@@ -1,0 +1,170 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-cream: #fbf7f0;
+  --color-sand: #f3ebdd;
+  --color-sand-2: #e9dcc6;
+  --color-ink: #26251e;
+  --color-muted: #6b6656;
+  --color-line: #e3d7c3;
+  --color-orange: #e8650a;
+  --color-orange-deep: #c4520a;
+  --color-orange-soft: #fbe6d2;
+  --color-olive: #4a5822;
+  --color-olive-deep: #2f3916;
+  --color-olive-soft: #e6e9d6;
+  --color-leaf: #8a9a55;
+
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-sans: var(--font-jost), 'Jost', system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-spin-slow: spin 28s linear infinite;
+
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+    font-feature-settings: 'kern', 'liga';
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-orange-soft);
+    color: var(--color-olive-deep);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-orange);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* Cormorant hat Mediävalziffern – für Zahlen lieber Versalziffern */
+  .font-serif,
+  .display {
+    font-variant-numeric: lining-nums;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12;
+  }
+  .eyebrow {
+    @apply text-olive inline-flex items-center gap-3 text-[0.72rem] font-medium tracking-[0.28em] uppercase;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply bg-orange inline-block h-px w-8;
+  }
+  .display {
+    @apply font-serif leading-[0.98] font-medium tracking-[-0.01em];
+  }
+  .display em {
+    @apply text-orange font-medium italic;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-medium tracking-wide transition duration-300 ease-(--ease-soft) select-none;
+  }
+  .btn-primary {
+    @apply bg-orange hover:bg-orange-deep text-white shadow-[0_10px_30px_-12px_rgba(232,101,10,0.7)] hover:-translate-y-0.5;
+  }
+  .btn-secondary {
+    @apply border-olive/25 text-olive hover:border-olive hover:bg-olive border bg-transparent hover:text-white;
+  }
+  .btn-light {
+    @apply text-olive-deep hover:bg-orange bg-white hover:text-white;
+  }
+  .link-underline {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.4s var(--ease-soft);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+  .card {
+    @apply border-line/70 rounded-[1.75rem] border bg-white/60 backdrop-blur-sm;
+  }
+  .field {
+    @apply border-line text-ink placeholder:text-muted/60 focus:border-orange focus:ring-orange/15 w-full rounded-2xl border bg-white px-4 py-3.5 text-[0.98rem] transition outline-none focus:ring-4;
+  }
+  .label {
+    @apply text-muted mb-2 block text-[0.78rem] font-medium tracking-[0.12em] uppercase;
+  }
+  .grain {
+    position: relative;
+  }
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.25 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Einblend-Animationen beim Scrollen */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease-soft),
+    transform 0.9s var(--ease-soft);
+  transition-delay: var(--d, 0ms);
+}
+[data-reveal='fade'] {
+  transform: none;
+}
+[data-reveal='scale'] {
+  transform: scale(0.96);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Der rote Faden: SVG-Linien zeichnen sich beim Scrollen */
+.thread path {
+  stroke-dasharray: var(--len, 2000);
+  stroke-dashoffset: var(--len, 2000);
+  transition: stroke-dashoffset 2.4s var(--ease-soft);
+}
+.thread.is-in path {
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal],
+  .thread path {
+    opacity: 1 !important;
+    transform: none !important;
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .animate-marquee,
+  .animate-spin-slow {
+    animation: none !important;
+  }
+}
