@@ -30,10 +30,10 @@ export const defaultSettings: SiteSettings = {
   heroEyebrow: 'Catering aus Pfaffnau',
   heroTitle: 'Hausgemacht. Für Ihre *Momente.*',
   heroText:
-    'Apéro, Mezze, Lunch und Themenbuffets – frisch zubereitet von Dilsah Sever. Für Firmen, Teams und private Feiern, die nach mehr schmecken sollen.',
+    'Apéro, Mezze, Lunch und Themenbuffets – frisch zubereitet von Dilsah Sever. Für Firmen, Geschäfte und Feste, die nach mehr schmecken sollen.',
   aboutTitle: 'Kochen, wie man es für die *eigene Familie* tut.',
   aboutText:
-    'Hinter AVA Catering steht Dilsah Sever. Was in ihrer Küche in Pfaffnau entsteht, ist ehrliches Handwerk: Teig, der von Hand geknetet wird, Weinblätter, die einzeln gerollt werden, und Rezepte, die mediterrane und türkische Tradition mit der Freude am Gastgeben verbinden.\n\nOb kleines Apéro im Büro oder grosses Familienfest – jedes Buffet wird für Ihren Anlass zusammengestellt, liebevoll angerichtet und mit derselben Sorgfalt zubereitet, als wären es die eigenen Gäste.',
+    'Hinter AVA Catering steht Dilsah Sever. Was in ihrer Küche in Pfaffnau entsteht, ist ehrliches Handwerk: Teig, der von Hand geknetet wird, Weinblätter, die einzeln gerollt werden, und Rezepte, die europäische und mediterrane Küche mit der Freude am Gastgeben verbinden.\n\nOb Apéro im Büro, Eröffnung im Geschäft oder Fest im Verein: Jedes Buffet wird für Ihren Anlass zusammengestellt, liebevoll angerichtet und mit derselben Sorgfalt zubereitet, als wären es die eigenen Gäste.',
   announcement: '',
   leadTime: 'Am besten fragen Sie mindestens 7 Tage vor Ihrem Anlass an – kurzfristige Anfragen prüfen wir gerne.',
   instagram: '',
@@ -206,6 +206,7 @@ export const eventTypes = [
   'Firmenapéro & Empfang',
   'Teamlunch & Meeting',
   'Firmenfeier & Jubiläum',
+  'Geschäftseröffnung & Kundenevent',
   'Geburtstag',
   'Familienfest',
   'Vereinsanlass',
@@ -264,13 +265,89 @@ export const categoryDetails: Record<string, { intro: string; idealFor: string[]
 
 export const occasions = [
   'Firmenapéro',
+  'Geschäftseröffnung',
   'Teamlunch',
+  'Kundenevent',
   'Geburtstag',
   'Firmenjubiläum',
   'Meeting & Workshop',
-  'Familienfest',
-  'Vereinsanlass',
-  'Kindergeburtstag',
-  'Taufe',
+  'Sommerfest',
+  'Vereinsfest',
   'Weihnachtsapéro',
+]
+
+/** Pakete für Firmen – Mengen als Richtwerte, Preis immer per Offerte. */
+export const businessPackages = [
+  {
+    key: 'apero-kurz',
+    title: 'Apéro kurz',
+    tag: 'Begrüssung & Empfang',
+    duration: 'bis 1 Stunde',
+    amount: '5–7 Häppchen pro Person',
+    text: 'Zum Anstossen nach dem Meeting, bei der Vernissage oder zur Begrüssung von Kunden.',
+    image: '/images/apero-minipizza.webp',
+    anlass: 'Firmenapéro & Empfang',
+    angebot: 'apero',
+  },
+  {
+    key: 'apero-riche',
+    title: 'Apéro riche',
+    tag: 'Ersetzt das Abendessen',
+    duration: '2–3 Stunden',
+    amount: '15–20 Häppchen pro Person',
+    text: 'Warm und kalt, herzhaft und süss: reichhaltig genug, dass niemand hungrig nach Hause geht.',
+    image: '/images/apero-tafel.webp',
+    anlass: 'Firmenfeier & Jubiläum',
+    angebot: 'mezze',
+  },
+  {
+    key: 'business-lunch',
+    title: 'Business-Lunch',
+    tag: 'Meeting, Workshop, Schulung',
+    duration: 'Mittagspause',
+    amount: 'Buffet oder Lunch-Box pro Person',
+    text: 'Ausgewogen und frisch, auf Wunsch einzeln verpackt und beschriftet, pünktlich zur Pause.',
+    image: '/images/lunch-box.webp',
+    anlass: 'Teamlunch & Meeting',
+    angebot: 'lunch',
+  },
+  {
+    key: 'pause',
+    title: 'Kaffeepause',
+    tag: 'Morgen- oder Nachmittagspause',
+    duration: '15–30 Minuten',
+    amount: '2–3 Stück Gebäck pro Person',
+    text: 'Hausgemachtes Gebäck, Simit und Süsses: der kleine Unterschied an jedem Seminartag.',
+    image: '/images/gebaeck-simit-schale.webp',
+    anlass: 'Teamlunch & Meeting',
+    angebot: 'suesses',
+  },
+] as const
+
+/** Richtwerte für den Mengenrechner (Stück pro Person, min–max). */
+export const quantityGuide = [
+  { key: 'apero-kurz', label: 'Apéro kurz', hint: 'bis 1 Stunde', unit: 'Häppchen', min: 5, max: 7, anlass: 'Firmenapéro & Empfang', angebot: 'apero' },
+  { key: 'apero', label: 'Apéro', hint: '1–2 Stunden', unit: 'Häppchen', min: 8, max: 12, anlass: 'Firmenapéro & Empfang', angebot: 'apero' },
+  { key: 'apero-riche', label: 'Apéro riche', hint: 'statt Abendessen', unit: 'Häppchen', min: 15, max: 20, anlass: 'Firmenfeier & Jubiläum', angebot: 'mezze' },
+  { key: 'lunch', label: 'Lunch', hint: 'Buffet oder Box', unit: 'Portionen', min: 1, max: 1, anlass: 'Teamlunch & Meeting', angebot: 'lunch' },
+  { key: 'pause', label: 'Kaffeepause', hint: 'Gebäck & Süsses', unit: 'Stück', min: 2, max: 3, anlass: 'Teamlunch & Meeting', angebot: 'suesses' },
+] as const
+
+/** Orte im Liefergebiet (lokale Suche). */
+export const serviceTowns = [
+  'Pfaffnau',
+  'St. Urban',
+  'Reiden',
+  'Wikon',
+  'Dagmersellen',
+  'Nebikon',
+  'Altishofen',
+  'Willisau',
+  'Sursee',
+  'Zofingen',
+  'Brittnau',
+  'Rothrist',
+  'Aarburg',
+  'Murgenthal',
+  'Olten',
 ]

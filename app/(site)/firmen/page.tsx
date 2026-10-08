@@ -1,27 +1,42 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Check } from '@/components/Icons'
-import { ContactChips, CtaBand, Faq, ImageHero, JsonLd, SectionHead, breadcrumbJsonLd, faqGroups, faqJsonLd } from '@/components/site/sections'
-import { getCategories, getSettings } from '@/lib/data'
+import { QuantityCalculator } from '@/components/site/QuantityCalculator'
+import { ContactChips, CtaBand, Faq, ImageHero, JsonLd, PackageCards, RegionBlock, SectionHead, TrustBar, breadcrumbJsonLd, faqGroups, faqJsonLd } from '@/components/site/sections'
+import { getSettings } from '@/lib/data'
 import { pageMeta } from '@/lib/seo'
 import { siteUrl } from '@/lib/utils'
 
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Firmencatering – Apéro, Lunch & Firmenanlässe',
+  title: 'Firmencatering – Apéro, Lunch & Geschäftsanlässe',
   description:
-    'Firmencatering aus Pfaffnau: Firmenapéro, Teamlunch, Lunch-Boxen für Meetings und Buffets für Jubiläen. Hausgemacht, pünktlich geliefert, Rechnung an Ihre Firma.',
+    'Catering für Firmen und Geschäfte aus Pfaffnau: Firmenapéro, Apéro riche, Business-Lunch, Lunch-Boxen und Buffets für Eröffnungen und Kundenevents. Hausgemacht, pünktlich geliefert, Rechnung an Ihre Firma.',
   path: '/firmen',
   image: '/og-firmen.jpg',
-  imageAlt: 'AVA Catering – Catering für Firmen & Teams',
+  imageAlt: 'AVA Catering – Catering für Firmen & Geschäfte',
 })
 
-const occasions = [
-  { t: 'Kunden- & Firmenapéro', d: 'Fingerfood, Gebäck und Mezze für Empfänge, Eröffnungen und Kundenanlässe.', img: '/images/apero-tafel.webp', cat: 'apero' },
-  { t: 'Meeting & Workshop', d: 'Lunch-Buffet oder einzeln verpackte Lunch-Boxen, bereit zur Mittagspause.', img: '/images/lunch-box.webp', cat: 'lunch' },
-  { t: 'Teamlunch & Teamevent', d: 'Gemeinsam essen verbindet: Mezze-Buffet oder ein Thema wie Burger oder Pasta.', img: '/images/mezze-buffet.webp', cat: 'mezze' },
-  { t: 'Jubiläum & Weihnachtsapéro', d: 'Ein festliches Buffet mit süssem Abschluss für die ganze Belegschaft.', img: '/images/suess-baklava.webp', cat: 'suesses' },
+const audiences = [
+  {
+    e: 'Büro & Team',
+    t: 'Für Ihr Unternehmen',
+    d: 'Damit Meetings produktiv bleiben und Feiern in Erinnerung.',
+    items: ['Meeting & Workshop', 'Teamlunch', 'Weiterbildung', 'Firmenjubiläum', 'Weihnachtsessen', 'Pensionierung'],
+  },
+  {
+    e: 'Geschäft & Kunden',
+    t: 'Für Ihr Geschäft',
+    d: 'Ein Buffet, über das Ihre Kundschaft noch lange spricht.',
+    items: ['Geschäftseröffnung', 'Kundenapéro', 'Tag der offenen Tür', 'Vernissage & Ausstellung', 'Produktpräsentation', 'Weihnachtsapéro'],
+  },
+]
+
+const process = [
+  ['Anfrage', 'Datum, Ort, Anzahl Gäste und Format angeben. Online in zwei Minuten oder per Telefon.'],
+  ['Offerte', 'Sie erhalten eine persönliche Offerte mit Auswahl, Menge und Preis, kostenlos und unverbindlich.'],
+  ['Bestätigung', 'Nach Ihrem Okay planen wir Lieferzeit, Allergene und Details. Änderungen nach Absprache.'],
+  ['Genuss & Rechnung', 'Frisch geliefert und angerichtet. Die Rechnung geht direkt an Ihre Firma.'],
 ]
 
 const benefits = [
@@ -32,47 +47,65 @@ const benefits = [
 ]
 
 export default async function FirmenPage() {
-  const [s, cats] = await Promise.all([getSettings(), getCategories()])
-  const featured = cats.filter((c) => ['apero', 'lunch', 'mezze'].includes(c.slug))
+  const s = await getSettings()
   const faq = faqGroups.find((g) => g.title === 'Für Firmen')!.items.concat(faqGroups[0].items[2], faqGroups[1].items[1])
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: 'Für Firmen', path: '/firmen' }], siteUrl())} />
+      <JsonLd data={breadcrumbJsonLd([{ name: 'Firmen & Geschäfte', path: '/firmen' }], siteUrl())} />
       <JsonLd data={faqJsonLd(faq)} />
       <ImageHero
-        crumbs={[{ href: '/firmen', label: 'Für Firmen' }]}
-        eyebrow="Firmencatering"
-        title="Catering, das Ihr *Team* begeistert."
-        text="Vom Kundenapéro bis zum Teamlunch: hausgemachte Buffets und Lunch-Boxen für Unternehmen in Pfaffnau, im Luzerner Hinterland und in der Region Aargau/Solothurn."
+        crumbs={[{ href: '/firmen', label: 'Firmen & Geschäfte' }]}
+        eyebrow="Firmen & Geschäfte"
+        title="Catering, das Ihr *Geschäft* stärkt."
+        text="Vom Teamlunch über die Geschäftseröffnung bis zum Kundenapéro: hausgemachte Buffets und Lunch-Boxen für Unternehmen und Geschäfte in Pfaffnau, im Luzerner Hinterland und in der Region Aargau/Solothurn."
         image="/images/lunch-set.webp"
         imageAlt="Lunch-Buffet für ein Firmenmeeting"
       >
         <div data-reveal style={{ '--d': '240ms' } as React.CSSProperties} className="mt-10 flex flex-col gap-3 sm:flex-row">
           <Link href="/anfrage?anlass=Firmenap%C3%A9ro%20%26%20Empfang" className="btn btn-primary">
-            Firmenanfrage starten <ArrowRight className="size-4" />
+            Offerte anfragen <ArrowRight className="size-4" />
           </Link>
-          <Link href="/angebot/lunch" className="btn btn-secondary">
-            Lunch-Angebot ansehen
+          <Link href="#mengenrechner" className="btn btn-secondary">
+            Menge berechnen
           </Link>
         </div>
       </ImageHero>
 
+      <div className="container-x -mt-4 pb-16 lg:pb-20">
+        <TrustBar />
+      </div>
+
+      <section className="pb-20 lg:pb-28">
+        <div className="container-x">
+          <SectionHead eyebrow="Für wen" title="Für das *Team*. Für Ihre *Kunden*." />
+          <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            {audiences.map((a, i) => (
+              <div key={a.t} data-reveal style={{ '--d': `${i * 120}ms` } as React.CSSProperties} className={i ? 'bg-olive-deep text-cream rounded-[2rem] p-8 sm:p-10' : 'bg-orange rounded-[2rem] p-8 text-white sm:p-10'}>
+                <p className="text-xs tracking-[0.25em] uppercase opacity-80">{a.e}</p>
+                <h3 className="mt-3 font-serif text-[clamp(2rem,3.4vw,2.8rem)] leading-tight">{a.t}</h3>
+                <p className="mt-3 leading-relaxed opacity-85">{a.d}</p>
+                <ul className="mt-7 flex flex-wrap gap-2">
+                  {a.items.map((it) => (
+                    <li key={it} className="rounded-full border border-white/30 px-3.5 py-1.5 text-sm">{it}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-sand/60 py-20 lg:py-28">
         <div className="container-x">
-          <SectionHead eyebrow="Anlässe" title="Für jeden Termin im *Kalender*." text="Ob 10 oder 120 Gäste: Wir stellen Auswahl und Mengen passend zu Ihrem Anlass zusammen." />
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {occasions.map((o, i) => (
-              <Link key={o.t} href={`/angebot/${o.cat}`} data-reveal style={{ '--d': `${i * 90}ms` } as React.CSSProperties} className="group overflow-hidden rounded-[1.75rem] bg-white/80">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image src={o.img} alt="" fill sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-[1.2s] ease-(--ease-soft) group-hover:scale-105" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-olive-deep font-serif text-[1.6rem] leading-tight">{o.t}</h3>
-                  <p className="text-muted mt-2 text-[0.95rem] leading-relaxed">{o.d}</p>
-                </div>
-              </Link>
-            ))}
+          <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+            <SectionHead eyebrow="Pakete für Firmen" title="Das passende Format für *jeden Termin*." text="Vier bewährte Formate als Ausgangspunkt. Auswahl, Menge und Ablauf stimmen wir auf Ihren Anlass ab." />
+            <Link data-reveal href="/angebot" className="btn btn-secondary shrink-0 self-start lg:self-auto">
+              Alle Buffets <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <div className="mt-14">
+            <PackageCards />
           </div>
         </div>
       </section>
@@ -91,24 +124,33 @@ export default async function FirmenPage() {
         </div>
       </section>
 
-      <section className="bg-olive-deep grain relative overflow-hidden py-20 lg:py-28">
+      <section id="mengenrechner" className="bg-olive-deep grain relative scroll-mt-24 overflow-hidden py-20 lg:py-28">
         <div className="container-x relative">
-          <SectionHead light eyebrow="Beliebt bei Firmen" title="Drei Buffets, die *immer* passen." />
-          <div className="mt-14 grid gap-5 md:grid-cols-3">
-            {featured.map((c, i) => (
-              <Link key={c.slug} href={`/angebot/${c.slug}`} data-reveal style={{ '--d': `${i * 90}ms` } as React.CSSProperties} className="group relative flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[1.75rem] p-7">
-                {c.image && <Image src={c.image} alt={c.title} fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover transition duration-[1.4s] ease-(--ease-soft) group-hover:scale-[1.06]" />}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/0" />
-                <div className="relative">
-                  <p className="text-orange-soft text-xs tracking-[0.25em] uppercase">{c.subtitle}</p>
-                  <h3 className="text-cream mt-2 font-serif text-[2.2rem] leading-tight">{c.title}</h3>
-                  <span className="text-cream mt-4 inline-flex items-center gap-2 text-sm">
-                    Details <ArrowRight className="size-4 transition group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
-            ))}
+          <SectionHead light eyebrow="Mengenrechner" title="Wie viel braucht *Ihr Team*?" text="Wählen Sie das Format und die Anzahl Gäste. Sie sehen sofort unsere Richtmenge und können direkt eine Offerte anfragen." />
+          <div data-reveal className="mt-12">
+            <QuantityCalculator light />
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 lg:py-28">
+        <div className="container-x">
+          <SectionHead eyebrow="Ablauf" title="In vier Schritten zum *Firmenanlass*." />
+          <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {process.map(([t, d], i) => (
+              <li key={t} data-reveal style={{ '--d': `${i * 100}ms` } as React.CSSProperties} className="border-line relative rounded-[1.75rem] border bg-white/60 p-7">
+                <span className="text-orange font-serif text-5xl leading-none italic">0{i + 1}</span>
+                <h3 className="text-olive-deep mt-5 font-serif text-[1.6rem] leading-tight">{t}</h3>
+                <p className="text-muted mt-2 text-[0.95rem] leading-relaxed">{d}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="bg-sand/60 py-20 lg:py-28">
+        <div className="container-x">
+          <RegionBlock s={s} />
         </div>
       </section>
 
@@ -120,7 +162,7 @@ export default async function FirmenPage() {
               <ContactChips s={s} />
             </div>
             <ul data-reveal className="mt-10 space-y-3">
-              {['Offerte innert kurzer Zeit', 'Unverbindlich und kostenlos', 'Auch wiederkehrende Lunches'].map((t) => (
+              {['Persönliche Offerte', 'Unverbindlich und kostenlos', 'Auch wiederkehrende Lunches'].map((t) => (
                 <li key={t} className="flex items-center gap-3">
                   <Check className="text-orange size-4" /> {t}
                 </li>
@@ -131,7 +173,7 @@ export default async function FirmenPage() {
         </div>
       </section>
 
-      <CtaBand s={s} title="Planen Sie Ihren nächsten *Firmenanlass*." />
+      <CtaBand s={s} title="Planen Sie Ihren nächsten *Geschäftsanlass*." />
     </>
   )
 }

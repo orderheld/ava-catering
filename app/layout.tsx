@@ -17,15 +17,18 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   ...pageMeta({
     description:
-      'Hausgemachtes Catering aus Pfaffnau: Apéro-, Mezze- und Lunch-Buffets, Themen-Party-Service und Süsses für Firmen und Privatpersonen. Jetzt unverbindlich anfragen.',
+      'Hausgemachtes Catering aus Pfaffnau: Apéro-, Mezze- und Lunch-Buffets, Themen-Party-Service und Süsses für Firmen, Geschäfte und Feste. Jetzt unverbindlich anfragen.',
     path: '/',
   }),
-  title: { default: 'AVA Catering – Catering aus Pfaffnau für Firmen & Private', template: '%s · AVA Catering' },
+  title: { default: 'AVA Catering – Catering aus Pfaffnau für Firmen, Geschäfte & Feste', template: '%s · AVA Catering' },
   applicationName: 'AVA Catering',
   authors: [{ name: 'Dilsah Sever' }],
   creator: 'webnova.ch',
   keywords: [
     'Catering Pfaffnau',
+    'Catering Firma',
+    'Catering Geschäftseröffnung',
+    'Apéro riche',
     'Catering Luzern',
     'Firmencatering',
     'Apéro Catering',

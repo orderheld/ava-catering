@@ -11,7 +11,7 @@ export const revalidate = 300
 export const metadata = pageMeta({
   title: 'Über uns – Dilsah Sever & AVA Catering',
   description:
-    'AVA Catering ist das Catering von Dilsah Sever aus Pfaffnau: hausgemachte mediterrane und türkische Spezialitäten, mit Sorgfalt für Firmen und private Feiern zubereitet.',
+    'AVA Catering ist das Catering von Dilsah Sever aus Pfaffnau: hausgemachte europäische und mediterrane Küche, mit Sorgfalt für Firmen, Geschäfte und Feste zubereitet.',
   path: '/ueber-uns',
 })
 
@@ -93,10 +93,10 @@ export default async function UeberUnsPage() {
           <SectionHead light eyebrow="Region" title="Zuhause in *Pfaffnau*." text={`${s.serviceArea}. Abholung in ${s.city} oder Lieferung zu Ihnen.`} />
           <div data-reveal className="flex flex-col gap-3 sm:flex-row lg:justify-end">
             <Link href="/firmen" className="btn btn-primary">
-              Für Firmen <ArrowRight className="size-4" />
+              Firmen & Geschäfte <ArrowRight className="size-4" />
             </Link>
             <Link href="/privat" className="btn btn-light">
-              Für Private <ArrowRight className="size-4" />
+              Feste & Feiern <ArrowRight className="size-4" />
             </Link>
           </div>
         </div>

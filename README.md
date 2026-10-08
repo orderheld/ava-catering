@@ -9,7 +9,7 @@ Next.js 16 · Tailwind CSS 4 · Neon (Postgres, Drizzle ORM) · Resend · Vercel
 - **Fünf Kapitel** (01 Apéro · 02 Mezze · 03 Lunch · 04 Themen-Party · 05 Süsses) – auf der Startseite als interaktive Buffet-Tafel, im Angebot als durchnummerierte Kapitel.
 - **Jeder Weg führt zur Anfrage**: Jedes Buffet und jedes Thema hat einen Button, der den Anfrage-Assistenten vorausgefüllt öffnet.
 - **Farben aus dem Logo**: Orange `#E8650A`, Oliv `#4A5822`, Creme `#FBF7F0`. Schriften: Cormorant Garamond (Titel) + Jost (Text, wie «CATERING» im Logo).
-- **Zielgruppen**: Firmen (Apéro, Teamlunch, Meetings) und Private (Geburtstag, Familienfest), Anlässe von rund 10 bis 120 Gästen. Sehr grosse Anlässe wie Hochzeiten sind bewusst nicht im Fokus.
+- **Zielgruppen**: Firmen & Geschäfte (Apéro, Teamlunch, Meetings, Eröffnungen) und Feste (Geburtstag, Familien- und Vereinsfest), Anlässe von rund 10 bis 120 Gästen. Keine Hochzeiten oder Grossanlässe.
 - **Mobil zuerst**: Feste Leiste mit «Anrufen», «WhatsApp» und «Unverbindlich anfragen».
 - **SEO & Teilen**: Eigene Titel/Beschreibung pro Seite, Open-Graph-Bilder für WhatsApp/Facebook/LinkedIn (`public/og*.jpg`), strukturierte Daten (LocalBusiness, Service, FAQ, Breadcrumbs), Sitemap, Web-App-Manifest, Favicon & App-Icons.
 
