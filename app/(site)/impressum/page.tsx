@@ -1,8 +1,8 @@
-import type { Metadata } from 'next'
+import { pageMeta } from '@/lib/seo'
 import { PageHero } from '@/components/site/sections'
 import { getSettings } from '@/lib/data'
 
-export const metadata: Metadata = { title: 'Impressum', robots: { index: false } }
+export const metadata = pageMeta({ title: 'Impressum', description: 'Impressum von AVA Catering, Dilsah Sever, Pfaffnau.', path: '/impressum', noindex: true })
 export const revalidate = 300
 
 export default async function ImpressumPage() {

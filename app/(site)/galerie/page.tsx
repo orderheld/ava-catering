@@ -1,15 +1,15 @@
-import type { Metadata } from 'next'
+import { pageMeta } from '@/lib/seo'
 import { CtaBand, PageHero } from '@/components/site/sections'
 import { Lightbox } from '@/components/site/Lightbox'
 import { getGallery, getSettings } from '@/lib/data'
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
-  title: 'Galerie',
-  description: 'Buffets, Gebäck und Süsses von AVA Catering – ein Blick in die Küche von Dilsah Sever.',
-  alternates: { canonical: '/galerie' },
-}
+export const metadata = pageMeta({
+  title: 'Galerie – Buffets, Gebäck & Süsses',
+  description: 'Bilder von Apéro-, Mezze- und Lunch-Buffets, Gebäck und Süssem von AVA Catering aus Pfaffnau. Ein Blick in die Küche von Dilsah Sever.',
+  path: '/galerie',
+})
 
 export default async function GaleriePage() {
   const [s, gallery] = await Promise.all([getSettings(), getGallery()])

@@ -2,7 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Accent } from '@/components/Accent'
 import { ArrowRight, Heart, Leaf, Truck } from '@/components/Icons'
-import { CtaBand, Faq, SectionHead, ThemeCards, Thread, faqs } from '@/components/site/sections'
+import { AudienceSplit, CtaBand, Faq, JsonLd, SectionHead, ThemeCards, Thread, faqJsonLd, faqs } from '@/components/site/sections'
+import { occasions } from '@/lib/content'
 import { getCategories, getGallery, getSettings, getThemes } from '@/lib/data'
 import { plain, siteUrl } from '@/lib/utils'
 
@@ -18,12 +19,10 @@ const hotspots = [
 
 const steps = [
   { t: 'Anfrage senden', d: 'Anlass, Datum, Personenzahl und Wünsche – in rund zwei Minuten erledigt.' },
-  { t: 'Persönliches Angebot', d: 'Dilsah meldet sich mit einem Vorschlag, der zu Ihrem Fest und Budget passt.' },
+  { t: 'Persönliches Angebot', d: 'Dilsah meldet sich mit einem Vorschlag, der zu Ihrem Anlass und Budget passt.' },
   { t: 'Feinschliff', d: 'Gemeinsam stimmen wir Auswahl, Mengen, Allergien und Lieferung ab.' },
   { t: 'Geniessen', d: 'Frisch zubereitet, schön angerichtet – Sie kümmern sich nur noch um Ihre Gäste.' },
 ]
-
-const occasions = ['Geburtstag', 'Firmenanlass', 'Hochzeit', 'Verlobung', 'Taufe', 'Familienfest', 'Vereinsanlass', 'Teamlunch', 'Apéro riche', 'Kindergeburtstag']
 
 export default async function HomePage() {
   const [s, cats, themes, gallery] = await Promise.all([getSettings(), getCategories(), getThemes(), getGallery()])
@@ -45,7 +44,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <JsonLd data={jsonLd} />
 
       {/* ───────────── Hero ───────────── */}
       <section className="relative overflow-hidden">
@@ -131,6 +130,16 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ───────────── Firmen & Private ───────────── */}
+      <section className="pb-20 lg:pb-28">
+        <div className="container-x">
+          <SectionHead eyebrow="Für wen" title="Für Ihr *Team*. Für Ihre *Liebsten*." text="Ob Firmenapéro, Teamlunch oder Geburtstag: Wir sind auf Anlässe von rund 10 bis 120 Gästen spezialisiert." />
+          <div className="mt-12">
+            <AudienceSplit />
+          </div>
+        </div>
+      </section>
+
       {/* ───────────── Die Tafel (Panorama mit Kapiteln) ───────────── */}
       <section className="relative pt-10 pb-20 lg:pb-28">
         <div className="container-x flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
@@ -146,7 +155,7 @@ export default async function HomePage() {
             {hotspots.map((h, i) => (
               <Link
                 key={h.slug}
-                href={`/angebot#${h.slug}`}
+                href={`/angebot/${h.slug}`}
                 className="group absolute bottom-[7%] -translate-x-1/2"
                 style={{ left: `${h.x}%` }}
               >
@@ -177,7 +186,7 @@ export default async function HomePage() {
             {cats.map((c, i) => (
               <Link
                 key={c.slug}
-                href={`/angebot#${c.slug}`}
+                href={`/angebot/${c.slug}`}
                 data-reveal
                 style={{ '--d': `${(i % 3) * 90}ms` } as React.CSSProperties}
                 className={`group bg-olive relative flex min-h-[380px] flex-col justify-end overflow-hidden rounded-[1.75rem] p-7 ${i < 2 ? 'md:col-span-3 md:min-h-[480px]' : 'md:col-span-2'}`}
@@ -206,7 +215,7 @@ export default async function HomePage() {
         <Thread className="top-0 right-0 h-full w-1/2 opacity-60" viewBox="0 0 600 600" d="M620 30C420 80 460 260 320 320S60 420 40 620" />
         <div className="container-x relative">
           <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-            <SectionHead light eyebrow="Themen-Party-Service" title="Ein Motto. Ein Buffet. *Ein Fest.*" text="Für Geburtstage, Teamevents und Familienfeiern, die ein Thema verdienen. Wählen Sie Ihr Motto – wir sorgen für den Rest." />
+            <SectionHead light eyebrow="Themen-Party-Service" title="Ein Motto. Ein Buffet. *Ein Fest.*" text="Für Teamevents, Geburtstage und Familienfeiern, die ein Thema verdienen. Wählen Sie Ihr Motto – wir sorgen für den Rest." />
           </div>
           <div className="mt-14">
             <ThemeCards themes={themes} />
@@ -277,6 +286,9 @@ export default async function HomePage() {
                 <p className="text-muted text-sm tracking-[0.18em] uppercase">Inhaberin & Köchin</p>
               </div>
             </div>
+            <Link data-reveal style={{ '--d': '360ms' } as React.CSSProperties} href="/ueber-uns" className="btn btn-secondary mt-10">
+              Mehr über uns <ArrowRight className="size-4" />
+            </Link>
             <dl data-reveal style={{ '--d': '400ms' } as React.CSSProperties} className="border-line mt-12 grid grid-cols-3 gap-6 border-t pt-8">
               {[
                 ['Hausgemacht', 'Teig, Füllungen, Dips'],
@@ -333,19 +345,13 @@ export default async function HomePage() {
         <div className="container-x grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
           <div>
             <SectionHead eyebrow="Gut zu wissen" title="Häufige *Fragen*." text={s.leadTime} />
+            <Link data-reveal href="/faq" className="btn btn-secondary mt-8">
+              Alle Fragen <ArrowRight className="size-4" />
+            </Link>
           </div>
           <Faq />
         </div>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-            }),
-          }}
-        />
+        <JsonLd data={faqJsonLd(faqs)} />
       </section>
 
       <CtaBand s={s} />
