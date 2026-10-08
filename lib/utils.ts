@@ -23,7 +23,12 @@ export function formatDateTime(d: Date | string) {
   return formatDate(d, { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
-export const siteUrl = () => (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://avacatering.ch').replace(/\/$/, '')
+/** Öffentliche Adresse: NEXT_PUBLIC_SITE_URL, sonst die Produktionsadresse von Vercel (z.B. *.vercel.app), sonst avacatering.ch. */
+export const siteUrl = () =>
+  (
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : 'https://avacatering.ch')
+  ).replace(/\/$/, '')
 
 export const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
