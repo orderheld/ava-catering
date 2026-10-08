@@ -11,7 +11,7 @@ export const revalidate = 300
 export const metadata = pageMeta({
   title: 'Angebot – Apéro, Mezze, Lunch & Themenbuffets',
   description:
-    'Apéro-Buffet, Mezze-Buffet, Lunch-Buffet, Themen-Party-Service und Süsses: das hausgemachte Catering-Angebot von AVA Catering aus Pfaffnau für Firmen und Private.',
+    'Apéro-Buffet, Mezze-Buffet, Lunch-Buffet, Themen-Party-Service und Süsses: das hausgemachte Catering-Angebot von AVA Catering aus Pfaffnau für Firmen, Geschäfte und Feste.',
   path: '/angebot',
   image: '/og-angebot.jpg',
   imageAlt: 'AVA Catering – Apéro, Mezze, Lunch & mehr',

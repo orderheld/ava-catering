@@ -9,17 +9,17 @@ import { siteUrl } from '@/lib/utils'
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Catering für private Feiern – Geburtstag & Familienfest',
+  title: 'Catering für Feste – Geburtstag, Verein & Familie',
   description:
-    'Catering für Geburtstage, Familienfeste, Taufen und Feiern mit Freunden: hausgemachte Apéro-, Mezze- und Themenbuffets von AVA Catering aus Pfaffnau.',
+    'Catering für Geburtstage, Vereins-, Sommer- und Familienfeste: hausgemachte Apéro-, Mezze- und Themenbuffets von AVA Catering aus Pfaffnau, geliefert in der Region.',
   path: '/privat',
   image: '/og-privat.jpg',
-  imageAlt: 'AVA Catering – Catering für private Feiern',
+  imageAlt: 'AVA Catering – Catering für Feste',
 })
 
 const occasions = [
   { t: 'Geburtstag', d: 'Vom runden Geburtstag bis zur Gartenparty: ein Buffet, das allen schmeckt.', img: '/images/suess-torte.webp', anlass: 'Geburtstag' },
-  { t: 'Familienfest & Taufe', d: 'Mezze, Gebäck und Süsses für Feiern mit der ganzen Familie.', img: '/images/mezze-sarma.webp', anlass: 'Familienfest' },
+  { t: 'Familien- & Sommerfest', d: 'Mezze, Gebäck und Süsses für Feste mit Familie, Freunden und Nachbarn.', img: '/images/mezze-sarma.webp', anlass: 'Familienfest' },
   { t: 'Kindergeburtstag', d: 'Pizza, Burger oder Pasta: Themenbuffets, die Gross und Klein begeistern.', img: '/images/themen-pizza.webp', anlass: 'Geburtstag' },
   { t: 'Vereins- & Nachbarschaftsfest', d: 'Unkompliziertes Fingerfood und Buffets für gesellige Runden.', img: '/images/apero-minipizza.webp', anlass: 'Vereinsanlass' },
 ]
@@ -30,15 +30,15 @@ export default async function PrivatPage() {
 
   return (
     <>
-      <JsonLd data={breadcrumbJsonLd([{ name: 'Für Private', path: '/privat' }], siteUrl())} />
+      <JsonLd data={breadcrumbJsonLd([{ name: 'Feste & Feiern', path: '/privat' }], siteUrl())} />
       <JsonLd data={faqJsonLd(faq)} />
       <ImageHero
-        crumbs={[{ href: '/privat', label: 'Für Private' }]}
-        eyebrow="Private Feiern"
+        crumbs={[{ href: '/privat', label: 'Feste & Feiern' }]}
+        eyebrow="Feste & Feiern"
         title="Sie feiern. Wir *kochen*."
-        text="Geburtstag, Familienfest oder ein Abend mit Freunden: Dilsah bereitet Ihr Buffet frisch und hausgemacht zu, damit Sie Zeit für Ihre Gäste haben."
+        text="Geburtstag, Vereinsfest, Sommerfest oder Familienfeier: Dilsah bereitet Ihr Buffet frisch und hausgemacht zu, damit Sie Zeit für Ihre Gäste haben."
         image="/images/apero-tafel.webp"
-        imageAlt="Gedeckte Apéro-Tafel für eine private Feier"
+        imageAlt="Gedeckte Apéro-Tafel für ein Fest"
       >
         <div data-reveal style={{ '--d': '240ms' } as React.CSSProperties} className="mt-10 flex flex-col gap-3 sm:flex-row">
           <Link href="/anfrage?anlass=Geburtstag" className="btn btn-primary">

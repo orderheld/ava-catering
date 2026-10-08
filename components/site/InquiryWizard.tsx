@@ -16,6 +16,7 @@ type Props = {
   initialOffering?: string
   initialTheme?: string
   initialEventType?: string
+  initialGuests?: number
   phone: string
   leadTime: string
 }
@@ -62,7 +63,7 @@ function Tile({
   )
 }
 
-export function InquiryWizard({ categories, themes, blocked, initialOffering, initialTheme, initialEventType, phone, leadTime }: Props) {
+export function InquiryWizard({ categories, themes, blocked, initialOffering, initialTheme, initialEventType, initialGuests, phone, leadTime }: Props) {
   const [state, action, pending] = useActionState<InquiryState, FormData>(submitInquiry, null)
   const [step, setStep] = useState(0)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -76,7 +77,7 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
   const [dietary, setDietary] = useState<string[]>([])
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
-  const [guests, setGuests] = useState(25)
+  const [guests, setGuests] = useState(initialGuests && initialGuests > 0 && initialGuests <= 5000 ? Math.round(initialGuests) : 25)
   const [location, setLocation] = useState('')
   const [service, setService] = useState('')
   const [budget, setBudget] = useState('')

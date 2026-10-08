@@ -8,8 +8,8 @@ import { cn, telHref } from '@/lib/utils'
 
 const nav = [
   { href: '/angebot', label: 'Angebot' },
-  { href: '/firmen', label: 'Für Firmen' },
-  { href: '/privat', label: 'Für Private' },
+  { href: '/firmen', label: 'Firmen & Geschäfte' },
+  { href: '/privat', label: 'Feste & Feiern' },
   { href: '/ueber-uns', label: 'Über uns' },
   { href: '/galerie', label: 'Galerie' },
   { href: '/kontakt', label: 'Kontakt' },
@@ -38,7 +38,7 @@ export function Header({ phone, email, whatsapp, announcement }: { phone: string
       )}
       <div className="bg-olive-deep text-olive-soft/85 hidden text-[0.8rem] tracking-wide lg:block">
         <div className="container-x flex h-9 items-center justify-between">
-          <p>Hausgemachtes Catering aus Pfaffnau für Firmen & Private</p>
+          <p>Hausgemachtes Catering aus Pfaffnau für Firmen, Geschäfte & Feste</p>
           <div className="flex items-center gap-6">
             <a href={telHref(phone)} className="flex items-center gap-2 hover:text-white">
               <Phone className="size-3.5" /> {phone.replace('+41 ', '0')}
@@ -109,7 +109,7 @@ export function Header({ phone, email, whatsapp, announcement }: { phone: string
       <div
         id="mobile-nav"
         className={cn(
-          'bg-cream fixed inset-0 z-40 flex flex-col overflow-y-auto px-6 pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] transition-all duration-500 ease-(--ease-soft) lg:hidden',
+          'bg-cream fixed inset-0 z-[45] flex flex-col overflow-y-auto px-6 pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] transition-all duration-500 ease-(--ease-soft) lg:hidden',
           open ? 'visible opacity-100' : 'invisible -translate-y-4 opacity-0',
         )}
       >

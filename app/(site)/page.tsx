@@ -2,8 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Accent } from '@/components/Accent'
 import { ArrowRight, Heart, Leaf, Truck } from '@/components/Icons'
-import { AudienceSplit, CtaBand, Faq, JsonLd, SectionHead, ThemeCards, Thread, faqJsonLd, faqs } from '@/components/site/sections'
-import { occasions } from '@/lib/content'
+import { QuantityCalculator } from '@/components/site/QuantityCalculator'
+import { AudienceSplit, CtaBand, Faq, JsonLd, SectionHead, ThemeCards, Thread, TrustBar, faqJsonLd, faqs } from '@/components/site/sections'
+import { occasions, serviceTowns } from '@/lib/content'
 import { getCategories, getGallery, getSettings, getThemes } from '@/lib/data'
 import { plain, siteUrl } from '@/lib/utils'
 
@@ -37,9 +38,11 @@ export default async function HomePage() {
     telephone: s.phone,
     email: s.email,
     founder: { '@type': 'Person', name: 'Dilsah Sever' },
-    servesCuisine: ['Mediterran', 'Türkisch', 'Fingerfood'],
+    servesCuisine: ['Europäisch', 'Mediterran', 'Fingerfood'],
     address: { '@type': 'PostalAddress', streetAddress: s.street, postalCode: s.zip, addressLocality: s.city, addressRegion: 'LU', addressCountry: 'CH' },
-    areaServed: s.serviceArea,
+    areaServed: serviceTowns.map((name) => ({ '@type': 'City', name })),
+    priceRange: 'CHF',
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.street}, ${s.zip} ${s.city}`)}`,
   }
 
   return (
@@ -77,7 +80,7 @@ export default async function HomePage() {
             <ul data-reveal style={{ '--d': '400ms' } as React.CSSProperties} className="text-ink/75 mt-12 grid gap-4 text-[0.92rem] sm:grid-cols-3 sm:gap-6">
               {[
                 [Heart, '100 % hausgemacht'],
-                [Leaf, 'Mediterran & türkisch inspiriert'],
+                [Leaf, 'Europäisch & mediterran'],
                 [Truck, 'Abholung oder Lieferung'],
               ].map(([Icon, label]) => {
                 const I = Icon as typeof Heart
@@ -130,10 +133,14 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <div className="container-x pb-20 lg:pb-24">
+        <TrustBar />
+      </div>
+
       {/* ───────────── Firmen & Private ───────────── */}
       <section className="pb-20 lg:pb-28">
         <div className="container-x">
-          <SectionHead eyebrow="Für wen" title="Für Ihr *Team*. Für Ihre *Liebsten*." text="Ob Firmenapéro, Teamlunch oder Geburtstag: Wir sind auf Anlässe von rund 10 bis 120 Gästen spezialisiert." />
+          <SectionHead eyebrow="Für wen" title="Fürs *Geschäft*. Fürs *Fest*." text="Ob Firmenapéro, Geschäftseröffnung, Teamlunch oder Geburtstag: Wir sind auf Anlässe von rund 10 bis 120 Gästen spezialisiert." />
           <div className="mt-12">
             <AudienceSplit />
           </div>
@@ -247,6 +254,16 @@ export default async function HomePage() {
             <Link href="/anfrage" className="btn btn-primary">
               Jetzt Schritt 1 machen <ArrowRight className="size-4" />
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────── Mengenrechner ───────────── */}
+      <section className="pb-20 lg:pb-28">
+        <div className="container-x">
+          <SectionHead eyebrow="Mengenrechner" title="Wie viel darf es *sein*?" text="Format wählen, Gäste einstellen und sofort sehen, mit welcher Menge Sie rechnen können." />
+          <div data-reveal className="mt-12">
+            <QuantityCalculator />
           </div>
         </div>
       </section>

@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Accent } from '@/components/Accent'
-import { ArrowRight, Check, Mail, Phone, Plus, Whatsapp } from '@/components/Icons'
-import type { SiteSettings, Theme } from '@/lib/content'
+import { ArrowRight, Calendar, Check, Heart, Leaf, Mail, Phone, Pin, Plus, Truck, Users, Whatsapp } from '@/components/Icons'
+import { businessPackages, serviceTowns, type SiteSettings, type Theme } from '@/lib/content'
 import { cn, telHref } from '@/lib/utils'
 
 export function SectionHead({
@@ -99,7 +99,7 @@ export const faqGroups: { title: string; items: FaqItem[] }[] = [
       },
       {
         q: 'Für wie viele Personen kocht AVA Catering?',
-        a: 'Wir sind auf Anlässe von rund 10 bis 120 Personen spezialisiert: Firmenapéros, Teamlunches, Geburtstage und Familienfeste. Sehr grosse Veranstaltungen wie Hochzeiten mit mehreren hundert Gästen gehören nicht zu unserem Schwerpunkt.',
+        a: 'Wir sind auf Anlässe von rund 10 bis 120 Personen spezialisiert: Firmenapéros, Teamlunches, Geschäftsanlässe, Geburtstage und Feste. Sehr grosse Veranstaltungen mit mehreren hundert Gästen gehören nicht zu unserem Schwerpunkt.',
       },
       {
         q: 'Was kostet ein Buffet?',
@@ -198,17 +198,17 @@ export function AudienceSplit() {
   const cards = [
     {
       href: '/firmen',
-      eyebrow: 'Für Firmen',
-      title: 'Apéro, Lunch & *Firmenanlässe*',
-      text: 'Kundenapéro, Teamlunch, Meeting oder Jubiläum: pünktlich, unkompliziert und mit Rechnung auf Ihre Firma.',
+      eyebrow: 'Firmen & Geschäfte',
+      title: 'Apéro, Lunch & *Kundenevents*',
+      text: 'Teamlunch, Meeting, Geschäftseröffnung oder Kundenapéro: pünktlich, unkompliziert und mit Rechnung auf Ihre Firma.',
       image: '/images/lunch-set.webp',
       points: ['Lunch-Boxen & Buffets', 'Rechnung an die Firma', 'Lieferung ins Büro'],
     },
     {
       href: '/privat',
-      eyebrow: 'Für Private',
-      title: 'Geburtstag, Familie & *Freunde*',
-      text: 'Von der Geburtstagsparty bis zum Familienfest: Sie feiern, wir kümmern uns ums Buffet, hausgemacht und mit Herz.',
+      eyebrow: 'Feste & Feiern',
+      title: 'Geburtstag, Verein & *Familie*',
+      text: 'Vom Geburtstag bis zum Vereins- oder Sommerfest: Sie feiern, wir kümmern uns ums Buffet, hausgemacht und mit Herz.',
       image: '/images/apero-tafel.webp',
       points: ['Themenbuffets für Gross & Klein', 'Vegetarisch & halal möglich', 'Abholung oder Lieferung'],
     },
@@ -405,4 +405,83 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[], base: 
       item: `${base}${it.path}`,
     })),
   }
+}
+
+/** Vertrauensleiste: die wichtigsten Fakten auf einen Blick. */
+export function TrustBar({ className }: { className?: string }) {
+  const items = [
+    { icon: Heart, t: '100 % hausgemacht', d: 'in Pfaffnau LU' },
+    { icon: Users, t: '10 bis 120 Gäste', d: 'Firmen, Geschäfte, Feste' },
+    { icon: Truck, t: 'Lieferung & Aufbau', d: 'oder Abholung' },
+    { icon: Leaf, t: 'Vegi, vegan, halal', d: 'Allergene ausgewiesen' },
+    { icon: Calendar, t: 'Offerte kostenlos', d: 'unverbindlich' },
+  ]
+  return (
+    <ul data-reveal className={cn('border-line grid grid-cols-1 gap-px overflow-hidden rounded-[1.75rem] border bg-line sm:grid-cols-2 lg:grid-cols-5', className)}>
+      {items.map(({ icon: I, t, d }, i) => (
+        <li key={t} className={cn('bg-cream flex items-center gap-3.5 px-5 py-3.5 sm:py-5', i === 4 && 'sm:col-span-2 lg:col-span-1')}>
+          <span className="bg-orange-soft text-orange grid size-10 shrink-0 place-items-center rounded-full">
+            <I className="size-[1.1rem]" />
+          </span>
+          <span className="min-w-0">
+            <span className="text-olive-deep block text-[0.95rem] leading-tight font-medium">{t}</span>
+            <span className="text-muted block text-[0.8rem]">{d}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+/** Firmen-Pakete mit Richtmengen. */
+export function PackageCards() {
+  return (
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {businessPackages.map((p, i) => (
+        <article key={p.key} data-reveal style={{ '--d': `${i * 90}ms` } as React.CSSProperties} className="group flex flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-[0_24px_50px_-36px_rgba(47,57,22,0.6)]">
+          <div className="relative aspect-[4/3] overflow-hidden">
+            <Image src={p.image} alt="" fill sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw" className="object-cover transition duration-[1.2s] ease-(--ease-soft) group-hover:scale-105" />
+            <span className="bg-cream/95 text-olive-deep absolute top-4 left-4 rounded-full px-3 py-1 text-xs tracking-[0.12em] uppercase">{p.tag}</span>
+          </div>
+          <div className="flex flex-1 flex-col p-6">
+            <h3 className="text-olive-deep font-serif text-[1.9rem] leading-tight">{p.title}</h3>
+            <p className="text-muted mt-2 text-[0.95rem] leading-relaxed">{p.text}</p>
+            <dl className="border-line mt-5 space-y-2 border-t pt-4 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted">Dauer</dt>
+                <dd className="text-right">{p.duration}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted">Menge</dt>
+                <dd className="text-right">{p.amount}</dd>
+              </div>
+            </dl>
+            <Link href={`/anfrage?anlass=${encodeURIComponent(p.anlass)}&angebot=${p.angebot}`} className="text-orange mt-auto inline-flex items-center gap-2 pt-6 font-medium">
+              Offerte anfragen <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+            </Link>
+          </div>
+        </article>
+      ))}
+    </div>
+  )
+}
+
+/** Liefergebiet mit Ortsliste (lokale Suche). */
+export function RegionBlock({ s }: { s: SiteSettings }) {
+  return (
+    <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:gap-16">
+      <SectionHead eyebrow="Liefergebiet" title="Von Pfaffnau in die *Region*." text={`${s.serviceArea}. Abholung in ${s.city} jederzeit nach Absprache.`} />
+      <div data-reveal className="relative">
+        <ul className="flex flex-wrap gap-2.5">
+          {serviceTowns.map((t) => (
+            <li key={t} className={cn('rounded-full border px-4 py-2 text-sm', t === s.city ? 'bg-orange border-orange text-white' : 'border-line text-olive bg-white/60')}>
+              {t === s.city && <Pin className="mr-1.5 -mt-0.5 inline size-3.5" />}
+              {t}
+            </li>
+          ))}
+          <li className="text-muted px-2 py-2 text-sm italic">… und weitere Orte auf Anfrage</li>
+        </ul>
+      </div>
+    </div>
+  )
 }

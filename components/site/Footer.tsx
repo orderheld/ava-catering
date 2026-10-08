@@ -15,7 +15,7 @@ export function Footer({ s }: { s: SiteSettings }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/ava-logo-hell.svg" alt="AVA Catering" className="h-24 w-auto" />
           <p className="text-olive-soft/75 mt-6 max-w-xs text-[0.95rem] leading-relaxed">
-            Hausgemachtes Catering von Dilsah Sever aus Pfaffnau: für Firmenanlässe, Teamlunches und private Feiern.
+            Hausgemachtes Catering von Dilsah Sever aus Pfaffnau: für Firmen, Geschäfte und Feste.
           </p>
         </div>
         <div>
@@ -68,8 +68,8 @@ export function Footer({ s }: { s: SiteSettings }) {
           <h3 className="text-orange mb-5 text-xs font-medium tracking-[0.25em] uppercase">Seiten</h3>
           <ul className="space-y-3 text-[0.95rem]">
             {[
-              ['Für Firmen', '/firmen'],
-              ['Für Private', '/privat'],
+              ['Firmen & Geschäfte', '/firmen'],
+              ['Feste & Feiern', '/privat'],
               ['Über uns', '/ueber-uns'],
               ['Galerie', '/galerie'],
               ['Häufige Fragen', '/faq'],

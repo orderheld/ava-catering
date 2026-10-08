@@ -18,7 +18,7 @@ export function pageMeta({
   imageAlt?: string
   noindex?: boolean
 }): Metadata {
-  const fullTitle = title ? `${title} · ${SITE}` : `${SITE} – Catering aus Pfaffnau für Firmen & Private`
+  const fullTitle = title ? `${title} · ${SITE}` : `${SITE} – Catering aus Pfaffnau für Firmen, Geschäfte & Feste`
   return {
     title: title ?? { absolute: fullTitle },
     description,
