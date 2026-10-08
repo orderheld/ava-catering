@@ -30,7 +30,7 @@ export const defaultSettings: SiteSettings = {
   heroEyebrow: 'Catering aus Pfaffnau',
   heroTitle: 'Hausgemacht. Für Ihre *Momente.*',
   heroText:
-    'Apéro, Mezze, Lunch und Themenbuffets – frisch zubereitet von Dilsah Sever. Für Geburtstage, Firmenanlässe und jedes Fest, das nach mehr schmecken soll.',
+    'Apéro, Mezze, Lunch und Themenbuffets – frisch zubereitet von Dilsah Sever. Für Firmen, Teams und private Feiern, die nach mehr schmecken sollen.',
   aboutTitle: 'Kochen, wie man es für die *eigene Familie* tut.',
   aboutText:
     'Hinter AVA Catering steht Dilsah Sever. Was in ihrer Küche in Pfaffnau entsteht, ist ehrliches Handwerk: Teig, der von Hand geknetet wird, Weinblätter, die einzeln gerollt werden, und Rezepte, die mediterrane und türkische Tradition mit der Freude am Gastgeben verbinden.\n\nOb kleines Apéro im Büro oder grosses Familienfest – jedes Buffet wird für Ihren Anlass zusammengestellt, liebevoll angerichtet und mit derselben Sorgfalt zubereitet, als wären es die eigenen Gäste.',
@@ -202,7 +202,15 @@ export const defaultGallery: GalleryImage[] = [
 ].map(([src, alt], i) => ({ src, alt, sort: i, visible: true }))
 
 // Auswahl-Optionen für den Anfrage-Assistenten
-export const eventTypes = ['Geburtstag', 'Firmenanlass', 'Hochzeit & Verlobung', 'Familienfest', 'Vereinsanlass', 'Anderes']
+export const eventTypes = [
+  'Firmenapéro & Empfang',
+  'Teamlunch & Meeting',
+  'Firmenfeier & Jubiläum',
+  'Geburtstag',
+  'Familienfest',
+  'Vereinsanlass',
+  'Anderes',
+]
 export const dietaryOptions = ['Vegetarisch', 'Vegan', 'Halal', 'Glutenfrei', 'Laktosefrei']
 export const serviceOptions = [
   { value: 'abholung', label: 'Abholung in Pfaffnau' },
@@ -210,3 +218,59 @@ export const serviceOptions = [
   { value: 'lieferung-aufbau', label: 'Lieferung & Aufbau' },
 ]
 export const budgetOptions = ['bis CHF 20', 'CHF 20–35', 'CHF 35–50', 'über CHF 50', 'Noch offen']
+
+/** Zusätzliche Bilder pro Kapitel (Übersicht & Detailseite). */
+export const categoryImages: Record<string, string[]> = {
+  apero: ['/images/apero-minipizza.webp', '/images/apero-pogaca.webp', '/images/apero-tafel.webp', '/images/gebaeck-boerek.webp'],
+  mezze: ['/images/mezze-sarma.webp', '/images/mezze-grillgemuese.webp', '/images/mezze-hummus.webp', '/images/mezze-kisir.webp'],
+  lunch: ['/images/lunch-box.webp', '/images/lunch-set-2.webp', '/images/lunch-box-2.webp', '/images/lunch-set.webp'],
+  'themen-party': ['/images/themen-pizza.webp', '/images/themen-pide.webp', '/images/themen-burger.webp', '/images/themen-burger-2.webp'],
+  suesses: ['/images/suess-kekse.webp', '/images/suess-torte.webp', '/images/suess-baklava.webp', '/images/suess-cupcakes.webp'],
+}
+
+/** Zusatztexte für die Detailseiten /angebot/[slug] (SEO & Beratung). */
+export const categoryDetails: Record<string, { intro: string; idealFor: string[]; seo: string }> = {
+  apero: {
+    intro:
+      'Ein Apéro lebt von Vielfalt in kleinen Bissen. Dilsah stellt Ihnen eine Auswahl aus warmem und kaltem Fingerfood zusammen – handlich, schön angerichtet und so geplant, dass es vom ersten Glas bis zum Schluss reicht.',
+    idealFor: ['Firmenapéro & Kundenanlass', 'Eröffnung & Vernissage', 'Geburtstag & Jubiläum', 'Feierabend im Team'],
+    seo: 'Apéro-Buffet & Fingerfood aus Pfaffnau: Börek, Poğaça, Wraps, gefüllte Weinblätter und Dips – hausgemacht für Firmen und Private.',
+  },
+  mezze: {
+    intro:
+      'Mezze sind das Herz der mediterranen Küche: viele kleine Schalen, die man teilt. Hummus, Sarma, Kısır und Grillgemüse – farbig, frisch und von Natur aus mit vielen vegetarischen Optionen.',
+    idealFor: ['Firmenessen mit Abwechslung', 'Familienfest', 'Sommerfest & Grillabend', 'Vegetarische Gäste'],
+    seo: 'Mezze-Buffet mit Hummus, Sarma, Kısır, İçli Köfte und Grillgemüse – mediterranes Catering von AVA Catering aus Pfaffnau.',
+  },
+  lunch: {
+    intro:
+      'Ein gutes Mittagessen hält Teams bei Laune. Ob Buffet im Sitzungszimmer oder einzeln verpackte Lunch-Boxen für Workshops – frisch, ausgewogen und pünktlich bereit.',
+    idealFor: ['Meetings & Workshops', 'Seminare & Schulungen', 'Teamlunch', 'Messe & Events'],
+    seo: 'Lunch-Catering & Lunch-Boxen für Firmen in der Region Luzern/Aargau – frisch zubereitet von AVA Catering in Pfaffnau.',
+  },
+  'themen-party': {
+    intro:
+      'Ein Thema macht jede Feier einfacher: Alle wissen, was sie erwartet, und jeder findet etwas. Chicken Burger, Pizza, Pasta oder mediterrane Spezialitäten – passend für Gross und Klein.',
+    idealFor: ['Geburtstag & Kindergeburtstag', 'Teamevent', 'Vereinsanlass', 'Familienfest'],
+    seo: 'Themen-Party-Service: Chicken-Burger-, Pizza-, Pasta- und mediterrane Buffets für Geburtstage, Teamevents und Vereine.',
+  },
+  suesses: {
+    intro:
+      'Der süsse Abschluss bleibt in Erinnerung. Kuchen, Kekse, Baklava und Dessertgläser – als Ergänzung zu jedem Buffet oder als eigenes Dessertbuffet.',
+    idealFor: ['Kaffee & Kuchen im Büro', 'Geburtstag', 'Apéro-Ergänzung', 'Dessertbuffet'],
+    seo: 'Süsses & Gebäck: Kuchen, Muffins, Kekse, Baklava und Dessertbuffets – hausgemacht von AVA Catering aus Pfaffnau.',
+  },
+}
+
+export const occasions = [
+  'Firmenapéro',
+  'Teamlunch',
+  'Geburtstag',
+  'Firmenjubiläum',
+  'Meeting & Workshop',
+  'Familienfest',
+  'Vereinsanlass',
+  'Kindergeburtstag',
+  'Taufe',
+  'Weihnachtsapéro',
+]

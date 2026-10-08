@@ -1,25 +1,21 @@
-import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Check } from '@/components/Icons'
 import { CtaBand, PageHero, ThemeCards } from '@/components/site/sections'
+import { categoryImages } from '@/lib/content'
 import { getCategories, getSettings, getThemes } from '@/lib/data'
+import { pageMeta } from '@/lib/seo'
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: 'Angebot – Apéro, Mezze, Lunch & Themenbuffets',
-  description: 'Apéro-Buffet, Mezze-Buffet, Lunch-Buffet, Themen-Party-Service und Süsses: Das Angebot von AVA Catering aus Pfaffnau im Überblick.',
-  alternates: { canonical: '/angebot' },
-}
-
-const extras: Record<string, string[]> = {
-  apero: ['/images/apero-minipizza.webp', '/images/apero-pogaca.webp'],
-  mezze: ['/images/mezze-sarma.webp', '/images/mezze-grillgemuese.webp'],
-  lunch: ['/images/lunch-box.webp', '/images/lunch-set-2.webp'],
-  'themen-party': ['/images/themen-pizza.webp', '/images/themen-pide.webp'],
-  suesses: ['/images/suess-kekse.webp', '/images/suess-torte.webp'],
-}
+  description:
+    'Apéro-Buffet, Mezze-Buffet, Lunch-Buffet, Themen-Party-Service und Süsses: das hausgemachte Catering-Angebot von AVA Catering aus Pfaffnau für Firmen und Private.',
+  path: '/angebot',
+  image: '/og-angebot.jpg',
+  imageAlt: 'AVA Catering – Apéro, Mezze, Lunch & mehr',
+})
 
 export default async function AngebotPage() {
   const [s, cats, themes] = await Promise.all([getSettings(), getCategories(), getThemes()])
@@ -44,7 +40,7 @@ export default async function AngebotPage() {
       <div className="space-y-6 pb-10">
         {cats.map((c, i) => {
           const flip = i % 2 === 1
-          const imgs = extras[c.slug] ?? []
+          const imgs = categoryImages[c.slug]?.slice(0, 2) ?? []
           return (
             <section key={c.slug} id={c.slug} className={`scroll-mt-24 py-14 lg:py-20 ${flip ? 'bg-sand/60' : ''}`}>
               <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
@@ -89,9 +85,12 @@ export default async function AngebotPage() {
                       </ul>
                     </div>
                   )}
-                  <div data-reveal style={{ '--d': '260ms' } as React.CSSProperties} className="mt-10">
+                  <div data-reveal style={{ '--d': '260ms' } as React.CSSProperties} className="mt-10 flex flex-col gap-3 sm:flex-row">
                     <Link href={`/anfrage?angebot=${c.slug}`} className="btn btn-primary">
                       {c.title} anfragen <ArrowRight className="size-4" />
+                    </Link>
+                    <Link href={`/angebot/${c.slug}`} className="btn btn-secondary">
+                      Mehr erfahren
                     </Link>
                   </div>
                 </div>

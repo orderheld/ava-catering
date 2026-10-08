@@ -11,10 +11,10 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <a href="#main" className="bg-orange sr-only z-[60] rounded-full px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
         Zum Inhalt springen
       </a>
-      <Header phone={s.phone} announcement={s.announcement} />
+      <Header phone={s.phone} email={s.email} whatsapp={s.whatsapp} announcement={s.announcement} />
       <main id="main">{children}</main>
       <Footer s={s} />
-      <MobileBar phone={s.phone} />
+      <MobileBar phone={s.phone} whatsapp={s.whatsapp} />
       <RevealObserver />
     </>
   )

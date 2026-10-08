@@ -1,18 +1,18 @@
-import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ContactForm } from '@/components/site/ContactForm'
 import { ArrowRight, Mail, Phone, Pin, Whatsapp } from '@/components/Icons'
 import { PageHero } from '@/components/site/sections'
+import { pageMeta } from '@/lib/seo'
 import { getSettings } from '@/lib/data'
 import { telHref } from '@/lib/utils'
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
+export const metadata = pageMeta({
   title: 'Kontakt',
-  description: 'AVA Catering, Dilsah Sever, Stegmatt 9a, 6264 Pfaffnau. Telefon 078 264 69 62, kontakt@avacatering.ch.',
-  alternates: { canonical: '/kontakt' },
-}
+  description: 'AVA Catering, Dilsah Sever, Stegmatt 9a, 6264 Pfaffnau. Telefon 078 264 69 62, WhatsApp oder E-Mail an kontakt@avacatering.ch. Wir freuen uns auf Ihre Nachricht.',
+  path: '/kontakt',
+})
 
 export default async function KontaktPage() {
   const s = await getSettings()

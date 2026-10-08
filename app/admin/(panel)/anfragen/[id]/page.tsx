@@ -96,7 +96,7 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
             </div>
           </Panel>
           <Panel title="Interne Notizen">
-            <ActionForm key={inq.updatedAt.toISOString()} action={saveInquiryNotes} className="space-y-4">
+            <ActionForm key={inq.id} action={saveInquiryNotes} className="space-y-4">
               <input type="hidden" name="id" value={inq.id} />
               <div>
                 <label className="label" htmlFor="offerAmount">Offertbetrag (CHF)</label>

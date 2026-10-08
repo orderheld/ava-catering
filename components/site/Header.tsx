@@ -3,18 +3,19 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { ArrowRight, Close, Menu, Phone } from '@/components/Icons'
+import { ArrowRight, Close, Mail, Menu, Phone, Whatsapp } from '@/components/Icons'
 import { cn, telHref } from '@/lib/utils'
 
 const nav = [
   { href: '/angebot', label: 'Angebot' },
-  { href: '/angebot#themen-party', label: 'Themen-Party' },
-  { href: '/#ueber-uns', label: 'Über uns' },
+  { href: '/firmen', label: 'Für Firmen' },
+  { href: '/privat', label: 'Für Private' },
+  { href: '/ueber-uns', label: 'Über uns' },
   { href: '/galerie', label: 'Galerie' },
   { href: '/kontakt', label: 'Kontakt' },
 ]
 
-export function Header({ phone, announcement }: { phone: string; announcement: string }) {
+export function Header({ phone, email, whatsapp, announcement }: { phone: string; email: string; whatsapp: string; announcement: string }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
@@ -35,6 +36,24 @@ export function Header({ phone, announcement }: { phone: string; announcement: s
       {announcement && (
         <div className="bg-olive text-olive-soft px-4 py-2 text-center text-[0.82rem] tracking-wide">{announcement}</div>
       )}
+      <div className="bg-olive-deep text-olive-soft/85 hidden text-[0.8rem] tracking-wide lg:block">
+        <div className="container-x flex h-9 items-center justify-between">
+          <p>Hausgemachtes Catering aus Pfaffnau für Firmen & Private</p>
+          <div className="flex items-center gap-6">
+            <a href={telHref(phone)} className="flex items-center gap-2 hover:text-white">
+              <Phone className="size-3.5" /> {phone.replace('+41 ', '0')}
+            </a>
+            <a href={`mailto:${email}`} className="flex items-center gap-2 hover:text-white">
+              <Mail className="size-3.5" /> {email}
+            </a>
+            {whatsapp && (
+              <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-white">
+                <Whatsapp className="size-3.5" /> WhatsApp
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
       <header
         className={cn(
           'sticky top-0 z-50 transition-all duration-500',
@@ -51,14 +70,15 @@ export function Header({ phone, announcement }: { phone: string; announcement: s
             />
           </Link>
 
-          <nav className="hidden items-center gap-9 lg:flex" aria-label="Hauptnavigation">
+          <nav className="hidden items-center gap-7 lg:flex xl:gap-9" aria-label="Hauptnavigation">
             {nav.map((n) => (
               <Link
                 key={n.href}
                 href={n.href}
+                aria-current={pathname === n.href ? 'page' : undefined}
                 className={cn(
-                  'link-underline text-[0.95rem] tracking-wide transition-colors hover:text-orange',
-                  pathname === n.href.split('#')[0] && !n.href.includes('#') ? 'text-orange' : 'text-ink/80',
+                  'link-underline text-[0.95rem] tracking-wide whitespace-nowrap transition-colors hover:text-orange',
+                  pathname === n.href || pathname.startsWith(`${n.href}/`) ? 'text-orange' : 'text-ink/80',
                 )}
               >
                 {n.label}
@@ -67,10 +87,6 @@ export function Header({ phone, announcement }: { phone: string; announcement: s
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <a href={telHref(phone)} className="text-olive hover:text-orange hidden items-center gap-2 text-sm tracking-wide xl:flex">
-              <Phone className="size-4" />
-              {phone.replace('+41 ', '0')}
-            </a>
             <Link href="/anfrage" className="btn btn-primary hidden !px-5 !py-2.5 text-sm sm:inline-flex">
               Anfrage starten
               <ArrowRight className="size-4" />
@@ -93,7 +109,7 @@ export function Header({ phone, announcement }: { phone: string; announcement: s
       <div
         id="mobile-nav"
         className={cn(
-          'bg-cream fixed inset-0 z-40 flex flex-col px-6 pt-28 pb-10 transition-all duration-500 ease-(--ease-soft) lg:hidden',
+          'bg-cream fixed inset-0 z-40 flex flex-col overflow-y-auto px-6 pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] transition-all duration-500 ease-(--ease-soft) lg:hidden',
           open ? 'visible opacity-100' : 'invisible -translate-y-4 opacity-0',
         )}
       >
@@ -103,7 +119,7 @@ export function Header({ phone, announcement }: { phone: string; announcement: s
               key={n.href}
               href={n.href}
               onClick={() => setOpen(false)}
-              className="border-line text-olive-deep flex items-baseline justify-between border-b py-4 font-serif text-4xl"
+              className="border-line text-olive-deep flex items-baseline justify-between border-b py-3 font-serif text-[2rem] leading-tight"
               style={{ transitionDelay: `${i * 40}ms` }}
             >
               {n.label}
@@ -115,9 +131,21 @@ export function Header({ phone, announcement }: { phone: string; announcement: s
           <Link href="/anfrage" className="btn btn-primary w-full">
             Anfrage starten <ArrowRight className="size-4" />
           </Link>
-          <a href={telHref(phone)} className="btn btn-secondary w-full">
-            <Phone className="size-4" /> {phone.replace('+41 ', '0')}
-          </a>
+          <div className="grid grid-cols-3 gap-2">
+            <a href={telHref(phone)} className="btn btn-secondary !px-2 text-sm">
+              <Phone className="size-4" /> Anrufen
+            </a>
+            <a href={`mailto:${email}`} className="btn btn-secondary !px-2 text-sm">
+              <Mail className="size-4" /> E-Mail
+            </a>
+            {whatsapp ? (
+              <a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary !px-2 text-sm">
+                <Whatsapp className="size-4" /> WhatsApp
+              </a>
+            ) : (
+              <Link href="/kontakt" className="btn btn-secondary !px-2 text-sm">Kontakt</Link>
+            )}
+          </div>
         </div>
       </div>
     </>

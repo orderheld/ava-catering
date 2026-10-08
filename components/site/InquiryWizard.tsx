@@ -15,6 +15,7 @@ type Props = {
   blocked: { day: string; note: string | null }[]
   initialOffering?: string
   initialTheme?: string
+  initialEventType?: string
   phone: string
   leadTime: string
 }
@@ -61,7 +62,7 @@ function Tile({
   )
 }
 
-export function InquiryWizard({ categories, themes, blocked, initialOffering, initialTheme, phone, leadTime }: Props) {
+export function InquiryWizard({ categories, themes, blocked, initialOffering, initialTheme, initialEventType, phone, leadTime }: Props) {
   const [state, action, pending] = useActionState<InquiryState, FormData>(submitInquiry, null)
   const [step, setStep] = useState(0)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -69,7 +70,7 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
   const formRef = useRef<HTMLFormElement>(null)
   const topRef = useRef<HTMLDivElement>(null)
 
-  const [eventType, setEventType] = useState('')
+  const [eventType, setEventType] = useState(initialEventType && (eventTypes as readonly string[]).includes(initialEventType) ? initialEventType : '')
   const [offerings, setOfferings] = useState<string[]>(initialOffering && categories.some((c) => c.slug === initialOffering) ? [initialOffering] : [])
   const [chosenThemes, setThemes] = useState<string[]>(initialTheme && themes.includes(initialTheme) ? [initialTheme] : [])
   const [dietary, setDietary] = useState<string[]>([])
