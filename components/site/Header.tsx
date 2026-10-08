@@ -109,7 +109,7 @@ export function Header({ phone, email, whatsapp, announcement }: { phone: string
       <div
         id="mobile-nav"
         className={cn(
-          'bg-cream fixed inset-0 z-40 flex flex-col overflow-y-auto px-6 pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] transition-all duration-500 ease-(--ease-soft) lg:hidden',
+          'bg-cream fixed inset-0 z-[45] flex flex-col overflow-y-auto px-6 pt-24 pb-[max(2rem,env(safe-area-inset-bottom))] transition-all duration-500 ease-(--ease-soft) lg:hidden',
           open ? 'visible opacity-100' : 'invisible -translate-y-4 opacity-0',
         )}
       >

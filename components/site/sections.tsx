@@ -417,9 +417,9 @@ export function TrustBar({ className }: { className?: string }) {
     { icon: Calendar, t: 'Offerte kostenlos', d: 'unverbindlich' },
   ]
   return (
-    <ul className={cn('border-line grid grid-cols-2 gap-px overflow-hidden rounded-[1.75rem] border bg-line sm:grid-cols-3 lg:grid-cols-5', className)}>
+    <ul data-reveal className={cn('border-line grid grid-cols-1 gap-px overflow-hidden rounded-[1.75rem] border bg-line sm:grid-cols-2 lg:grid-cols-5', className)}>
       {items.map(({ icon: I, t, d }, i) => (
-        <li key={t} data-reveal style={{ '--d': `${i * 70}ms` } as React.CSSProperties} className={cn('bg-cream flex items-center gap-3.5 p-5', i === 4 && 'col-span-2 sm:col-span-1')}>
+        <li key={t} className={cn('bg-cream flex items-center gap-3.5 px-5 py-3.5 sm:py-5', i === 4 && 'sm:col-span-2 lg:col-span-1')}>
           <span className="bg-orange-soft text-orange grid size-10 shrink-0 place-items-center rounded-full">
             <I className="size-[1.1rem]" />
           </span>
