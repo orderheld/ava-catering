@@ -26,7 +26,7 @@ function ensureTable() {
       sql`CREATE TABLE IF NOT EXISTS push_subscriptions (
         id serial PRIMARY KEY,
         created_at timestamptz DEFAULT now() NOT NULL,
-        endpoint text UNIQUE NOT NULL,
+        endpoint text NOT NULL CONSTRAINT push_subscriptions_endpoint_unique UNIQUE,
         p256dh text NOT NULL,
         auth text NOT NULL,
         device text,

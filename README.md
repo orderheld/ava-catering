@@ -63,7 +63,7 @@ Zufälligen `AUTH_SECRET` erzeugen:
 ## Live schalten
 
 1. **GitHub**: `git init`, committen, auf GitHub pushen.
-2. **Vercel**: Projekt importieren, unter *Storage* eine **Neon**-Datenbank und einen **Blob**-Store verbinden, restliche Variablen eintragen, deployen. Danach lokal mit der Neon-URL einmal `npm run db:push` (und optional `npm run db:seed`).
+2. **Vercel**: Projekt importieren, unter *Storage* eine **Neon**-Datenbank und einen **Blob**-Store verbinden, restliche Variablen eintragen, deployen. Die Tabellen werden bei jedem Deploy automatisch angelegt bzw. ergänzt (`scripts/migrate.ts`, läuft vor `next build`); `npm run db:push` ist nicht mehr nötig. Optional lokal `npm run db:seed` für Startinhalte.
 3. **Domain**: In Vercel `avacatering.ch` und `www.avacatering.ch` hinzufügen und die angezeigten DNS-Einträge bei **cyon** setzen (in der Regel A-Record `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com`). **MX-Einträge nicht ändern** – das Postfach kontakt@ bleibt bei cyon.
 4. **Resend**: Domain `avacatering.ch` hinzufügen und die DKIM-/SPF-Einträge (TXT/MX auf der Subdomain `send`) bei cyon eintragen. Das kollidiert nicht mit dem cyon-Postfach. Nach der Verifizierung gehen die E-Mails von `kontakt@avacatering.ch` raus.
 
