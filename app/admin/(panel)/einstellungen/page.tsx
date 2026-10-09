@@ -1,5 +1,6 @@
 import { saveSettings } from '@/app/admin/actions'
 import { ActionForm, SubmitButton } from '@/components/admin/forms'
+import { PushSettings } from '@/components/admin/Push'
 import { DbMissing, PageTitle, Panel } from '@/components/admin/ui'
 import type { SiteSettings } from '@/lib/content'
 import { getSettings } from '@/lib/data'
@@ -42,7 +43,10 @@ export default async function EinstellungenPage() {
   const s = await getSettings()
   return (
     <>
-      <PageTitle title="Einstellungen" text="Kontaktangaben und Texte der Website." />
+      <PageTitle title="Einstellungen" text="Mitteilungen, Kontaktangaben und Texte der Website." />
+      <Panel title="Mitteilungen" className="mb-6">
+        <PushSettings />
+      </Panel>
       <ActionForm action={saveSettings} className="space-y-6">
         {groups.map((g) => (
           <Panel key={g.title} title={g.title}>

@@ -1,4 +1,5 @@
 import { boolean, date, integer, jsonb, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { pushCategories, type PushCategory } from '../lib/push-shared'
 
 export const inquiryStatuses = ['neu', 'in_bearbeitung', 'offeriert', 'bestaetigt', 'erledigt', 'abgesagt'] as const
 export type InquiryStatus = (typeof inquiryStatuses)[number]
@@ -89,4 +90,16 @@ export const settings = pgTable('settings', {
 export const blockedDates = pgTable('blocked_dates', {
   day: date('day').primaryKey(),
   note: text('note'),
+})
+
+// Push-Benachrichtigungen fürs Admin-Panel: ein Eintrag pro Gerät/Browser.
+// Wird bei Bedarf automatisch angelegt (lib/push.ts), `npm run db:push` ist nicht nötig.
+export const pushSubscriptions = pgTable('push_subscriptions', {
+  id: serial('id').primaryKey(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  endpoint: text('endpoint').unique().notNull(),
+  p256dh: text('p256dh').notNull(),
+  auth: text('auth').notNull(),
+  device: text('device'),
+  categories: jsonb('categories').$type<PushCategory[]>().default([...pushCategories]).notNull(),
 })

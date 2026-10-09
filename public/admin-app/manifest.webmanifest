@@ -1,0 +1,22 @@
+{
+  "id": "/admin",
+  "name": "AVA Admin – AVA Catering",
+  "short_name": "AVA Admin",
+  "description": "Verwaltung von AVA Catering: Anfragen, Kalender, Angebot und Mitteilungen.",
+  "start_url": "/admin",
+  "scope": "/admin",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2F3916",
+  "theme_color": "#2F3916",
+  "lang": "de-CH",
+  "icons": [
+    { "src": "/admin-app/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/admin-app/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/admin-app/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Anfragen", "url": "/admin/anfragen", "icons": [{ "src": "/admin-app/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Kalender", "url": "/admin/kalender", "icons": [{ "src": "/admin-app/icon-192.png", "sizes": "192x192" }] }
+  ]
+}

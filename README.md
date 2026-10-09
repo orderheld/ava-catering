@@ -57,6 +57,8 @@ Zufälligen `AUTH_SECRET` erzeugen:
 | `ADMIN_PASSWORD` | Passwort für `/admin` |
 | `AUTH_SECRET` | Zufallswert, mind. 32 Zeichen |
 | `BLOB_READ_WRITE_TOKEN` | Bild-Uploads im Admin (Vercel → Storage → Blob) |
+| `CRON_SECRET` | Empfohlen: Zufallswert, schützt die tägliche Erinnerung (`/api/cron/erinnerung`). Vercel schickt ihn automatisch mit. |
+| `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` | Optional. Schlüssel für Push-Mitteilungen; ohne diese Variablen werden sie einmalig erzeugt und in der Datenbank gespeichert. |
 
 ## Live schalten
 
@@ -72,6 +74,18 @@ Zufälligen `AUTH_SECRET` erzeugen:
 3. Im Admin: Status setzen, Notizen & Offertbetrag erfassen, mit Vorlage antworten. Der Verlauf wird protokolliert.
 
 Spam-Schutz: Honeypot-Feld, Mindest-Ausfüllzeit, max. 5 Anfragen pro Stunde und IP (gehasht gespeichert).
+
+## Admin als App & Mitteilungen
+
+Das Admin hat ein eigenes Manifest (`public/admin-app/`) und erscheint installiert als **«AVA Admin»** mit eigenem Icon (Oliv, oranges A). Push-Mitteilungen laufen über Web Push (Service Worker `public/admin-sw.js`):
+
+- **Neue Anfrage** und **neue Nachricht** (Kontaktformular): sofort, Antippen öffnet die Anfrage.
+- **Tägliche Erinnerung** am frühen Morgen (Vercel Cron, `vercel.json`): Anlässe heute und morgen, Anfragen ohne Antwort seit 24 Std., Offerten ohne Rückmeldung seit 7 Tagen.
+- Die Zahl neuer Anfragen erscheint als Zähler auf dem App-Icon.
+
+**iPhone/iPad (ab iOS 16.4):** Admin in Safari öffnen → Teilen → «Zum Home-Bildschirm» → App öffnen, anmelden, «Aktivieren» tippen und erlauben. Eine Website darf die Erlaubnis nie selbst erteilen, das braucht immer einmal ein Tippen. Alle Kategorien sind danach eingeschaltet; einzeln abschalten unter *Einstellungen → Mitteilungen* (pro Gerät).
+
+Die Tabelle `push_subscriptions` wird beim ersten Gebrauch automatisch angelegt.
 
 ## Projektstruktur
 
