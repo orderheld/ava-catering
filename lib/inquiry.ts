@@ -3,12 +3,15 @@
 import { createHash } from 'node:crypto'
 import { and, eq, gte, sql } from 'drizzle-orm'
 import { headers } from 'next/headers'
+import { after } from 'next/server'
 import { z } from 'zod'
 import { inquiries } from '@/db/schema'
 import { serviceOptions } from './content'
 import { getCategories } from './data'
 import { getDb } from './db'
 import { sendInquiryMails } from './mail'
+import { notifyAdmins } from './push'
+import { formatDate } from './utils'
 
 export type InquiryState = { ok: boolean; error?: string; fieldErrors?: Record<string, string>; name?: string } | null
 
@@ -117,10 +120,26 @@ export async function submitInquiry(_prev: InquiryState, fd: FormData): Promise<
     return { ok: false, error: 'Das Formular ist noch nicht eingerichtet. Bitte kontaktieren Sie uns per Telefon oder E-Mail.' }
   }
 
+  if (id) after(() => notifyAdmins(pushFor(id, record)))
+
   try {
     await sendInquiryMails({ id, ...record })
   } catch (err) {
     console.error('[anfrage] E-Mail-Versand fehlgeschlagen:', err)
   }
   return { ok: true, name: d.name.split(' ')[0] }
+}
+
+/** Push-Mitteilung fürs Admin-Panel zu einer neuen Anfrage bzw. Nachricht. */
+function pushFor(id: number, d: { kind: string; name: string; company: string | null; eventType: string | null; eventDate: string | null; guests: number | null; offerings: string[]; message: string | null }) {
+  const who = d.company ? `${d.name} (${d.company})` : d.name
+  const excerpt = d.message ? (d.message.length > 140 ? `${d.message.slice(0, 140)}…` : d.message) : ''
+  if (d.kind === 'kontakt') {
+    return { category: 'nachrichten' as const, title: `Neue Nachricht von ${who}`, body: excerpt || 'Über das Kontaktformular', url: `/admin/anfragen/${id}`, tag: `anfrage-${id}` }
+  }
+  const facts = [d.eventType, d.eventDate && formatDate(d.eventDate, { weekday: 'short', day: 'numeric', month: 'short' }), d.guests && `${d.guests} Gäste`]
+    .filter(Boolean)
+    .join(' · ')
+  const body = [facts, d.offerings.join(', '), excerpt].filter(Boolean).join('\n')
+  return { category: 'anfragen' as const, title: `Neue Anfrage von ${who}`, body: body || 'Details im Admin ansehen', url: `/admin/anfragen/${id}`, tag: `anfrage-${id}` }
 }
