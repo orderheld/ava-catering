@@ -147,16 +147,16 @@ export function PushPrompt({ newCount }: { newCount: number }) {
   if (status === 'ask') {
     content = (
       <>
-        <p className="flex-1">
-          <b className="text-olive-deep">Mitteilungen aktivieren?</b> Dann erscheinen neue Anfragen und Nachrichten sofort auf diesem Gerät, auch wenn das Admin geschlossen ist.
+        <p className="min-w-[14rem] flex-1">
+          <b className="text-olive-deep">Mitteilungen aktivieren?</b> Neue Anfragen erscheinen dann sofort auf diesem Gerät.
           {error && <span className="text-orange-deep mt-1 block">{error}</span>}
         </p>
-        <button onClick={enable} className="btn btn-primary shrink-0">Aktivieren</button>
+        <button onClick={enable} className="btn btn-primary shrink-0 !px-5 !py-2.5">Aktivieren</button>
       </>
     )
   } else if (status === 'install') {
     content = (
-      <p className="flex-1">
+      <p className="min-w-[14rem] flex-1">
         <b className="text-olive-deep">Als App installieren, um Mitteilungen zu erhalten:</b> In Safari unten auf <b>Teilen</b>{' '}
         <svg viewBox="0 0 24 24" className="inline size-4 align-[-2px]" fill="none" stroke="currentColor" strokeWidth="1.8" aria-label="Teilen-Symbol"><path d="M12 15V3m0 0L8 7m4-4 4 4M6 11H5v10h14V11h-1" /></svg>{' '}
         tippen, dann <b>«Zum Home-Bildschirm»</b>. Danach «AVA Admin» vom Home-Bildschirm öffnen und Mitteilungen erlauben.
@@ -165,14 +165,14 @@ export function PushPrompt({ newCount }: { newCount: number }) {
   } else if (install && !isStandalone()) {
     content = (
       <>
-        <p className="flex-1"><b className="text-olive-deep">AVA Admin als App installieren</b> – mit eigenem Icon auf dem Startbildschirm.</p>
+        <p className="min-w-[14rem] flex-1"><b className="text-olive-deep">AVA Admin als App installieren</b> – mit eigenem Icon auf dem Startbildschirm.</p>
         <button onClick={() => install.prompt().then(() => setInstall(null))} className="btn btn-primary shrink-0">Installieren</button>
       </>
     )
   }
   if (!content) return null
   return (
-    <div className="border-orange/30 bg-orange-soft/60 mb-6 flex flex-col gap-3 rounded-3xl border p-4 text-sm leading-relaxed sm:flex-row sm:items-center sm:gap-5 sm:p-5">
+    <div className="border-orange/30 bg-orange-soft/60 mb-6 flex flex-wrap items-center gap-x-4 gap-y-3 rounded-[1.4rem] border p-4 text-[0.95rem] leading-snug sm:p-5">
       {content}
       <button onClick={later} className="text-muted hover:text-ink shrink-0 text-xs">Später</button>
     </div>

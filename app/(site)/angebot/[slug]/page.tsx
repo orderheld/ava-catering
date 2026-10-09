@@ -6,7 +6,7 @@ import { ArrowLeft, ArrowRight, Check } from '@/components/Icons'
 import { ContactChips, CtaBand, ImageHero, JsonLd, SectionHead, ThemeCards, breadcrumbJsonLd } from '@/components/site/sections'
 import { categoryDetails, categoryImages } from '@/lib/content'
 import { getCategories, getSettings, getThemes } from '@/lib/data'
-import { pageMeta } from '@/lib/seo'
+import { businessId, pageMeta } from '@/lib/seo'
 import { siteUrl } from '@/lib/utils'
 
 export const revalidate = 300
@@ -55,7 +55,7 @@ export default async function CategoryPage({ params }: Props) {
           image: c.image ? `${base}${c.image}` : undefined,
           url: `${base}/angebot/${slug}`,
           areaServed: s.serviceArea,
-          provider: { '@type': 'FoodEstablishment', name: 'AVA Catering', telephone: s.phone, url: base },
+          provider: { '@type': 'FoodEstablishment', '@id': businessId(), name: 'AVA Catering', telephone: s.phone, url: base },
         }}
       />
       <ImageHero

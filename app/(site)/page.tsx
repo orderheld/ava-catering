@@ -2,13 +2,21 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Accent } from '@/components/Accent'
 import { ArrowRight, Heart, Leaf, Truck } from '@/components/Icons'
+import { LazyVideo } from '@/components/site/LazyVideo'
 import { QuantityCalculator } from '@/components/site/QuantityCalculator'
 import { AudienceSplit, CtaBand, Faq, JsonLd, SectionHead, ThemeCards, Thread, TrustBar, faqJsonLd, faqs } from '@/components/site/sections'
 import { googleProfile, instagramUrl, occasions, phoneHours, serviceTowns } from '@/lib/content'
 import { getCategories, getGallery, getSettings, getThemes } from '@/lib/data'
+import { businessId, pageMeta } from '@/lib/seo'
 import { plain, siteUrl } from '@/lib/utils'
 
 export const revalidate = 300
+
+export const metadata = pageMeta({
+  description:
+    'Hausgemachtes Catering aus Pfaffnau: Apéro-, Mezze- und Lunch-Buffets, Themenbuffets und Süsses für Firmen, Geschäfte und Feste. Unverbindlich anfragen.',
+  path: '/',
+})
 
 const hotspots = [
   { slug: 'apero', label: 'Apéro', x: 9 },
@@ -30,6 +38,7 @@ export default async function HomePage() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'FoodEstablishment',
+    '@id': businessId(),
     name: 'AVA Catering',
     description: plain(s.heroText),
     url: siteUrl(),
@@ -41,9 +50,9 @@ export default async function HomePage() {
     servesCuisine: ['Europäisch', 'Mediterran', 'Fingerfood'],
     address: { '@type': 'PostalAddress', streetAddress: s.street, postalCode: s.zip, addressLocality: s.city, addressRegion: 'LU', addressCountry: 'CH' },
     areaServed: serviceTowns.map((name) => ({ '@type': 'City', name })),
-    priceRange: 'CHF',
+    currenciesAccepted: 'CHF',
     hasMap: googleProfile.profile,
-    sameAs: [googleProfile.profile, instagramUrl(s)],
+    sameAs: [googleProfile.profile, instagramUrl(s)].filter(Boolean),
     ...(phoneHours.length && {
       openingHoursSpecification: phoneHours.map((h) => ({
         '@type': 'OpeningHoursSpecification',
@@ -67,15 +76,14 @@ export default async function HomePage() {
         />
         <div className="container-x relative grid items-center gap-14 pt-8 pb-20 lg:grid-cols-[1.08fr_1fr] lg:gap-10 lg:pt-12 lg:pb-28">
           <div>
-            <p data-reveal className="eyebrow">{s.heroEyebrow}</p>
+            {/* Hero ohne data-reveal: sofort sichtbar (LCP, auch ohne JavaScript). */}
+            <p className="eyebrow">{s.heroEyebrow}</p>
             <h1
-              data-reveal
-              style={{ '--d': '100ms' } as React.CSSProperties}
               className="display text-olive-deep mt-7 text-[clamp(3.4rem,8.4vw,7.4rem)]"
             >
               <Accent text={s.heroTitle} />
             </h1>
-            <p data-reveal style={{ '--d': '200ms' } as React.CSSProperties} className="text-muted mt-8 max-w-xl text-lg leading-relaxed sm:text-xl">
+            <p className="text-muted mt-8 max-w-xl text-lg leading-relaxed sm:text-xl">
               {s.heroText}
             </p>
             <div data-reveal style={{ '--d': '300ms' } as React.CSSProperties} className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -106,7 +114,7 @@ export default async function HomePage() {
           </div>
 
           <div className="relative mx-auto w-full max-w-[560px] lg:mr-0">
-            <div data-reveal="scale" className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] shadow-[0_40px_80px_-40px_rgba(47,57,22,0.55)]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] shadow-[0_40px_80px_-40px_rgba(47,57,22,0.55)]">
               <Image src="/images/mezze-buffet.webp" alt="Mezze-Buffet mit Sarma, Hummus und Kısır" fill priority sizes="(min-width:1024px) 560px, 92vw" className="object-cover" />
             </div>
             <div
@@ -114,7 +122,7 @@ export default async function HomePage() {
               style={{ '--d': '350ms' } as React.CSSProperties}
               className="border-cream absolute -bottom-8 -left-4 aspect-square w-[38%] overflow-hidden rounded-full border-[6px] shadow-xl sm:-left-10"
             >
-              <Image src="/images/gebaeck-simit.webp" alt="Frische Simit" fill sizes="220px" className="object-cover" />
+              <Image src="/images/gebaeck-simit.webp" alt="Frische Simit" fill sizes="(min-width:640px) 220px, 36vw" className="object-cover" />
             </div>
             {/* Rotierendes Siegel */}
             <div data-reveal="fade" style={{ '--d': '500ms' } as React.CSSProperties} className="absolute -top-2 -right-2 size-32 sm:-right-6 sm:size-36">
@@ -281,17 +289,12 @@ export default async function HomePage() {
       <section id="ueber-uns" className="bg-sand/60 relative scroll-mt-24 overflow-hidden py-20 lg:py-28">
         <div className="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <div className="relative mx-auto w-full max-w-[460px]">
-            <div data-reveal="scale" className="relative aspect-[9/14] overflow-hidden rounded-t-[999px] rounded-b-[2rem] shadow-[0_40px_80px_-40px_rgba(47,57,22,0.6)]">
-              <video
+            <div data-reveal="scale" className="bg-sand-2 relative aspect-[9/14] overflow-hidden rounded-t-[999px] rounded-b-[2rem] shadow-[0_40px_80px_-40px_rgba(47,57,22,0.6)]">
+              <LazyVideo
                 className="absolute inset-0 h-full w-full object-cover"
                 src="/video/mezze.mp4"
                 poster="/video/mezze-poster.webp"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label="Video: Mezze mit Grillgemüse und Caprese-Spiesschen"
+                label="Video: Mezze mit Grillgemüse und Caprese-Spiesschen"
               />
             </div>
             <div data-reveal style={{ '--d': '300ms' } as React.CSSProperties} className="border-sand absolute -right-6 -bottom-8 aspect-square w-[42%] overflow-hidden rounded-[1.5rem] border-[6px] shadow-xl sm:-right-12">

@@ -11,7 +11,7 @@ export const revalidate = 300
 export const metadata = pageMeta({
   title: 'Catering für Feste – Geburtstag, Verein & Familie',
   description:
-    'Catering für Geburtstage, Vereins-, Sommer- und Familienfeste: hausgemachte Apéro-, Mezze- und Themenbuffets von AVA Catering aus Pfaffnau, geliefert in der Region.',
+    'Catering für Geburtstage, Vereins-, Sommer- und Familienfeste: hausgemachte Apéro-, Mezze- und Themenbuffets von AVA Catering aus Pfaffnau.',
   path: '/privat',
   image: '/og-privat.jpg',
   imageAlt: 'AVA Catering – Catering für Feste',

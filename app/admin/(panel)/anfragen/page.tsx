@@ -38,20 +38,20 @@ export default async function AnfragenPage({ searchParams }: { searchParams: Pro
     <>
       <PageTitle title="Anfragen" text="Alle Anfragen und Kontaktnachrichten von der Website." />
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
+        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
           {tabs.map((t) => (
             <Link
               key={t.key}
               href={`/admin/anfragen?status=${t.key}${q ? `&q=${encodeURIComponent(q)}` : ''}`}
-              className={cn('shrink-0 rounded-full border px-4 py-2 text-sm transition', status === t.key ? 'bg-olive border-olive text-white' : 'border-line bg-white hover:border-olive/40')}
+              className={cn('shrink-0 rounded-full border px-4 py-2.5 transition', status === t.key ? 'bg-olive border-olive text-white' : 'border-line bg-white hover:border-olive/40')}
             >
               {t.label} <span className="opacity-60">{t.n}</span>
             </Link>
           ))}
         </div>
-        <form className="flex gap-2" action="/admin/anfragen">
+        <form className="flex min-w-0 gap-2" action="/admin/anfragen" role="search">
           <input type="hidden" name="status" value={status} />
-          <input name="q" defaultValue={q} placeholder="Name, E-Mail, Firma, Ort …" className="field !w-64 !rounded-full !py-2.5 text-sm" />
+          <input name="q" type="search" defaultValue={q} placeholder="Suchen: Name, Firma, Ort …" className="field min-w-0 !rounded-full !py-3 lg:!w-72" />
         </form>
       </div>
 
@@ -59,12 +59,29 @@ export default async function AnfragenPage({ searchParams }: { searchParams: Pro
         {rows.length === 0 ? (
           <p className="text-muted p-8 text-center">Keine Anfragen gefunden.</p>
         ) : (
-          <table className="w-full text-left text-sm">
+          <>
+          <ul className="divide-line divide-y md:hidden">
+            {rows.map((r) => (
+              <li key={r.id}>
+                <Link href={`/admin/anfragen/${r.id}`} className="active:bg-sand/50 flex items-start gap-3 px-4 py-4">
+                  <span className="min-w-0 flex-1">
+                    <span className={cn('block truncate text-[1.05rem]', r.status === 'neu' && 'font-semibold')}>{r.company || r.name}</span>
+                    <span className="text-muted block truncate text-sm">
+                      {r.kind === 'kontakt' ? 'Kontaktnachricht' : [r.eventType, r.eventDate && formatDate(r.eventDate, { day: 'numeric', month: 'short' }), r.guests && `${r.guests} P.`].filter(Boolean).join(' · ')}
+                    </span>
+                    <span className="text-muted/80 block text-xs">Eingang {formatDateTime(r.createdAt)}</span>
+                  </span>
+                  <StatusBadge status={r.status} />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <table className="hidden w-full text-left md:table">
             <thead className="bg-sand/60 text-muted text-xs tracking-wider uppercase">
               <tr>
                 <th className="px-5 py-3 font-medium">Kunde</th>
-                <th className="hidden px-5 py-3 font-medium md:table-cell">Anlass</th>
-                <th className="hidden px-5 py-3 font-medium sm:table-cell">Datum Anlass</th>
+                <th className="px-5 py-3 font-medium">Anlass</th>
+                <th className="px-5 py-3 font-medium">Datum Anlass</th>
                 <th className="hidden px-5 py-3 font-medium lg:table-cell">Eingang</th>
                 <th className="px-5 py-3 font-medium">Status</th>
               </tr>
@@ -78,11 +95,11 @@ export default async function AnfragenPage({ searchParams }: { searchParams: Pro
                     </Link>
                     <span className="text-muted block text-xs font-normal">{r.company || r.email}</span>
                   </td>
-                  <td className="hidden px-5 py-4 md:table-cell">
+                  <td className="px-5 py-4">
                     {r.kind === 'kontakt' ? <span className="text-muted">Kontaktnachricht</span> : r.eventType}
                     {r.guests && <span className="text-muted block text-xs font-normal">{r.guests} Personen</span>}
                   </td>
-                  <td className="hidden px-5 py-4 sm:table-cell">{r.eventDate ? formatDate(r.eventDate, { day: '2-digit', month: 'short', year: 'numeric' }) : '–'}</td>
+                  <td className="px-5 py-4">{r.eventDate ? formatDate(r.eventDate, { day: '2-digit', month: 'short', year: 'numeric' }) : '–'}</td>
                   <td className="text-muted hidden px-5 py-4 font-normal lg:table-cell">{formatDateTime(r.createdAt)}</td>
                   <td className="px-5 py-4">
                     <StatusBadge status={r.status} />
@@ -91,9 +108,10 @@ export default async function AnfragenPage({ searchParams }: { searchParams: Pro
               ))}
             </tbody>
           </table>
+          </>
         )}
       </div>
-      <p className="text-muted mt-4 text-xs">Status: {Object.values(statusMeta).map((s) => s.label).join(' → ')}</p>
+      <p className="text-muted mt-4 text-sm">Ablauf: {Object.values(statusMeta).map((s) => s.label).join(' → ')}</p>
     </>
   )
 }

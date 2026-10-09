@@ -11,7 +11,7 @@ export const revalidate = 300
 export const metadata = pageMeta({
   title: 'Firmencatering – Apéro, Lunch & Geschäftsanlässe',
   description:
-    'Catering für Firmen und Geschäfte aus Pfaffnau: Firmenapéro, Apéro riche, Business-Lunch, Lunch-Boxen und Buffets für Eröffnungen und Kundenevents. Hausgemacht, pünktlich geliefert, Rechnung an Ihre Firma.',
+    'Firmencatering aus Pfaffnau: Apéro riche, Business-Lunch, Lunch-Boxen und Buffets für Meetings, Eröffnungen und Kundenevents. Mit Rechnung an Ihre Firma.',
   path: '/firmen',
   image: '/og-firmen.jpg',
   imageAlt: 'AVA Catering – Catering für Firmen & Geschäfte',

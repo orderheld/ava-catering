@@ -84,7 +84,7 @@
     @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-medium tracking-wide transition duration-300 ease-(--ease-soft) select-none;
   }
   .btn-primary {
-    @apply bg-orange hover:bg-orange-deep text-white shadow-[0_10px_30px_-12px_rgba(232,101,10,0.7)] hover:-translate-y-0.5;
+    @apply bg-orange-deep text-white shadow-[0_10px_30px_-12px_rgba(196,82,10,0.7)] hover:-translate-y-0.5 hover:bg-[#a84505];
   }
   .btn-secondary {
     @apply border-olive/25 text-olive hover:border-olive hover:bg-olive border bg-transparent hover:text-white;
@@ -167,4 +167,39 @@
   .animate-spin-slow {
     animation: none !important;
   }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+/* ───────── Admin: grössere Schrift, kein seitliches Verschieben ───────── */
+html:has(.admin-root) {
+  font-size: 106.25%; /* 17px */
+  overflow-x: clip;
+  background: #f7f2e9;
+}
+html:has(.admin-root) body {
+  overflow-x: clip;
+  background: #f7f2e9;
+  overscroll-behavior-x: none;
+}
+@media (min-width: 1280px) {
+  html:has(.admin-root) {
+    font-size: 112.5%; /* 18px */
+  }
+}
+.admin-root .label {
+  @apply text-olive-deep/80 text-[0.82rem] tracking-[0.08em];
+}
+.admin-root .field {
+  @apply text-base;
+}
+.admin-root input,
+.admin-root select,
+.admin-root textarea {
+  font-size: max(16px, 1rem); /* iOS zoomt sonst beim Antippen hinein */
 }

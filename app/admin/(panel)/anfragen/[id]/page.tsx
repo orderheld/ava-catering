@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { desc, eq } from 'drizzle-orm'
 import { deleteInquiry, saveInquiryNotes, updateInquiryStatus } from '@/app/admin/actions'
-import { ActionForm, ConfirmButton, SubmitButton } from '@/components/admin/forms'
+import { ActionForm, QuickForm, SubmitButton } from '@/components/admin/forms'
 import { ReplyComposer } from '@/components/admin/ReplyComposer'
 import { DbMissing, Panel, StatusBadge, statusMeta } from '@/components/admin/ui'
 import { inquiries, inquiryLog, inquiryStatuses } from '@/db/schema'
@@ -35,7 +35,7 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
 
   return (
     <>
-      <Link href="/admin/anfragen" className="text-muted hover:text-orange text-sm">← Alle Anfragen</Link>
+      <Link href="/admin/anfragen" className="text-olive hover:text-orange inline-flex items-center gap-2 py-2">← Alle Anfragen</Link>
       <div className="mt-4 mb-8 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
         <div>
           <div className="flex flex-wrap items-center gap-3">
@@ -44,18 +44,18 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
               #{inq.id} · {inq.kind === 'kontakt' ? 'Kontaktnachricht' : 'Anfrage'} vom {formatDateTime(inq.createdAt)}
             </span>
           </div>
-          <h1 className="text-olive-deep mt-3 font-serif text-4xl sm:text-5xl">{inq.name}</h1>
+          <h1 className="text-olive-deep mt-3 font-serif text-4xl break-words sm:text-5xl">{inq.name}</h1>
           {inq.company && <p className="text-muted mt-1 text-lg">{inq.company}</p>}
         </div>
-        <form key={inq.status} action={updateInquiryStatus} className="flex items-center gap-2">
+        <QuickForm key={inq.status} action={updateInquiryStatus} className="flex items-center gap-2">
           <input type="hidden" name="id" value={inq.id} />
-          <select name="status" defaultValue={inq.status} className="field !w-auto !rounded-full !py-2.5 text-sm">
+          <select name="status" defaultValue={inq.status} className="field !w-auto min-w-0 flex-1 !rounded-full !py-3">
             {inquiryStatuses.map((s) => (
               <option key={s} value={s}>{statusMeta[s].label}</option>
             ))}
           </select>
           <SubmitButton pendingText="…">Status setzen</SubmitButton>
-        </form>
+        </QuickForm>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
@@ -76,7 +76,7 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
           )}
           {inq.message && (
             <Panel title="Nachricht">
-              <p className="leading-relaxed whitespace-pre-line">{inq.message}</p>
+              <p className="leading-relaxed break-words whitespace-pre-line">{inq.message}</p>
             </Panel>
           )}
           <Panel title="Antworten">
@@ -91,8 +91,9 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
               {inq.phone && <a href={telHref(inq.phone)} className="hover:text-orange block">☎ {inq.phone}</a>}
             </div>
             <div className="mt-5 flex flex-wrap gap-2">
-              {inq.phone && <a href={telHref(inq.phone)} className="btn btn-secondary !px-4 !py-2 text-sm">Anrufen</a>}
-              {wa && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary !px-4 !py-2 text-sm">WhatsApp</a>}
+              {inq.phone && <a href={telHref(inq.phone)} className="btn btn-secondary !px-5 !py-3">Anrufen</a>}
+              {wa && <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer" className="btn btn-secondary !px-5 !py-3">WhatsApp</a>}
+              <a href={`mailto:${inq.email}`} className="btn btn-secondary !px-5 !py-3">E-Mail</a>
             </div>
           </Panel>
           <Panel title="Interne Notizen">
@@ -132,12 +133,10 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
               </li>
             </ol>
           </Panel>
-          <form action={deleteInquiry} className="text-right">
+          <QuickForm action={deleteInquiry} confirm="Diese Anfrage löschen? (Im Verlauf wiederherstellbar)" className="text-right">
             <input type="hidden" name="id" value={inq.id} />
-            <ConfirmButton message="Diese Anfrage endgültig löschen?" className="text-muted text-sm hover:text-red-700">
-              Anfrage löschen
-            </ConfirmButton>
-          </form>
+            <button className="text-muted rounded-full px-3 py-2 text-sm hover:bg-red-50 hover:text-red-700">Anfrage löschen</button>
+          </QuickForm>
         </div>
       </div>
     </>

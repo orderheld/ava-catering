@@ -12,15 +12,15 @@ export const statusMeta: Record<InquiryStatus, { label: string; cls: string }> =
 
 export function StatusBadge({ status }: { status: string }) {
   const m = statusMeta[status as InquiryStatus] ?? { label: status, cls: 'bg-stone-200' }
-  return <span className={cn('inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap', m.cls)}>{m.label}</span>
+  return <span className={cn('inline-flex items-center rounded-full px-3 py-1 text-[0.8rem] font-medium whitespace-nowrap', m.cls)}>{m.label}</span>
 }
 
 export function PageTitle({ title, text, children }: { title: string; text?: string; children?: React.ReactNode }) {
   return (
-    <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
-      <div>
-        <h1 className="text-olive-deep font-serif text-4xl font-medium sm:text-5xl">{title}</h1>
-        {text && <p className="text-muted mt-2 max-w-2xl">{text}</p>}
+    <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end md:mb-9">
+      <div className="min-w-0">
+        <h1 className="text-olive-deep font-serif text-[2.4rem] leading-tight font-medium sm:text-5xl">{title}</h1>
+        {text && <p className="text-muted mt-2 max-w-2xl text-[1.02rem] leading-relaxed">{text}</p>}
       </div>
       {children}
     </div>
@@ -29,10 +29,10 @@ export function PageTitle({ title, text, children }: { title: string; text?: str
 
 export function Panel({ title, children, className, actions }: { title?: string; children: React.ReactNode; className?: string; actions?: React.ReactNode }) {
   return (
-    <section className={cn('border-line rounded-3xl border bg-white p-5 sm:p-7', className)}>
+    <section className={cn('border-line/80 min-w-0 rounded-[1.6rem] border bg-white p-5 shadow-[0_1px_2px_rgba(47,57,22,0.04)] sm:p-7', className)}>
       {(title || actions) && (
-        <div className="mb-5 flex items-center justify-between gap-4">
-          {title && <h2 className="text-olive-deep font-serif text-2xl">{title}</h2>}
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+          {title && <h2 className="text-olive-deep font-serif text-[1.7rem] leading-tight">{title}</h2>}
           {actions}
         </div>
       )}

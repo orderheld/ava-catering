@@ -60,7 +60,7 @@ export function ContactForm() {
       <label className="text-muted flex items-start gap-3 text-sm">
         <input type="checkbox" name="consent" className="accent-orange mt-1 size-4 shrink-0" />
         <span>
-          Ich bin mit der Verarbeitung meiner Angaben gemäss <Link href="/datenschutz" className="text-orange underline underline-offset-2">Datenschutzerklärung</Link> einverstanden. *
+          Ich bin mit der Verarbeitung meiner Angaben gemäss <Link href="/datenschutz" className="text-[#a84505] underline underline-offset-2">Datenschutzerklärung</Link> einverstanden. *
         </span>
       </label>
       {fe.consent && <p className="text-orange-deep -mt-3 text-sm">{fe.consent}</p>}

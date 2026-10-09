@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getCategories } from '@/lib/data'
+import { SITE_UPDATED } from '@/lib/seo'
 import { siteUrl } from '@/lib/utils'
 
 export const revalidate = 3600
@@ -19,5 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ['/faq', 0.6],
     ['/kontakt', 0.7],
   ]
-  return pages.map(([p, priority]) => ({ url: `${base}${p}`, lastModified: new Date(), changeFrequency: 'monthly', priority }))
+  // Fester Stand statt new Date(): ein lastmod, das sich bei jedem Abruf ändert, ignorieren Suchmaschinen.
+  const lastModified = new Date(SITE_UPDATED)
+  return pages.map(([p, priority]) => ({ url: `${base}${p}`, lastModified, changeFrequency: 'monthly', priority }))
 }

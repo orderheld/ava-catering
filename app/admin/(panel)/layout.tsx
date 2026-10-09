@@ -1,5 +1,6 @@
 import { eq, sql } from 'drizzle-orm'
 import { PushPrompt } from '@/components/admin/Push'
+import { Toaster } from '@/components/admin/forms'
 import { Sidebar } from '@/components/admin/Sidebar'
 import { inquiries } from '@/db/schema'
 import { requireAdmin } from '@/lib/auth'
@@ -16,14 +17,15 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     } catch {}
   }
   return (
-    <div className="lg:flex">
+    <div className="md:flex">
       <Sidebar newCount={newCount} />
-      <main className="min-w-0 flex-1 px-4 py-8 sm:px-8 lg:px-12 lg:py-12">
-        <div className="mx-auto max-w-6xl">
+      <main className="min-w-0 flex-1 px-4 pt-6 pb-[calc(7rem+env(safe-area-inset-bottom))] sm:px-6 md:px-8 md:pt-10 md:pb-16 xl:px-14">
+        <div className="mx-auto max-w-5xl">
           <PushPrompt newCount={newCount} />
           {children}
         </div>
       </main>
+      <Toaster />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { boolean, date, integer, jsonb, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { boolean, date, index, integer, jsonb, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
 import { pushCategories, type PushCategory } from '../lib/push-shared'
 
 export const inquiryStatuses = ['neu', 'in_bearbeitung', 'offeriert', 'bestaetigt', 'erledigt', 'abgesagt'] as const
@@ -28,7 +28,12 @@ export const inquiries = pgTable('inquiries', {
   internalNotes: text('internal_notes'),
   offerAmount: text('offer_amount'),
   ipHash: varchar('ip_hash', { length: 64 }),
-})
+}, (t) => [
+  index('inquiries_status_idx').on(t.status),
+  index('inquiries_created_at_idx').on(t.createdAt),
+  index('inquiries_event_date_idx').on(t.eventDate),
+  index('inquiries_ip_hash_idx').on(t.ipHash, t.createdAt),
+])
 
 export const inquiryLog = pgTable('inquiry_log', {
   id: serial('id').primaryKey(),
@@ -39,7 +44,7 @@ export const inquiryLog = pgTable('inquiry_log', {
   type: varchar('type', { length: 20 }).notNull(), // mail | status | note
   subject: text('subject'),
   body: text('body'),
-})
+}, (t) => [index('inquiry_log_inquiry_idx').on(t.inquiryId)])
 
 export const categories = pgTable('categories', {
   id: serial('id').primaryKey(),
@@ -62,7 +67,7 @@ export const menuItems = pgTable('menu_items', {
   tags: jsonb('tags').$type<string[]>().default([]).notNull(),
   sort: integer('sort').default(0).notNull(),
   visible: boolean('visible').default(true).notNull(),
-})
+}, (t) => [index('menu_items_category_idx').on(t.categoryId)])
 
 export const themes = pgTable('themes', {
   id: serial('id').primaryKey(),
@@ -103,3 +108,16 @@ export const pushSubscriptions = pgTable('push_subscriptions', {
   device: text('device'),
   categories: jsonb('categories').$type<PushCategory[]>().default([...pushCategories]).notNull(),
 })
+
+// Verlauf aller Änderungen an Website-Inhalten und Anfragen – damit sich jede Änderung rückgängig machen lässt.
+export const contentHistory = pgTable('content_history', {
+  id: serial('id').primaryKey(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  entity: varchar('entity', { length: 20 }).notNull(), // category | item | theme | gallery | settings | inquiry
+  entityId: text('entity_id').notNull(),
+  action: varchar('action', { length: 10 }).notNull(), // create | update | delete
+  label: text('label').notNull(),
+  before: jsonb('before'),
+  after: jsonb('after'),
+  undoneAt: timestamp('undone_at', { withTimezone: true }),
+}, (t) => [index('content_history_created_idx').on(t.createdAt)])
