@@ -2,16 +2,16 @@ import Link from 'next/link'
 import { ContactForm } from '@/components/site/ContactForm'
 import { ArrowRight, Clock, Instagram, Mail, Phone, Pin, Star, Whatsapp } from '@/components/Icons'
 import { googleProfile, instagramUrl, phoneHours } from '@/lib/content'
-import { PageHero } from '@/components/site/sections'
+import { JsonLd, PageHero, breadcrumbJsonLd } from '@/components/site/sections'
 import { pageMeta } from '@/lib/seo'
 import { getSettings } from '@/lib/data'
-import { telHref } from '@/lib/utils'
+import { siteUrl, telHref } from '@/lib/utils'
 
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Kontakt',
-  description: 'AVA Catering, Dilsah Sever, Stegmatt 9a, 6264 Pfaffnau. Telefon 078 264 69 62, WhatsApp oder E-Mail an kontakt@avacatering.ch. Wir freuen uns auf Ihre Nachricht.',
+  title: 'Kontakt – Catering in Pfaffnau',
+  description: 'Kontakt zu AVA Catering, Dilsah Sever, Stegmatt 9a, 6264 Pfaffnau: Telefon 078 264 69 62, WhatsApp oder E-Mail an kontakt@avacatering.ch.',
   path: '/kontakt',
 })
 
@@ -19,6 +19,7 @@ export default async function KontaktPage() {
   const s = await getSettings()
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: 'Kontakt', path: '/kontakt' }], siteUrl())} />
       <PageHero eyebrow="Kontakt" title="Wir freuen uns, von Ihnen zu *hören*." text="Für eine Catering-Anfrage nutzen Sie am besten unseren Anfrage-Assistenten. Für alles andere sind wir hier erreichbar." />
       <section className="container-x grid gap-10 pb-24 lg:grid-cols-[1fr_1.2fr] lg:gap-16 lg:pb-32">
         <div className="space-y-4">

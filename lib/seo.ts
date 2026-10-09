@@ -1,6 +1,13 @@
 import type { Metadata } from 'next'
+import { siteUrl } from '@/lib/utils'
 
 const SITE = 'AVA Catering'
+
+/** Stand der Website-Inhalte für sitemap.xml (lastmod). Bei grösseren Text-/Angebotsänderungen anpassen. */
+export const SITE_UPDATED = '2026-10-09'
+
+/** Stabile ID des Betriebs für strukturierte Daten (verknüpft LocalBusiness, Service usw.). */
+export const businessId = () => `${siteUrl()}/#business`
 
 /** Einheitliche Metadaten pro Seite inkl. Open Graph (WhatsApp, Facebook, LinkedIn) und Twitter. */
 export function pageMeta({

@@ -1,7 +1,8 @@
 import { pageMeta } from '@/lib/seo'
-import { CtaBand, PageHero } from '@/components/site/sections'
+import { CtaBand, JsonLd, PageHero, breadcrumbJsonLd } from '@/components/site/sections'
 import { Lightbox } from '@/components/site/Lightbox'
 import { getGallery, getSettings } from '@/lib/data'
+import { siteUrl } from '@/lib/utils'
 
 export const revalidate = 300
 
@@ -15,6 +16,7 @@ export default async function GaleriePage() {
   const [s, gallery] = await Promise.all([getSettings(), getGallery()])
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: 'Galerie', path: '/galerie' }], siteUrl())} />
       <PageHero eyebrow="Galerie" title="Mit den Augen *isst* man mit." text="Echte Buffets, echte Anlässe – alles frisch und von Hand zubereitet." />
       <section className="container-x pb-10">
         <Lightbox images={gallery.map((g) => ({ src: g.src, alt: g.alt }))} />

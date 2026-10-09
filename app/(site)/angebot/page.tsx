@@ -1,17 +1,18 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Check } from '@/components/Icons'
-import { CtaBand, PageHero, ThemeCards } from '@/components/site/sections'
+import { CtaBand, JsonLd, PageHero, ThemeCards, breadcrumbJsonLd } from '@/components/site/sections'
 import { categoryImages } from '@/lib/content'
 import { getCategories, getSettings, getThemes } from '@/lib/data'
 import { pageMeta } from '@/lib/seo'
+import { siteUrl } from '@/lib/utils'
 
 export const revalidate = 300
 
 export const metadata = pageMeta({
   title: 'Angebot – Apéro, Mezze, Lunch & Themenbuffets',
   description:
-    'Apéro-Buffet, Mezze-Buffet, Lunch-Buffet, Themen-Party-Service und Süsses: das hausgemachte Catering-Angebot von AVA Catering aus Pfaffnau für Firmen, Geschäfte und Feste.',
+    'Apéro-, Mezze- und Lunch-Buffets, Themen-Party-Service und Süsses: das hausgemachte Catering-Angebot aus Pfaffnau für Firmen, Geschäfte und Feste.',
   path: '/angebot',
   image: '/og-angebot.jpg',
   imageAlt: 'AVA Catering – Apéro, Mezze, Lunch & mehr',
@@ -22,6 +23,7 @@ export default async function AngebotPage() {
 
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: 'Angebot', path: '/angebot' }], siteUrl())} />
       <PageHero
         eyebrow="Angebot"
         title="Hausgemacht, *kombinierbar*, ganz nach Ihrem Anlass."
@@ -30,7 +32,7 @@ export default async function AngebotPage() {
         <nav aria-label="Kapitel" className="mt-12 flex flex-wrap gap-2.5">
           {cats.map((c, i) => (
             <a key={c.slug} href={`#${c.slug}`} className="border-line text-olive hover:border-orange hover:text-orange rounded-full border bg-white/60 px-4 py-2 text-sm transition">
-              <span className="text-orange mr-2 font-serif italic">0{i + 1}</span>
+              <span className="mr-2 font-serif text-[#a84505] italic" aria-hidden>0{i + 1}</span>
               {c.title}
             </a>
           ))}

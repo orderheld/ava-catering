@@ -66,6 +66,8 @@ export function Header({ phone, email, whatsapp, announcement }: { phone: string
             <img
               src="/brand/ava-logo-horizontal.svg"
               alt="AVA Catering"
+              width={189}
+              height={44}
               className={cn('w-auto transition-all duration-500', scrolled ? 'h-8' : 'h-9 lg:h-11')}
             />
           </Link>

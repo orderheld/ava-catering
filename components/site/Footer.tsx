@@ -13,13 +13,13 @@ export function Footer({ s }: { s: SiteSettings }) {
       <div className="container-x relative grid gap-14 py-20 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:py-24">
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/ava-logo-hell.svg" alt="AVA Catering" className="h-24 w-auto" />
+          <img src="/brand/ava-logo-hell.svg" alt="AVA Catering" width={155} height={96} loading="lazy" decoding="async" className="h-24 w-auto" />
           <p className="text-olive-soft/75 mt-6 max-w-xs text-[0.95rem] leading-relaxed">
             Hausgemachtes Catering von Dilsah Sever aus Pfaffnau: für Firmen, Geschäfte und Feste.
           </p>
         </div>
         <div>
-          <h3 className="text-orange mb-5 text-xs font-medium tracking-[0.25em] uppercase">Angebot</h3>
+          <h2 className="mb-5 text-xs font-medium tracking-[0.25em] text-[#f08a3e] uppercase">Angebot</h2>
           <ul className="space-y-3 text-[0.95rem]">
             {[
               ['Apéro-Buffet', '/angebot/apero'],
@@ -35,7 +35,7 @@ export function Footer({ s }: { s: SiteSettings }) {
           </ul>
         </div>
         <div>
-          <h3 className="text-orange mb-5 text-xs font-medium tracking-[0.25em] uppercase">Kontakt</h3>
+          <h2 className="mb-5 text-xs font-medium tracking-[0.25em] text-[#f08a3e] uppercase">Kontakt</h2>
           <ul className="space-y-3.5 text-[0.95rem]">
             <li className="flex gap-3">
               <Pin className="mt-0.5 size-4 shrink-0" />
@@ -86,7 +86,7 @@ export function Footer({ s }: { s: SiteSettings }) {
           )}
         </div>
         <div>
-          <h3 className="text-orange mb-5 text-xs font-medium tracking-[0.25em] uppercase">Seiten</h3>
+          <h2 className="mb-5 text-xs font-medium tracking-[0.25em] text-[#f08a3e] uppercase">Seiten</h2>
           <ul className="space-y-3 text-[0.95rem]">
             {[
               ['Firmen & Geschäfte', '/firmen'],
@@ -114,7 +114,7 @@ export function Footer({ s }: { s: SiteSettings }) {
           </div>
           <p>
             Webdesign by{' '}
-            <a href="https://webnova.ch" target="_blank" rel="noopener" className="text-olive-soft hover:text-orange underline-offset-4 hover:underline">
+            <a href="https://webnova.ch" target="_blank" rel="noopener" className="text-olive-soft underline decoration-olive-soft/40 underline-offset-4 hover:text-white hover:decoration-current">
               webnova.ch
             </a>
           </p>

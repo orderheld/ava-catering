@@ -240,7 +240,7 @@ export function AudienceSplit() {
                 </li>
               ))}
             </ul>
-            <span className="text-orange mt-8 inline-flex items-center gap-2 font-medium">
+            <span className="mt-8 inline-flex items-center gap-2 font-medium text-[#a84505]">
               Mehr erfahren <ArrowRight className="size-4 transition group-hover:translate-x-1" />
             </span>
           </div>
@@ -316,12 +316,13 @@ export function PageHero({ eyebrow, title, text, children }: { eyebrow: string; 
     <section className="relative overflow-hidden pt-14 pb-16 lg:pt-20 lg:pb-24">
       <Thread className="-right-10 top-0 h-full w-[70%] opacity-70" viewBox="0 0 800 400" d="M820 -10C640 30 600 140 700 230S760 360 620 410" />
       <div className="container-x relative">
-        <p data-reveal className="eyebrow">{eyebrow}</p>
-        <h1 data-reveal style={{ '--d': '80ms' } as React.CSSProperties} className="display text-olive-deep mt-6 max-w-4xl text-[clamp(3rem,7vw,6.2rem)]">
+        {/* Hero ohne data-reveal: sofort sichtbar (LCP, auch ohne JavaScript). */}
+        <p className="eyebrow">{eyebrow}</p>
+        <h1 className="display text-olive-deep mt-6 max-w-4xl text-[clamp(3rem,7vw,6.2rem)]">
           <Accent text={title} />
         </h1>
         {text && (
-          <p data-reveal style={{ '--d': '160ms' } as React.CSSProperties} className="text-muted mt-7 max-w-2xl text-lg leading-relaxed">
+          <p className="text-muted mt-7 max-w-2xl text-lg leading-relaxed">
             {text}
           </p>
         )}
@@ -374,18 +375,18 @@ export function ImageHero({
         )}
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div>
-            <p data-reveal className="eyebrow">{eyebrow}</p>
-            <h1 data-reveal style={{ '--d': '80ms' } as React.CSSProperties} className="display text-olive-deep mt-6 text-[clamp(2.9rem,6.4vw,5.6rem)]">
+            <p className="eyebrow">{eyebrow}</p>
+            <h1 className="display text-olive-deep mt-6 text-[clamp(2.9rem,6.4vw,5.6rem)]">
               <Accent text={title} />
             </h1>
             {text && (
-              <p data-reveal style={{ '--d': '160ms' } as React.CSSProperties} className="text-muted mt-7 max-w-xl text-lg leading-relaxed">
+              <p className="text-muted mt-7 max-w-xl text-lg leading-relaxed">
                 {text}
               </p>
             )}
             {children}
           </div>
-          <div data-reveal="scale" className="relative mx-auto aspect-[5/4] w-full max-w-[600px] overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] shadow-[0_40px_80px_-40px_rgba(47,57,22,0.55)] sm:aspect-[4/4] lg:mr-0">
+          <div className="relative mx-auto aspect-[5/4] w-full max-w-[600px] overflow-hidden rounded-t-[999px] rounded-b-[2.5rem] shadow-[0_40px_80px_-40px_rgba(47,57,22,0.55)] sm:aspect-[4/4] lg:mr-0">
             <Image src={image} alt={imageAlt} fill priority sizes="(min-width:1024px) 600px, 92vw" className="object-cover" />
           </div>
         </div>
@@ -456,7 +457,7 @@ export function PackageCards() {
                 <dd className="text-right">{p.amount}</dd>
               </div>
             </dl>
-            <Link href={`/anfrage?anlass=${encodeURIComponent(p.anlass)}&angebot=${p.angebot}`} className="text-orange mt-auto inline-flex items-center gap-2 pt-6 font-medium">
+            <Link href={`/anfrage?anlass=${encodeURIComponent(p.anlass)}&angebot=${p.angebot}`} className="mt-auto inline-flex items-center gap-2 pt-6 font-medium text-[#a84505]">
               Offerte anfragen <ArrowRight className="size-4 transition group-hover:translate-x-1" />
             </Link>
           </div>

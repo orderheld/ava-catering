@@ -84,7 +84,7 @@
     @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[0.95rem] font-medium tracking-wide transition duration-300 ease-(--ease-soft) select-none;
   }
   .btn-primary {
-    @apply bg-orange hover:bg-orange-deep text-white shadow-[0_10px_30px_-12px_rgba(232,101,10,0.7)] hover:-translate-y-0.5;
+    @apply bg-orange-deep text-white shadow-[0_10px_30px_-12px_rgba(196,82,10,0.7)] hover:-translate-y-0.5 hover:bg-[#a84505];
   }
   .btn-secondary {
     @apply border-olive/25 text-olive hover:border-olive hover:bg-olive border bg-transparent hover:text-white;

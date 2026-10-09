@@ -195,7 +195,7 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
                 <span className="bg-line block h-[3px] overflow-hidden rounded-full">
                   <span className={cn('bg-orange block h-full rounded-full transition-all duration-700 ease-(--ease-soft)', i <= step ? 'w-full' : 'w-0')} />
                 </span>
-                <span className={cn('mt-3 flex items-center gap-2 text-xs tracking-[0.18em] uppercase sm:text-[0.8rem]', i === step ? 'text-orange' : i < step ? 'text-olive' : 'text-muted/60')}>
+                <span className={cn('mt-3 flex items-center gap-2 text-xs tracking-[0.18em] uppercase sm:text-[0.8rem]', i === step ? 'text-[#a84505] font-medium' : i < step ? 'text-olive' : 'text-muted/60')}>
                   <span className="hidden font-serif text-base tracking-normal italic sm:inline">0{i + 1}</span>
                   {label}
                 </span>
@@ -387,7 +387,7 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
             <input type="checkbox" name="consent" className="accent-orange mt-1 size-4 shrink-0" aria-invalid={!!errors.consent} />
             <span>
               Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage gespeichert werden. Mehr in der{' '}
-              <Link href="/datenschutz" className="text-orange underline underline-offset-2" target="_blank">Datenschutzerklärung</Link>. *
+              <Link href="/datenschutz" className="text-[#a84505] underline underline-offset-2" target="_blank">Datenschutzerklärung</Link>. *
             </span>
           </label>
           {err('consent')}
@@ -419,29 +419,27 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
       <aside className="lg:sticky lg:top-28 lg:self-start">
         <div className="bg-olive-deep text-olive-soft grain relative overflow-hidden rounded-[1.75rem] p-7">
           <p className="text-orange-soft text-xs tracking-[0.25em] uppercase">Ihre Anfrage</p>
-          <dl className="mt-6 space-y-4 text-[0.95rem]">
-            <div>
-              <dt className="text-olive-soft/50 text-xs tracking-[0.15em] uppercase">Anlass</dt>
+          <dl className="mt-6 grid grid-cols-[auto_1fr] gap-x-6 gap-y-4 text-[0.95rem]">
+            <div className="col-span-2">
+              <dt className="text-olive-soft/70 text-xs tracking-[0.15em] uppercase">Anlass</dt>
               <dd className="text-cream mt-1 font-serif text-xl">{eventType || '–'}</dd>
             </div>
-            <div>
-              <dt className="text-olive-soft/50 text-xs tracking-[0.15em] uppercase">Buffet</dt>
+            <div className="col-span-2">
+              <dt className="text-olive-soft/70 text-xs tracking-[0.15em] uppercase">Buffet</dt>
               <dd className="text-cream mt-1">{offerings.length ? offerings.map(catTitle).join(', ') : '–'}</dd>
               {chosenThemes.length > 0 && <dd className="text-olive-soft/70 mt-1 text-sm">Thema: {chosenThemes.join(', ')}</dd>}
             </div>
-            <div className="flex gap-6">
-              <div>
-                <dt className="text-olive-soft/50 flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase"><Calendar className="size-3.5" /> Datum</dt>
-                <dd className="text-cream mt-1">{date ? formatDate(date, { day: 'numeric', month: 'short', year: 'numeric' }) : '–'}</dd>
-              </div>
-              <div>
-                <dt className="text-olive-soft/50 flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase"><Users className="size-3.5" /> Personen</dt>
-                <dd className="text-cream mt-1">{step >= 2 ? guests : '–'}</dd>
-              </div>
+            <div>
+              <dt className="text-olive-soft/70 flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase"><Calendar className="size-3.5" /> Datum</dt>
+              <dd className="text-cream mt-1">{date ? formatDate(date, { day: 'numeric', month: 'short', year: 'numeric' }) : '–'}</dd>
+            </div>
+            <div>
+              <dt className="text-olive-soft/70 flex items-center gap-1.5 text-xs tracking-[0.15em] uppercase"><Users className="size-3.5" /> Personen</dt>
+              <dd className="text-cream mt-1">{step >= 2 ? guests : '–'}</dd>
             </div>
             {dietary.length > 0 && (
-              <div>
-                <dt className="text-olive-soft/50 text-xs tracking-[0.15em] uppercase">Ernährung</dt>
+              <div className="col-span-2">
+                <dt className="text-olive-soft/70 text-xs tracking-[0.15em] uppercase">Ernährung</dt>
                 <dd className="text-cream mt-1">{dietary.join(', ')}</dd>
               </div>
             )}
