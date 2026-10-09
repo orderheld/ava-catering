@@ -168,3 +168,38 @@
     animation: none !important;
   }
 }
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+
+/* ───────── Admin: grössere Schrift, kein seitliches Verschieben ───────── */
+html:has(.admin-root) {
+  font-size: 106.25%; /* 17px */
+  overflow-x: clip;
+  background: #f7f2e9;
+}
+html:has(.admin-root) body {
+  overflow-x: clip;
+  background: #f7f2e9;
+  overscroll-behavior-x: none;
+}
+@media (min-width: 1280px) {
+  html:has(.admin-root) {
+    font-size: 112.5%; /* 18px */
+  }
+}
+.admin-root .label {
+  @apply text-olive-deep/80 text-[0.82rem] tracking-[0.08em];
+}
+.admin-root .field {
+  @apply text-base;
+}
+.admin-root input,
+.admin-root select,
+.admin-root textarea {
+  font-size: max(16px, 1rem); /* iOS zoomt sonst beim Antippen hinein */
+}

@@ -19,5 +19,5 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: '#2F3916' }
 
 export default function AdminRoot({ children }: { children: React.ReactNode }) {
-  return <div className="bg-sand/50 min-h-screen">{children}</div>
+  return <div className="admin-root min-h-dvh bg-[#f7f2e9]">{children}</div>
 }

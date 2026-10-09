@@ -9,7 +9,7 @@ export default async function Dashboard() {
   const db = getDb()
   if (!db) return (<><PageTitle title="Übersicht" /><DbMissing /></>)
 
-  const today = new Date().toISOString().slice(0, 10)
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(new Date())
   const monthStart = `${today.slice(0, 7)}-01`
   const [counts, latest, upcoming] = await Promise.all([
     db
@@ -35,16 +35,16 @@ export default async function Dashboard() {
   return (
     <>
       <PageTitle title={`${greet}, Dilsah`} text="Hier sehen Sie auf einen Blick, was ansteht." />
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         {[
           { label: 'Neue Anfragen', value: c.neu, href: '/admin/anfragen?status=neu', accent: true },
           { label: 'In Bearbeitung', value: c.offen, href: '/admin/anfragen?status=offen' },
           { label: 'Bestätigte Events', value: c.bestaetigt, href: '/admin/kalender' },
           { label: 'Anfragen diesen Monat', value: c.monat, href: '/admin/anfragen' },
         ].map((k) => (
-          <Link key={k.label} href={k.href} className={`rounded-3xl border p-6 transition hover:-translate-y-0.5 ${k.accent ? 'bg-orange border-orange text-white' : 'border-line bg-white'}`}>
-            <p className={`text-xs tracking-[0.15em] uppercase ${k.accent ? 'text-white/80' : 'text-muted'}`}>{k.label}</p>
-            <p className={`mt-3 font-serif text-5xl ${k.accent ? '' : 'text-olive-deep'}`}>{k.value}</p>
+          <Link key={k.label} href={k.href} className={`rounded-[1.6rem] border p-5 transition hover:-translate-y-0.5 sm:p-6 ${k.accent ? 'bg-orange border-orange text-white' : 'border-line bg-white'}`}>
+            <p className={`text-[0.72rem] leading-snug tracking-[0.12em] uppercase ${k.accent ? 'text-white/80' : 'text-muted'}`}>{k.label}</p>
+            <p className={`mt-2 font-serif text-4xl sm:text-5xl ${k.accent ? '' : 'text-olive-deep'}`}>{k.value}</p>
           </Link>
         ))}
       </div>
