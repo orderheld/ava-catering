@@ -4,7 +4,7 @@ import { Accent } from '@/components/Accent'
 import { ArrowRight, Heart, Leaf, Truck } from '@/components/Icons'
 import { QuantityCalculator } from '@/components/site/QuantityCalculator'
 import { AudienceSplit, CtaBand, Faq, JsonLd, SectionHead, ThemeCards, Thread, TrustBar, faqJsonLd, faqs } from '@/components/site/sections'
-import { occasions, serviceTowns } from '@/lib/content'
+import { googleProfile, instagramUrl, occasions, phoneHours, serviceTowns } from '@/lib/content'
 import { getCategories, getGallery, getSettings, getThemes } from '@/lib/data'
 import { plain, siteUrl } from '@/lib/utils'
 
@@ -42,7 +42,16 @@ export default async function HomePage() {
     address: { '@type': 'PostalAddress', streetAddress: s.street, postalCode: s.zip, addressLocality: s.city, addressRegion: 'LU', addressCountry: 'CH' },
     areaServed: serviceTowns.map((name) => ({ '@type': 'City', name })),
     priceRange: 'CHF',
-    hasMap: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.street}, ${s.zip} ${s.city}`)}`,
+    hasMap: googleProfile.profile,
+    sameAs: [googleProfile.profile, instagramUrl(s)],
+    ...(phoneHours.length && {
+      openingHoursSpecification: phoneHours.map((h) => ({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: h.days.map((d) => `https://schema.org/${d}`),
+        opens: h.opens,
+        closes: h.closes,
+      })),
+    }),
   }
 
   return (

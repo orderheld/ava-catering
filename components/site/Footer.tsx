@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import type { SiteSettings } from '@/lib/content'
-import { Mail, Phone, Pin, Whatsapp } from '@/components/Icons'
+import { googleProfile, instagramUrl, phoneHours, type SiteSettings } from '@/lib/content'
+import { Clock, Instagram, Mail, Phone, Pin, Star, Whatsapp } from '@/components/Icons'
 import { telHref } from '@/lib/utils'
 
 export function Footer({ s }: { s: SiteSettings }) {
@@ -39,11 +39,11 @@ export function Footer({ s }: { s: SiteSettings }) {
           <ul className="space-y-3.5 text-[0.95rem]">
             <li className="flex gap-3">
               <Pin className="mt-0.5 size-4 shrink-0" />
-              <span>
+              <a href={googleProfile.profile} target="_blank" rel="noopener noreferrer" className="hover:text-white">
                 {s.street}
                 <br />
                 {s.zip} {s.city}
-              </span>
+              </a>
             </li>
             <li>
               <a href={telHref(s.phone)} className="flex items-center gap-3 hover:text-white">
@@ -62,7 +62,28 @@ export function Footer({ s }: { s: SiteSettings }) {
                 </a>
               </li>
             )}
+            <li>
+              <a href={instagramUrl(s)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-white">
+                <Instagram className="size-4" /> Instagram
+              </a>
+            </li>
+            <li>
+              <a href={googleProfile.review} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-white">
+                <Star className="size-4" /> Auf Google bewerten
+              </a>
+            </li>
           </ul>
+          {phoneHours.length > 0 && (
+            <div className="mt-6 flex gap-3 text-[0.9rem]">
+              <Clock className="mt-0.5 size-4 shrink-0" />
+              <div>
+                <p className="text-olive-soft/60 text-xs tracking-[0.2em] uppercase">Telefonisch erreichbar</p>
+                {phoneHours.map((h) => (
+                  <p key={h.label} className="mt-1">{h.label}: {h.opens}–{h.closes}</p>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
         <div>
           <h3 className="text-orange mb-5 text-xs font-medium tracking-[0.25em] uppercase">Seiten</h3>

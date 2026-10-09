@@ -36,8 +36,19 @@ export const defaultSettings: SiteSettings = {
     'Hinter AVA Catering steht Dilsah Sever. Was in ihrer Küche in Pfaffnau entsteht, ist ehrliches Handwerk: Teig, der von Hand geknetet wird, Weinblätter, die einzeln gerollt werden, und Rezepte, die europäische und mediterrane Küche mit der Freude am Gastgeben verbinden.\n\nOb Apéro im Büro, Eröffnung im Geschäft oder Fest im Verein: Jedes Buffet wird für Ihren Anlass zusammengestellt, liebevoll angerichtet und mit derselben Sorgfalt zubereitet, als wären es die eigenen Gäste.',
   announcement: '',
   leadTime: 'Am besten fragen Sie mindestens 7 Tage vor Ihrem Anlass an – kurzfristige Anfragen prüfen wir gerne.',
-  instagram: '',
+  instagram: 'https://www.instagram.com/avacatering.ch/',
 }
+
+// Offizielles Google-Unternehmensprofil und Social Media (für Verlinkung und SEO, schema.org sameAs)
+export const googleProfile = {
+  profile: 'https://share.google/eK0U2Xy9556xXvDAu',
+  review: 'https://g.page/r/CYjyPcZD4cJHEBM/review',
+}
+export const instagramUrl = (s: SiteSettings) => s.instagram || defaultSettings.instagram
+
+// Telefonische Erreichbarkeit, gleich wie im Google-Profil. Leer = Abschnitt wird ausgeblendet.
+// days: schema.org-Wochentage, label: Anzeige auf der Webseite, opens/closes im Format HH:MM
+export const phoneHours: { label: string; days: string[]; opens: string; closes: string }[] = []
 
 export type Category = {
   id?: number
