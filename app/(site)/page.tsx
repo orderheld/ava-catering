@@ -66,6 +66,8 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={jsonLd} />
+      {/* Name der Website in den Google-Suchergebnissen */}
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${siteUrl()}/#website`, name: 'AVA Catering', url: `${siteUrl()}/`, inLanguage: 'de-CH', publisher: { '@id': businessId() } }} />
 
       {/* ───────────── Hero ───────────── */}
       <section className="relative overflow-hidden">

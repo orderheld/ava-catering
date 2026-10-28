@@ -16,6 +16,12 @@ const nextConfig: NextConfig = {
       { source: '/video/:path*', headers: [staticCache] },
       { source: '/brand/:path*', headers: [staticCache] },
       { source: '/:file(og.*\\.jpg|icon-.*\\.png)', headers: [staticCache] },
+      // Die Vercel-Adresse (*.vercel.app) nicht indexieren: sonst doppelte Inhalte neben avacatering.ch.
+      {
+        source: '/(.*)',
+        has: [{ type: 'host', value: '(?<host>.+)\\.vercel\\.app' }],
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex' }],
+      },
       {
         source: '/(.*)',
         headers: [
