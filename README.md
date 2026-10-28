@@ -72,6 +72,7 @@ Zufälligen `AUTH_SECRET` erzeugen:
 1. Kundin füllt den Assistenten aus → Speicherung in Neon (Status *Neu*).
 2. Resend schickt eine Benachrichtigung an `MAIL_NOTIFY_TO` (Antworten gehen direkt an die Kundin) und eine Bestätigung an die Kundin.
 3. Im Admin: Status setzen, Notizen & Offertbetrag erfassen, mit Vorlage antworten. Der Verlauf wird protokolliert.
+4. **Offerte:** In der Anfrage «+ Offerte erstellen» tippen. Kunde, Anlass und gewählte Buffets (mit Personenzahl und zuletzt verwendetem Preis) sind vorausgefüllt. Preise ergänzen → «Senden». Der Kunde bekommt eine E-Mail mit Link auf `/offerte/<code>`: Offerte ansehen, als PDF speichern und mit einem Klick annehmen. Danach wird die Anfrage automatisch «Bestätigt», es kommt eine Push-Mitteilung (Kategorie «Offerten») und eine E-Mail. Zusagen am Telefon: in der Offerte «✓ Angenommen» tippen.
 
 Spam-Schutz: Honeypot-Feld, Mindest-Ausfüllzeit, max. 5 Anfragen pro Stunde und IP (gehasht gespeichert).
 

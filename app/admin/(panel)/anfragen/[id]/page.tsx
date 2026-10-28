@@ -2,11 +2,14 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { desc, eq } from 'drizzle-orm'
 import { deleteInquiry, saveInquiryNotes, updateInquiryStatus } from '@/app/admin/actions'
+import { createOffer } from '@/app/admin/offer-actions'
+import { OfferBadge } from '@/components/admin/OfferBadge'
 import { ActionForm, QuickForm, SubmitButton } from '@/components/admin/forms'
 import { ReplyComposer } from '@/components/admin/ReplyComposer'
 import { DbMissing, Panel, StatusBadge, statusMeta } from '@/components/admin/ui'
-import { inquiries, inquiryLog, inquiryStatuses } from '@/db/schema'
+import { inquiries, inquiryLog, inquiryStatuses, offers } from '@/db/schema'
 import { getDb } from '@/lib/db'
+import { formatChf, offerNumber } from '@/lib/offer'
 import { formatDate, formatDateTime, telHref } from '@/lib/utils'
 
 export const metadata = { title: 'Anfrage' }
@@ -17,7 +20,11 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
   if (!db) return <DbMissing />
   const inq = await db.query.inquiries.findFirst({ where: eq(inquiries.id, Number(id)) })
   if (!inq) notFound()
-  const log = await db.select().from(inquiryLog).where(eq(inquiryLog.inquiryId, inq.id)).orderBy(desc(inquiryLog.createdAt))
+  const [log, offerList] = await Promise.all([
+    db.select().from(inquiryLog).where(eq(inquiryLog.inquiryId, inq.id)).orderBy(desc(inquiryLog.createdAt)),
+    db.select().from(offers).where(eq(offers.inquiryId, inq.id)).orderBy(desc(offers.createdAt)),
+  ])
+  const latestOffer = offerList[0]
   const eventLabel = [inq.eventType, inq.eventDate && formatDate(inq.eventDate)].filter(Boolean).join(' am ') || 'Ihre Anfrage'
   const wa = inq.phone ? inq.phone.replace(/\D/g, '').replace(/^0/, '41') : null
 
@@ -47,6 +54,18 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
           <h1 className="text-olive-deep mt-3 font-serif text-4xl break-words sm:text-5xl">{inq.name}</h1>
           {inq.company && <p className="text-muted mt-1 text-lg">{inq.company}</p>}
         </div>
+        <div className="flex flex-col gap-3 sm:items-end">
+          {inq.kind !== 'kontakt' &&
+            (latestOffer ? (
+              <Link href={`/admin/offerten/${latestOffer.id}`} className="btn btn-primary !py-3.5">
+                Offerte öffnen · {formatChf(latestOffer.totalCents / 100)}
+              </Link>
+            ) : (
+              <form action={createOffer}>
+                <input type="hidden" name="inquiryId" value={inq.id} />
+                <SubmitButton pendingText="Wird erstellt …" className="w-full !py-3.5 sm:w-auto">+ Offerte erstellen</SubmitButton>
+              </form>
+            ))}
         <QuickForm key={inq.status} action={updateInquiryStatus} className="flex items-center gap-2">
           <input type="hidden" name="id" value={inq.id} />
           <select name="status" defaultValue={inq.status} className="field !w-auto min-w-0 flex-1 !rounded-full !py-3">
@@ -54,8 +73,9 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
               <option key={s} value={s}>{statusMeta[s].label}</option>
             ))}
           </select>
-          <SubmitButton pendingText="…">Status setzen</SubmitButton>
+          <SubmitButton pendingText="…" className="btn-secondary !bg-transparent !text-olive !shadow-none hover:!bg-olive hover:!text-white">Status setzen</SubmitButton>
         </QuickForm>
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr]">
@@ -85,6 +105,31 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
         </div>
 
         <div className="space-y-6">
+          {offerList.length > 0 && (
+            <Panel
+              title="Offerten"
+              actions={
+                <form action={createOffer}>
+                  <input type="hidden" name="inquiryId" value={inq.id} />
+                  <button className="text-orange text-sm">+ Weitere Offerte</button>
+                </form>
+              }
+            >
+              <ul className="divide-line -my-3 divide-y">
+                {offerList.map((o) => (
+                  <li key={o.id}>
+                    <Link href={`/admin/offerten/${o.id}`} className="hover:bg-sand/50 -mx-3 flex items-center justify-between gap-3 rounded-xl px-3 py-3">
+                      <span>
+                        <span className="block font-medium">{formatChf(o.totalCents / 100)}</span>
+                        <span className="text-muted text-sm">Nr. {offerNumber(o)}</span>
+                      </span>
+                      <OfferBadge status={o.status} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Panel>
+          )}
           <Panel title="Kontakt">
             <div className="space-y-3">
               <a href={`mailto:${inq.email}`} className="hover:text-orange block break-all">✉ {inq.email}</a>

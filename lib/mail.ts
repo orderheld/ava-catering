@@ -1,5 +1,6 @@
 import 'server-only'
 import { Resend } from 'resend'
+import { formatAmount, formatChf, lineTotal, offerNumber, offerUnits, type OfferPosition } from './offer'
 import { escapeHtml, formatDate, siteUrl } from './utils'
 
 const FROM = () => process.env.MAIL_FROM ?? 'AVA Catering <kontakt@avacatering.ch>'
@@ -138,4 +139,118 @@ export async function sendReply(to: string, subject: string, body: string) {
       .join('')}`,
   )
   return sendMail({ to, subject, html, text: body, replyTo: NOTIFY() })
+}
+
+/* ───────── Offerten ───────── */
+
+export type OfferMailData = {
+  id: number
+  createdAt: Date
+  token: string
+  name: string
+  company: string | null
+  email: string | null
+  eventType: string | null
+  eventDate: string | null
+  eventTime: string | null
+  guests: number | null
+  location: string | null
+  intro: string | null
+  positions: OfferPosition[]
+  notes: string | null
+  validUntil: string | null
+  totalCents: number
+  customerNote?: string | null
+}
+
+export const offerUrl = (token: string) => `${siteUrl()}/offerte/${token}`
+
+const paragraphs = (t: string) =>
+  escapeHtml(t)
+    .split(/\n{2,}/)
+    .map((p) => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+    .join('')
+
+function offerTable(o: OfferMailData) {
+  const rows = o.positions
+    .map(
+      (p) => `<tr><td style="padding:10px 8px 10px 0;border-bottom:1px solid #E6DCCB;vertical-align:top">
+<b style="font-weight:600">${escapeHtml(p.text)}</b>${p.detail ? `<br><span style="color:${C.muted};font-size:13px">${escapeHtml(p.detail)}</span>` : ''}
+<br><span style="color:${C.muted};font-size:13px">${p.unit === 'pauschal' ? 'pauschal' : `${p.qty} × CHF ${formatAmount(p.price)} ${offerUnits[p.unit]}`}</span></td>
+<td style="padding:10px 0;border-bottom:1px solid #E6DCCB;text-align:right;vertical-align:top;white-space:nowrap">${formatAmount(lineTotal(p))}</td></tr>`,
+    )
+    .join('')
+  return `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;margin:18px 0;font-size:14px">${rows}
+<tr><td style="padding:14px 8px 0 0;font-size:16px"><b>Total</b></td><td style="padding:14px 0 0;text-align:right;font-size:18px;white-space:nowrap;color:${C.olive}"><b>${formatChf(o.totalCents / 100)}</b></td></tr></table>`
+}
+
+function offerFacts(o: OfferMailData) {
+  return `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-top:1px solid #E6DCCB;margin:18px 0">
+${row('Anlass', o.eventType)}${row('Datum', o.eventDate ? `${formatDate(o.eventDate, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${o.eventTime ? `, ${o.eventTime} Uhr` : ''}` : null)}
+${row('Personen', o.guests)}${row('Ort', o.location)}</table>`
+}
+
+function offerText(o: OfferMailData) {
+  const lines = o.positions.map((p) => `– ${p.text}${p.detail ? ` (${p.detail})` : ''}: ${p.unit === 'pauschal' ? '' : `${p.qty} × ${formatAmount(p.price)} = `}CHF ${formatAmount(lineTotal(p))}`)
+  return `${lines.join('\n')}\n\nTotal: ${formatChf(o.totalCents / 100)}`
+}
+
+/** Schickt die Offerte mit Link zur Online-Ansicht (dort annehmen oder als PDF speichern). */
+export async function sendOffer(o: OfferMailData & { email: string }) {
+  const nr = offerNumber(o)
+  const url = offerUrl(o.token)
+  const subject = `Ihre Offerte von AVA Catering${o.eventType ? ` – ${o.eventType}` : ''}${o.eventDate ? ` am ${formatDate(o.eventDate)}` : ''}`
+  const valid = o.validUntil ? `Diese Offerte ist gültig bis ${formatDate(o.validUntil)}.` : ''
+  const button = (label: string) =>
+    `<p style="margin:26px 0;text-align:center"><a href="${url}" style="display:inline-block;background:${C.orange};color:#fff;text-decoration:none;padding:14px 26px;border-radius:999px;font-weight:bold">${label}</a></p>`
+  const html = layout(
+    subject,
+    `<h1 style="font-family:Georgia,serif;font-weight:normal;font-size:26px;margin:16px 0 4px;color:${C.olive}">Ihre Offerte</h1>
+<p style="margin:0 0 18px;color:${C.muted}">Nr. ${nr}</p>
+${o.intro ? paragraphs(o.intro) : ''}${offerFacts(o)}${offerTable(o)}
+${o.notes ? `<div style="color:${C.muted};font-size:13px">${paragraphs(o.notes)}</div>` : ''}
+${valid ? `<p style="color:${C.muted};font-size:13px">${valid}</p>` : ''}
+${button('Offerte ansehen & annehmen')}
+<p style="font-size:13px;color:${C.muted};text-align:center;margin-top:-12px">Dort können Sie die Offerte auch als PDF speichern.</p>
+<p style="margin-top:24px">Herzliche Grüsse<br><span style="font-family:Georgia,serif;font-size:18px;color:${C.olive}">Dilsah Sever</span><br><span style="color:${C.muted};font-size:13px">AVA Catering</span></p>`,
+    `Offerte Nr. ${nr}: ${formatChf(o.totalCents / 100)}`,
+  )
+  const text = `Ihre Offerte von AVA Catering (Nr. ${nr})\n\n${o.intro ? `${o.intro}\n\n` : ''}${offerText(o)}\n\n${o.notes ? `${o.notes}\n\n` : ''}${valid ? `${valid}\n\n` : ''}Offerte ansehen & annehmen: ${url}\n\nHerzliche Grüsse\nDilsah Sever, AVA Catering\n078 264 69 62 · kontakt@avacatering.ch`
+  return sendMail({ to: o.email, subject, html, text, replyTo: NOTIFY() })
+}
+
+/** Nach dem Annehmen: Bestätigung an die Kundin / den Kunden und Info an AVA. */
+export async function sendOfferAccepted(o: OfferMailData) {
+  const nr = offerNumber(o)
+  const who = o.company ? `${o.name} (${o.company})` : o.name
+  const owner = sendMail({
+    to: NOTIFY(),
+    replyTo: o.email ?? undefined,
+    subject: `Offerte ${nr} angenommen – ${who}`,
+    html: layout(
+      'Offerte angenommen',
+      `<h1 style="font-family:Georgia,serif;font-weight:normal;font-size:26px;margin:16px 0 4px;color:${C.olive}">Offerte ${nr} angenommen</h1>
+<p style="margin:0;color:${C.muted}">${escapeHtml(who)} hat die Offerte über ${formatChf(o.totalCents / 100)} online angenommen.</p>
+${o.customerNote ? `<p style="margin-top:16px"><b>Bemerkung:</b><br>${escapeHtml(o.customerNote).replace(/\n/g, '<br>')}</p>` : ''}${offerFacts(o)}
+<p style="margin:24px 0 0"><a href="${siteUrl()}/admin/offerten/${o.id}" style="display:inline-block;background:${C.orange};color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:bold">Im Admin öffnen</a></p>`,
+    ),
+    text: `${who} hat die Offerte ${nr} über ${formatChf(o.totalCents / 100)} angenommen.${o.customerNote ? `\n\nBemerkung: ${o.customerNote}` : ''}\n\n${siteUrl()}/admin/offerten/${o.id}`,
+  })
+  const customer = o.email
+    ? sendMail({
+        to: o.email,
+        replyTo: NOTIFY(),
+        subject: `Bestätigung: Offerte ${nr} angenommen – AVA Catering`,
+        html: layout(
+          'Vielen Dank für Ihren Auftrag',
+          `<h1 style="font-family:Georgia,serif;font-weight:normal;font-size:28px;margin:16px 0 12px;color:${C.olive}">Herzlichen Dank, ${escapeHtml(o.name.split(' ')[0])}!</h1>
+<p>Wir haben Ihre Zusage für die Offerte Nr. ${nr} erhalten und freuen uns sehr auf Ihren Anlass. Wir melden uns vorher nochmals für die letzten Details.</p>${offerFacts(o)}${offerTable(o)}
+<p>Die Offerte können Sie jederzeit <a href="${offerUrl(o.token)}" style="color:${C.orange}">hier ansehen</a>. Fragen? Antworten Sie einfach auf diese E-Mail oder rufen Sie uns an: <a href="tel:+41782646962" style="color:${C.orange}">078 264 69 62</a>.</p>
+<p style="margin-top:24px">Herzliche Grüsse<br><span style="font-family:Georgia,serif;font-size:18px;color:${C.olive}">Dilsah Sever</span><br><span style="color:${C.muted};font-size:13px">AVA Catering</span></p>`,
+          'Wir haben Ihre Zusage erhalten.',
+        ),
+        text: `Herzlichen Dank!\n\nWir haben Ihre Zusage für die Offerte Nr. ${nr} erhalten und freuen uns auf Ihren Anlass.\n\n${offerText(o)}\n\nOfferte ansehen: ${offerUrl(o.token)}\n\nHerzliche Grüsse\nDilsah Sever, AVA Catering\n078 264 69 62`,
+      })
+    : Promise.resolve({ ok: true as const })
+  return Promise.all([owner, customer])
 }

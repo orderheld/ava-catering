@@ -47,10 +47,34 @@ export function Toaster() {
   )
 }
 
-export function SubmitButton({ children, className, pendingText = 'Speichern …' }: { children: React.ReactNode; className?: string; pendingText?: string }) {
-  const { pending } = useFormStatus()
+export function SubmitButton({
+  children,
+  className,
+  pendingText = 'Speichern …',
+  name,
+  value,
+  confirm: question,
+}: {
+  children: React.ReactNode
+  className?: string
+  pendingText?: string
+  name?: string
+  value?: string
+  /** Rückfrage vor dem Absenden */
+  confirm?: string
+}) {
+  const status = useFormStatus()
+  // Mehrere Knöpfe im selben Formular: nur der angetippte zeigt «… läuft»
+  const pending = status.pending && (!name || status.data?.get(name) === value)
   return (
-    <button type="submit" disabled={pending} className={cn('btn btn-primary !px-6 !py-3 disabled:opacity-60', className)}>
+    <button
+      type="submit"
+      name={name}
+      value={value}
+      disabled={status.pending}
+      onClick={question ? (e) => !window.confirm(question) && e.preventDefault() : undefined}
+      className={cn('btn btn-primary !px-6 !py-3 disabled:opacity-60', className)}
+    >
       {pending && <span className="size-4 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden />}
       {pending ? pendingText : children}
     </button>
