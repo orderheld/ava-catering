@@ -96,11 +96,11 @@ export async function sendInquiryMails(d: InquiryMailData) {
   const owner = sendMail({
     to: NOTIFY(),
     replyTo: d.email,
-    subject: `${headline} (#${d.id})`,
+    subject: d.id ? `${headline} (#${d.id})` : headline,
     html: layout(
       headline,
       `<h1 style="font-family:Georgia,serif;font-weight:normal;font-size:26px;margin:16px 0 4px;color:${C.olive}">${escapeHtml(headline)}</h1>
-<p style="margin:0;color:${C.muted}">${label} #${d.id} über avacatering.ch</p>${summaryTable(d)}
+<p style="margin:0;color:${C.muted}">${label}${d.id ? ` #${d.id}` : ''} über avacatering.ch</p>${summaryTable(d)}
 <p style="margin:24px 0 0"><a href="${siteUrl()}/admin/anfragen/${d.id}" style="display:inline-block;background:${C.orange};color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:bold">Im Admin öffnen</a></p>
 <p style="font-size:13px;color:${C.muted}">Tipp: Direkt auf diese E-Mail antworten – die Antwort geht an ${escapeHtml(d.email)}.</p>`,
       headline,

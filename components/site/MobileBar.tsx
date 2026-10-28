@@ -1,9 +1,14 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Phone, Whatsapp } from '@/components/Icons'
 import { telHref } from '@/lib/utils'
 
 /** Fixe Aktionsleiste auf dem Handy: Anrufen, WhatsApp + Anfrage. */
 export function MobileBar({ phone, whatsapp }: { phone: string; whatsapp: string }) {
+  // Auf der Anfrage-Seite selbst würde die Leiste nur das Formular verdecken.
+  if (usePathname() === '/anfrage') return null
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:hidden">
       <div className="bg-olive-deep/95 pointer-events-auto flex gap-2 rounded-full p-1.5 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.5)] backdrop-blur">

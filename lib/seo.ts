@@ -4,7 +4,7 @@ import { siteUrl } from '@/lib/utils'
 const SITE = 'AVA Catering'
 
 /** Stand der Website-Inhalte für sitemap.xml (lastmod). Bei grösseren Text-/Angebotsänderungen anpassen. */
-export const SITE_UPDATED = '2026-10-09'
+export const SITE_UPDATED = '2026-10-28'
 
 /** Stabile ID des Betriebs für strukturierte Daten (verknüpft LocalBusiness, Service usw.). */
 export const businessId = () => `${siteUrl()}/#business`

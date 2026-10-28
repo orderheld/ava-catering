@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight, Heart, Leaf, Truck } from '@/components/Icons'
+import { LazyVideo } from '@/components/site/LazyVideo'
 import { CtaBand, ImageHero, JsonLd, SectionHead, breadcrumbJsonLd } from '@/components/site/sections'
 import { getSettings } from '@/lib/data'
 import { pageMeta } from '@/lib/seo'
@@ -39,16 +40,11 @@ export default async function UeberUnsPage() {
         <div className="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
           <div className="relative mx-auto w-full max-w-[440px]">
             <div data-reveal="scale" className="relative aspect-[9/14] overflow-hidden rounded-t-[999px] rounded-b-[2rem] shadow-[0_40px_80px_-40px_rgba(47,57,22,0.6)]">
-              <video
+              <LazyVideo
                 className="absolute inset-0 h-full w-full object-cover"
                 src="/video/mezze.mp4"
                 poster="/video/mezze-poster.webp"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label="Video: Mezze mit Grillgemüse und Caprese-Spiesschen"
+                label="Video: Mezze mit Grillgemüse und Caprese-Spiesschen"
               />
             </div>
           </div>

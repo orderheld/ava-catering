@@ -122,10 +122,16 @@ export async function submitInquiry(_prev: InquiryState, fd: FormData): Promise<
 
   if (id) after(() => notifyAdmins(pushFor(id, record)))
 
+  let mailed = false
   try {
-    await sendInquiryMails({ id, ...record })
+    const [owner] = await sendInquiryMails({ id, ...record })
+    mailed = owner.ok
   } catch (err) {
     console.error('[anfrage] E-Mail-Versand fehlgeschlagen:', err)
+  }
+  // Weder gespeichert noch per E-Mail angekommen: nicht «Danke» zeigen, sonst geht die Anfrage verloren.
+  if (!id && !mailed) {
+    return { ok: false, error: 'Die Anfrage konnte leider nicht gesendet werden. Bitte rufen Sie uns an oder schreiben Sie an kontakt@avacatering.ch.' }
   }
   return { ok: true, name: d.name.split(' ')[0] }
 }
