@@ -1,4 +1,5 @@
 import { boolean, date, index, integer, jsonb, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+import type { OfferPosition, OfferStatus } from '../lib/offer'
 import { pushCategories, type PushCategory } from '../lib/push-shared'
 
 export const inquiryStatuses = ['neu', 'in_bearbeitung', 'offeriert', 'bestaetigt', 'erledigt', 'abgesagt'] as const
@@ -96,6 +97,41 @@ export const blockedDates = pgTable('blocked_dates', {
   day: date('day').primaryKey(),
   note: text('note'),
 })
+
+// Offerten an Kundinnen und Kunden. Kundendaten und Anlass werden kopiert, damit die Offerte unverändert bleibt,
+// auch wenn die Anfrage später geändert oder gelöscht wird (Grundlage für spätere Rechnungen).
+export const offers = pgTable('offers', {
+  id: serial('id').primaryKey(),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
+  inquiryId: integer('inquiry_id').references(() => inquiries.id, { onDelete: 'set null' }),
+  status: varchar('status', { length: 20 }).$type<OfferStatus>().default('entwurf').notNull(),
+  /** Geheimer Teil des Kunden-Links /offerte/<token> */
+  token: varchar('token', { length: 48 }).unique().notNull(),
+  name: text('name').notNull(),
+  company: text('company'),
+  email: text('email'),
+  phone: text('phone'),
+  address: text('address'),
+  eventType: text('event_type'),
+  eventDate: date('event_date'),
+  eventTime: text('event_time'),
+  guests: integer('guests'),
+  location: text('location'),
+  intro: text('intro'),
+  positions: jsonb('positions').$type<OfferPosition[]>().default([]).notNull(),
+  notes: text('notes'),
+  validUntil: date('valid_until'),
+  totalCents: integer('total_cents').default(0).notNull(),
+  sentAt: timestamp('sent_at', { withTimezone: true }),
+  viewedAt: timestamp('viewed_at', { withTimezone: true }),
+  acceptedAt: timestamp('accepted_at', { withTimezone: true }),
+  customerNote: text('customer_note'),
+}, (t) => [
+  index('offers_inquiry_idx').on(t.inquiryId),
+  index('offers_status_idx').on(t.status),
+  index('offers_created_at_idx').on(t.createdAt),
+])
 
 // Push-Benachrichtigungen fürs Admin-Panel: ein Eintrag pro Gerät/Browser.
 // Wird bei Bedarf automatisch angelegt (lib/push.ts), `npm run db:push` ist nicht nötig.

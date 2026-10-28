@@ -30,14 +30,32 @@ function ensureTable() {
         p256dh text NOT NULL,
         auth text NOT NULL,
         device text,
-        categories jsonb DEFAULT '["anfragen","nachrichten","erinnerungen"]'::jsonb NOT NULL
+        categories jsonb DEFAULT '["anfragen","nachrichten","offerten","erinnerungen"]'::jsonb NOT NULL
       )`,
     )
+    .then(() => addNewCategories(db))
     .catch((err) => {
       tableReady = null
       throw err
     })
   return tableReady.then(() => db)
+}
+
+/** Neue Kategorien einmalig bei allen bestehenden Geräten einschalten (danach gilt die Auswahl pro Gerät). */
+async function addNewCategories(db: NonNullable<ReturnType<typeof getDb>>) {
+  for (const cat of ['offerten'] as const) {
+    const claimed = await db
+      .insert(settings)
+      .values({ key: `push_category_${cat}`, value: true })
+      .onConflictDoNothing()
+      .returning({ key: settings.key })
+    if (claimed.length) {
+      await db
+        .update(pushSubscriptions)
+        .set({ categories: sql`${pushSubscriptions.categories} || ${JSON.stringify([cat])}::jsonb` })
+        .where(sql`NOT ${pushSubscriptions.categories} @> ${JSON.stringify([cat])}::jsonb`)
+    }
+  }
 }
 
 type Vapid = { publicKey: string; privateKey: string }

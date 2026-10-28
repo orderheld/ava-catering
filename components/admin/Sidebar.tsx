@@ -11,6 +11,7 @@ type Item = { href: string; label: string; icon: string }
 const icons = {
   home: 'M3 11.5 12 4l9 7.5M5.5 9.5V20h13V9.5M10 20v-5.5h4V20',
   inbox: 'M4 5h16v11H8l-4 4zM8 9h8M8 12h5',
+  offer: 'M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5',
   calendar: 'M4 6h16v14H4zM4 10h16M9 3v4M15 3v4',
   menu: 'M5 4h14v16H5zM9 8h6M9 12h6M9 16h3',
   image: 'M4 5h16v14H4zM4 15l5-5 4 4 3-3 4 4',
@@ -27,13 +28,14 @@ const groups: { title: string; items: Item[] }[] = [
     items: [
       { href: '/admin', label: 'Übersicht', icon: icons.home },
       { href: '/admin/anfragen', label: 'Anfragen', icon: icons.inbox },
+      { href: '/admin/offerten', label: 'Offerten', icon: icons.offer },
       { href: '/admin/kalender', label: 'Kalender', icon: icons.calendar },
     ],
   },
   {
     title: 'Website',
     items: [
-      { href: '/admin/angebot', label: 'Angebot & Themen', icon: icons.menu },
+      { href: '/admin/angebot', label: 'Buffets & Themen', icon: icons.menu },
       { href: '/admin/galerie', label: 'Galerie', icon: icons.image },
       { href: '/admin/einstellungen', label: 'Texte & Einstellungen', icon: icons.settings },
     ],
@@ -47,8 +49,8 @@ const groups: { title: string; items: Item[] }[] = [
 const tabs: Item[] = [
   { href: '/admin', label: 'Übersicht', icon: icons.home },
   { href: '/admin/anfragen', label: 'Anfragen', icon: icons.inbox },
+  { href: '/admin/offerten', label: 'Offerten', icon: icons.offer },
   { href: '/admin/kalender', label: 'Kalender', icon: icons.calendar },
-  { href: '/admin/angebot', label: 'Angebot', icon: icons.menu },
 ]
 
 function Icon({ d, className }: { d: string; className?: string }) {
@@ -160,7 +162,7 @@ export function Sidebar({ newCount }: { newCount: number }) {
           >
             <div className="bg-line mx-auto mb-4 h-1.5 w-12 rounded-full" />
             <ul className="space-y-1">
-              {[...groups[1].items.slice(1), ...groups[2].items].map((l) => (
+              {[...groups[1].items, ...groups[2].items].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href} className={cn('flex items-center gap-4 rounded-2xl px-4 py-3.5 text-[1.05rem]', active(l.href) ? 'bg-orange-soft text-orange-deep' : 'text-olive-deep')}>
                     <Icon d={l.icon} /> {l.label}

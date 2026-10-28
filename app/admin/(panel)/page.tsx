@@ -1,7 +1,9 @@
 import Link from 'next/link'
 import { and, asc, desc, eq, gte, inArray, sql } from 'drizzle-orm'
+import { createOffer } from '@/app/admin/offer-actions'
+import { SubmitButton } from '@/components/admin/forms'
 import { DbMissing, PageTitle, Panel, StatusBadge } from '@/components/admin/ui'
-import { inquiries } from '@/db/schema'
+import { inquiries, offers } from '@/db/schema'
 import { getDb } from '@/lib/db'
 import { formatDate, formatDateTime } from '@/lib/utils'
 
@@ -10,14 +12,12 @@ export default async function Dashboard() {
   if (!db) return (<><PageTitle title="Übersicht" /><DbMissing /></>)
 
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(new Date())
-  const monthStart = `${today.slice(0, 7)}-01`
-  const [counts, latest, upcoming] = await Promise.all([
+  const [counts, latest, upcoming, [openOffers]] = await Promise.all([
     db
       .select({
         neu: sql<number>`count(*) filter (where ${inquiries.status} = 'neu')::int`,
         offen: sql<number>`count(*) filter (where ${inquiries.status} in ('in_bearbeitung','offeriert'))::int`,
         bestaetigt: sql<number>`count(*) filter (where ${inquiries.status} = 'bestaetigt' and ${inquiries.eventDate} >= ${today})::int`,
-        monat: sql<number>`count(*) filter (where ${inquiries.createdAt} >= ${monthStart})::int`,
       })
       .from(inquiries),
     db.select().from(inquiries).orderBy(desc(inquiries.createdAt)).limit(6),
@@ -27,6 +27,11 @@ export default async function Dashboard() {
       .where(and(gte(inquiries.eventDate, today), inArray(inquiries.status, ['bestaetigt', 'offeriert', 'in_bearbeitung', 'neu'])))
       .orderBy(asc(inquiries.eventDate))
       .limit(6),
+    db
+      .select({ n: sql<number>`count(*)::int` })
+      .from(offers)
+      .where(eq(offers.status, 'gesendet'))
+      .catch(() => [{ n: 0 }]),
   ])
   const c = counts[0]
   const hour = Number(new Intl.DateTimeFormat('de-CH', { hour: 'numeric', timeZone: 'Europe/Zurich' }).format(new Date()))
@@ -34,13 +39,17 @@ export default async function Dashboard() {
 
   return (
     <>
-      <PageTitle title={`${greet}, Dilsah`} text="Hier sehen Sie auf einen Blick, was ansteht." />
+      <PageTitle title={`${greet}, Dilsah`} text="Hier sehen Sie auf einen Blick, was ansteht.">
+        <form action={createOffer}>
+          <SubmitButton pendingText="Wird erstellt …" className="w-full sm:w-auto">+ Neue Offerte</SubmitButton>
+        </form>
+      </PageTitle>
       <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         {[
           { label: 'Neue Anfragen', value: c.neu, href: '/admin/anfragen?status=neu', accent: true },
           { label: 'In Bearbeitung', value: c.offen, href: '/admin/anfragen?status=offen' },
           { label: 'Bestätigte Events', value: c.bestaetigt, href: '/admin/kalender' },
-          { label: 'Anfragen diesen Monat', value: c.monat, href: '/admin/anfragen' },
+          { label: 'Offerten ohne Antwort', value: openOffers.n, href: '/admin/offerten?status=gesendet' },
         ].map((k) => (
           <Link key={k.label} href={k.href} className={`rounded-[1.6rem] border p-5 transition hover:-translate-y-0.5 sm:p-6 ${k.accent ? 'bg-orange border-orange text-white' : 'border-line bg-white'}`}>
             <p className={`text-[0.72rem] leading-snug tracking-[0.12em] uppercase ${k.accent ? 'text-white/80' : 'text-muted'}`}>{k.label}</p>

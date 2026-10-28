@@ -1,9 +1,9 @@
 import 'server-only'
 import { eq } from 'drizzle-orm'
-import { categories, contentHistory, gallery, inquiries, inquiryLog, menuItems, settings, themes } from '@/db/schema'
+import { categories, contentHistory, gallery, inquiries, inquiryLog, menuItems, offers, settings, themes } from '@/db/schema'
 import { getDb, requireDb } from './db'
 
-export type Entity = 'category' | 'item' | 'theme' | 'gallery' | 'settings' | 'inquiry'
+export type Entity = 'category' | 'item' | 'theme' | 'gallery' | 'settings' | 'inquiry' | 'offer'
 type Action = 'create' | 'update' | 'delete'
 
 export const entityLabels: Record<Entity, string> = {
@@ -13,6 +13,7 @@ export const entityLabels: Record<Entity, string> = {
   gallery: 'Galeriebild',
   settings: 'Einstellungen',
   inquiry: 'Anfrage',
+  offer: 'Offerte',
 }
 
 /** Speichert den Zustand vor (und nach) einer Änderung. Ein Fehler hier blockiert nie das Speichern selbst. */
@@ -29,7 +30,7 @@ export async function record(entity: Entity, entityId: string | number, action: 
 // In JSON werden Datumswerte zu Text – beim Wiederherstellen zurückwandeln
 const revive = <T extends Record<string, unknown>>(row: T) => {
   const out: Record<string, unknown> = { ...row }
-  for (const k of ['createdAt', 'updatedAt']) if (typeof out[k] === 'string') out[k] = new Date(out[k] as string)
+  for (const k of ['createdAt', 'updatedAt', 'sentAt', 'viewedAt', 'acceptedAt']) if (typeof out[k] === 'string') out[k] = new Date(out[k] as string)
   return out as T
 }
 
@@ -44,7 +45,7 @@ export async function undo(historyId: number): Promise<{ ok: boolean; message: s
   const id = Number(h.entityId)
   const before = h.before as Record<string, unknown> | null
 
-  const tables = { category: categories, item: menuItems, theme: themes, gallery } as const
+  const tables = { category: categories, item: menuItems, theme: themes, gallery, offer: offers } as const
 
   if (h.entity === 'settings') {
     if (before) await db.insert(settings).values({ key: 'site', value: before }).onConflictDoUpdate({ target: settings.key, set: { value: before } })
