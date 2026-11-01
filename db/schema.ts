@@ -2,7 +2,7 @@ import { boolean, date, index, integer, jsonb, pgTable, serial, text, timestamp,
 import type { OfferPosition, OfferStatus } from '../lib/offer'
 import { pushCategories, type PushCategory } from '../lib/push-shared'
 
-export const inquiryStatuses = ['neu', 'in_bearbeitung', 'offeriert', 'bestaetigt', 'erledigt', 'abgesagt'] as const
+export const inquiryStatuses = ['neu', 'in_bearbeitung', 'offeriert', 'bestaetigt', 'erledigt', 'abgesagt', 'spam'] as const
 export type InquiryStatus = (typeof inquiryStatuses)[number]
 
 export const inquiries = pgTable('inquiries', {

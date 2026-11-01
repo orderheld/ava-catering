@@ -8,6 +8,7 @@ export const statusMeta: Record<InquiryStatus, { label: string; cls: string }> =
   bestaetigt: { label: 'Bestätigt', cls: 'bg-olive text-white' },
   erledigt: { label: 'Erledigt', cls: 'bg-olive-soft text-olive' },
   abgesagt: { label: 'Abgesagt', cls: 'bg-stone-200 text-stone-600' },
+  spam: { label: 'Spam', cls: 'bg-stone-100 text-stone-500 line-through' },
 }
 
 export function StatusBadge({ status }: { status: string }) {

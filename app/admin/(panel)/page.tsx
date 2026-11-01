@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { and, asc, desc, eq, gte, inArray, sql } from 'drizzle-orm'
+import { and, asc, desc, eq, gte, inArray, ne, sql } from 'drizzle-orm'
 import { createOffer } from '@/app/admin/offer-actions'
 import { SubmitButton } from '@/components/admin/forms'
 import { DbMissing, PageTitle, Panel, StatusBadge } from '@/components/admin/ui'
@@ -20,7 +20,7 @@ export default async function Dashboard() {
         bestaetigt: sql<number>`count(*) filter (where ${inquiries.status} = 'bestaetigt' and ${inquiries.eventDate} >= ${today})::int`,
       })
       .from(inquiries),
-    db.select().from(inquiries).orderBy(desc(inquiries.createdAt)).limit(6),
+    db.select().from(inquiries).where(ne(inquiries.status, 'spam')).orderBy(desc(inquiries.createdAt)).limit(6),
     db
       .select()
       .from(inquiries)

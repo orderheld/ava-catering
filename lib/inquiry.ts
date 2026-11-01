@@ -1,16 +1,17 @@
 'use server'
 
 import { createHash } from 'node:crypto'
-import { and, eq, gte, sql } from 'drizzle-orm'
+import { and, eq, gte, ne, sql, type SQL } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { after } from 'next/server'
 import { z } from 'zod'
-import { inquiries } from '@/db/schema'
+import { inquiries, inquiryLog } from '@/db/schema'
 import { serviceOptions } from './content'
 import { getCategories } from './data'
 import { getDb } from './db'
 import { sendInquiryMails } from './mail'
 import { notifyAdmins } from './push'
+import { checkFormToken, createFormToken, spamCheck } from './spam'
 import { formatDate } from './utils'
 
 export type InquiryState = { ok: boolean; error?: string; fieldErrors?: Record<string, string>; name?: string } | null
@@ -48,11 +49,19 @@ const schema = z.object({
   consent: z.literal('on', { error: 'Bitte bestätigen Sie die Datenschutzhinweise' }),
 })
 
+/** Signierter Zeitstempel fürs Formular (Spam-Schutz, siehe lib/spam.ts). */
+export async function getFormToken() {
+  return createFormToken()
+}
+
 export async function submitInquiry(_prev: InquiryState, fd: FormData): Promise<InquiryState> {
-  // Spam-Schutz: Honeypot + Mindestzeit zum Ausfüllen
-  const started = Number(fd.get('t') ?? 0)
-  if (fd.get('website') || (started && Date.now() - started < 2500)) {
-    return { ok: true, name: String(fd.get('name') ?? '') }
+  // Spam-Schutz 1: Formular-Token (Mindestzeit, nur über die Website). Bots bekommen still «Danke».
+  const silent = { ok: true, name: String(fd.get('name') ?? '').split(' ')[0] }
+  const token = checkFormToken(fd.get('ft'))
+  if (token === 'expired') return { ok: false, error: 'Das Formular war sehr lange offen. Bitte laden Sie die Seite neu und senden Sie es nochmals.' }
+  if (token !== 'ok') {
+    console.warn('[anfrage] verworfen, Token:', token)
+    return silent
   }
 
   const parsed = schema.safeParse({
@@ -95,29 +104,55 @@ export async function submitInquiry(_prev: InquiryState, fd: FormData): Promise<
   const ip = (h.get('x-forwarded-for') ?? '').split(',')[0].trim() || h.get('x-real-ip') || ''
   const ipHash = ip ? createHash('sha256').update(`${ip}:${process.env.AUTH_SECRET ?? 'ava'}`).digest('hex') : null
 
+  // Spam-Schutz 2: verdächtiger Inhalt landet im Admin unter «Spam» (ohne E-Mail/Push), damit nichts verloren geht.
+  const check = spamCheck(d)
+  // Unsichtbares Feld ausgefüllt: fast sicher ein Bot – trotzdem nur ablegen, falls ein Browser es automatisch befüllt hat
+  if (fd.get('website')) {
+    check.spam = true
+    check.reasons.push('Verstecktes Feld ausgefüllt')
+  }
   const record = { ...d, offerings, service, guests: d.guests ?? null, ipHash }
   let id = 0
+  let spam = check.spam
   const db = getDb()
   if (db) {
     try {
-      if (ipHash) {
-        const [{ n }] = await db
+      // Spam-Schutz 3: Limits pro Absender
+      const recent = (col: SQL, interval: string) =>
+        db
           .select({ n: sql<number>`count(*)::int` })
           .from(inquiries)
-          .where(and(eq(inquiries.ipHash, ipHash), gte(inquiries.createdAt, sql`now() - interval '1 hour'`)))
-        if (n >= 5) return { ok: false, error: 'Sie haben bereits mehrere Anfragen gesendet. Bitte rufen Sie uns direkt an.' }
+          .where(and(col, gte(inquiries.createdAt, sql.raw(`now() - interval '${interval}'`))))
+          .then(([r]) => r.n)
+      const [ipHour, ipDay, mailHour, allHour] = await Promise.all([
+        ipHash ? recent(eq(inquiries.ipHash, ipHash), '1 hour') : 0,
+        ipHash ? recent(eq(inquiries.ipHash, ipHash), '1 day') : 0,
+        recent(sql`lower(${inquiries.email}) = ${d.email.toLowerCase()}`, '1 hour'),
+        recent(ne(inquiries.status, 'spam'), '1 hour'),
+      ])
+      if (ipHour >= 5 || ipDay >= 12 || mailHour >= 3) return { ok: false, error: 'Sie haben bereits mehrere Anfragen gesendet. Bitte rufen Sie uns direkt an.' }
+      // Flut von vielen Adressen gleichzeitig: weiter speichern, aber nicht mehr benachrichtigen
+      if (allHour >= 30 && !spam) {
+        spam = true
+        check.reasons.push('Über 30 Anfragen in einer Stunde')
       }
       const [row] = await db
         .insert(inquiries)
-        .values(record)
+        .values({ ...record, status: spam ? 'spam' : 'neu' })
         .returning({ id: inquiries.id })
       id = row.id
+      if (spam) await db.insert(inquiryLog).values({ inquiryId: id, type: 'note', subject: 'Als Spam erkannt', body: check.reasons.join(', ') })
     } catch (err) {
       console.error('[anfrage] Speichern fehlgeschlagen:', err)
       if (!process.env.RESEND_API_KEY) return { ok: false, error: 'Die Anfrage konnte nicht gesendet werden. Bitte rufen Sie uns an.' }
     }
   } else if (!process.env.RESEND_API_KEY) {
     return { ok: false, error: 'Das Formular ist noch nicht eingerichtet. Bitte kontaktieren Sie uns per Telefon oder E-Mail.' }
+  }
+
+  if (spam) {
+    console.warn('[anfrage] als Spam abgelegt:', id || '(nicht gespeichert)', check.reasons.join(', '))
+    return silent
   }
 
   if (id) after(() => notifyAdmins(pushFor(id, record)))

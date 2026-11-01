@@ -6,6 +6,7 @@ import { startTransition, useActionState, useEffect, useMemo, useRef, useState }
 import { ArrowLeft, ArrowRight, Calendar, Check, Phone, Users } from '@/components/Icons'
 import { budgetOptions, dietaryOptions, eventTypes, serviceOptions } from '@/lib/content'
 import { submitInquiry, type InquiryState } from '@/lib/inquiry'
+import { useFormGuard } from './useFormGuard'
 import { cn, formatDate, telHref } from '@/lib/utils'
 
 type Cat = { slug: string; title: string; subtitle: string; image: string }
@@ -64,10 +65,12 @@ function Tile({
 }
 
 export function InquiryWizard({ categories, themes, blocked, initialOffering, initialTheme, initialEventType, initialGuests, phone, leadTime }: Props) {
-  const [state, action, pending] = useActionState<InquiryState, FormData>(submitInquiry, null)
+  const [state, action, isPending] = useActionState<InquiryState, FormData>(submitInquiry, null)
+  const guard = useFormGuard()
+  const [preparing, setPreparing] = useState(false)
+  const pending = isPending || preparing
   const [step, setStep] = useState(0)
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [t] = useState(() => Date.now())
   const formRef = useRef<HTMLFormElement>(null)
   const topRef = useRef<HTMLDivElement>(null)
 
@@ -164,17 +167,18 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
         ref={formRef}
         noValidate
         className="min-w-0"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           // Eigenes Submit statt form action: so bleiben Eingaben bei einem Fehler erhalten
           e.preventDefault()
           if (step < steps.length - 1) return next()
-          if (!validate(step)) return
-          const fd = new FormData(e.currentTarget)
+          if (!validate(step) || pending) return
+          setPreparing(true)
+          const fd = await guard(new FormData(e.currentTarget))
+          setPreparing(false)
           startTransition(() => action(fd))
         }}
       >
         <input type="hidden" name="kind" value="anfrage" />
-        <input type="hidden" name="t" value={t} />
         <div aria-hidden className="absolute -left-[9999px] h-0 overflow-hidden">
           <label>
             Website <input type="text" name="website" tabIndex={-1} autoComplete="off" />
