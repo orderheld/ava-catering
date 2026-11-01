@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { and, asc, gte, lte, ne } from 'drizzle-orm'
+import { and, asc, gte, lte, notInArray } from 'drizzle-orm'
 import { addBlockedDate, removeBlockedDate } from '@/app/admin/actions'
 import { ActionForm, QuickForm, SubmitButton } from '@/components/admin/forms'
 import { DbMissing, PageTitle, Panel, statusMeta } from '@/components/admin/ui'
@@ -27,7 +27,7 @@ export default async function KalenderPage({ searchParams }: { searchParams: Pro
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Zurich' }).format(now)
 
   const [events, blocked, upcomingBlocked] = await Promise.all([
-    db.select().from(inquiries).where(and(gte(inquiries.eventDate, first), lte(inquiries.eventDate, last), ne(inquiries.status, 'abgesagt'))).orderBy(asc(inquiries.eventTime)),
+    db.select().from(inquiries).where(and(gte(inquiries.eventDate, first), lte(inquiries.eventDate, last), notInArray(inquiries.status, ['abgesagt', 'spam']))).orderBy(asc(inquiries.eventTime)),
     db.select().from(blockedDates).where(and(gte(blockedDates.day, first), lte(blockedDates.day, last))),
     db.select().from(blockedDates).where(gte(blockedDates.day, today)).orderBy(asc(blockedDates.day)),
   ])

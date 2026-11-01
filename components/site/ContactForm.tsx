@@ -4,10 +4,13 @@ import Link from 'next/link'
 import { startTransition, useActionState, useState } from 'react'
 import { ArrowRight, Check } from '@/components/Icons'
 import { submitInquiry, type InquiryState } from '@/lib/inquiry'
+import { useFormGuard } from './useFormGuard'
 
 export function ContactForm() {
-  const [state, action, pending] = useActionState<InquiryState, FormData>(submitInquiry, null)
-  const [t] = useState(() => Date.now())
+  const [state, action, isPending] = useActionState<InquiryState, FormData>(submitInquiry, null)
+  const guard = useFormGuard()
+  const [preparing, setPreparing] = useState(false)
+  const pending = isPending || preparing
   const fe = state?.fieldErrors ?? {}
 
   if (state?.ok) {
@@ -26,14 +29,16 @@ export function ContactForm() {
     <form
       noValidate
       className="card grid gap-5 p-6 sm:p-10"
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault()
-        const fd = new FormData(e.currentTarget)
+        if (pending) return
+        setPreparing(true)
+        const fd = await guard(new FormData(e.currentTarget))
+        setPreparing(false)
         startTransition(() => action(fd))
       }}
     >
       <input type="hidden" name="kind" value="kontakt" />
-      <input type="hidden" name="t" value={t} />
       <div aria-hidden className="absolute -left-[9999px] h-0 overflow-hidden">
         <input type="text" name="website" tabIndex={-1} autoComplete="off" />
       </div>

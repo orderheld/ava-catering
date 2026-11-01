@@ -24,6 +24,9 @@ export async function GET(request: Request) {
     .returning({ key: settings.key })
   if (!claimed.length) return Response.json({ skipped: 'heute schon gesendet' })
 
+  // Spam nach 30 Tagen endgültig löschen
+  await db.delete(inquiries).where(and(eq(inquiries.status, 'spam'), lt(inquiries.createdAt, sql`now() - interval '30 days'`))).catch(() => {})
+
   const tomorrow = zurichDay(1)
   const active = ['neu', 'in_bearbeitung', 'offeriert', 'bestaetigt'] as const
   const [events, [waiting], [offers]] = await Promise.all([

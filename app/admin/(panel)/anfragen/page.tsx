@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { and, desc, eq, ilike, inArray, or, sql, type SQL } from 'drizzle-orm'
+import { and, desc, eq, ilike, inArray, ne, or, sql, type SQL } from 'drizzle-orm'
 import { DbMissing, PageTitle, StatusBadge, statusMeta } from '@/components/admin/ui'
 import { inquiries, inquiryStatuses, type InquiryStatus } from '@/db/schema'
 import { getDb } from '@/lib/db'
@@ -14,6 +14,7 @@ export default async function AnfragenPage({ searchParams }: { searchParams: Pro
 
   const where: SQL[] = []
   if (status === 'offen') where.push(inArray(inquiries.status, ['in_bearbeitung', 'offeriert']))
+  else if (status === 'alle') where.push(ne(inquiries.status, 'spam'))
   else if (inquiryStatuses.includes(status as InquiryStatus)) where.push(eq(inquiries.status, status as InquiryStatus))
   if (q.trim()) {
     const like = `%${q.trim()}%`
@@ -24,7 +25,7 @@ export default async function AnfragenPage({ searchParams }: { searchParams: Pro
     db.select({ status: inquiries.status, n: sql<number>`count(*)::int` }).from(inquiries).groupBy(inquiries.status),
   ])
   const count = (s: string) => counts.find((c) => c.status === s)?.n ?? 0
-  const total = counts.reduce((a, c) => a + c.n, 0)
+  const total = counts.reduce((a, c) => a + (c.status === 'spam' ? 0 : c.n), 0)
   const tabs = [
     { key: 'alle', label: 'Alle', n: total },
     { key: 'neu', label: 'Neu', n: count('neu') },
@@ -32,6 +33,7 @@ export default async function AnfragenPage({ searchParams }: { searchParams: Pro
     { key: 'bestaetigt', label: 'Bestätigt', n: count('bestaetigt') },
     { key: 'erledigt', label: 'Erledigt', n: count('erledigt') },
     { key: 'abgesagt', label: 'Abgesagt', n: count('abgesagt') },
+    ...(count('spam') ? [{ key: 'spam', label: 'Spam', n: count('spam') }] : []),
   ]
 
   return (
