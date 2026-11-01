@@ -1,0 +1,129 @@
+WHATSAPP BUSINESS – AVA CATERING
+Alles zum Kopieren. Einstellungen > Unternehmenstools > Unternehmensprofil.
+
+────────────────────────────────
+1) BILDER
+────────────────────────────────
+Profilbild:  01-profilbild-dunkel.jpg  (empfohlen, wirkt im kleinen Kreis am stärksten)
+             02-profilbild-hell.jpg    (Alternative)
+Titelbild:   03-titelbild.jpg          (1920×1080, Logo und Text liegen in der Mitte,
+                                       damit nichts abgeschnitten wird)
+Katalog:     Ordner katalog/ (5 quadratische Bilder, siehe Punkt 8)
+
+────────────────────────────────
+2) NAME
+────────────────────────────────
+AVA Catering
+
+────────────────────────────────
+3) KATEGORIE
+────────────────────────────────
+Erste Wahl: «Event-Planung/Event-Service» (oder ähnlich lautend)
+Zweite Kategorie, falls angeboten: «Restaurant» bzw. «Lebensmittel»
+(WhatsApp hat keine eigene Kategorie «Catering»; bitte die nächstliegende wählen.)
+
+────────────────────────────────
+4) INFO / STATUS (max. 139 Zeichen)
+────────────────────────────────
+Catering für Firmen & Feste 🍽️ Apéro, Lunch & Buffets – hausgemacht in Pfaffnau
+
+────────────────────────────────
+5) BESCHREIBUNG (max. 512 Zeichen)
+────────────────────────────────
+Hausgemachtes Catering für Firmen & Feste aus Pfaffnau. Dilsah Sever bereitet alles frisch und von Hand zu: Apéro-Buffets mit Gebäck und Häppchen, Lunch-Boxen für Team und Meeting, Themen-Buffets (Burger, Pizza, Pasta) und Süsses für den Abschluss.
+
+Wir liefern im Luzerner Hinterland, Aargau & Solothurn auf Anfrage.
+
+Schreiben Sie uns Datum, Anlass und Anzahl Personen – Sie erhalten rasch eine unverbindliche Offerte.
+
+────────────────────────────────
+6) KONTAKT & ADRESSE
+────────────────────────────────
+Adresse:    Stegmatt 9a, 6264 Pfaffnau
+            (Hinweis: Adresse nur eintragen, wenn sie öffentlich sichtbar sein darf.
+             Da kein Laden, alternativ leer lassen.)
+E-Mail:     kontakt@avacatering.ch
+Webseite 1: https://avacatering.ch
+Webseite 2: https://www.instagram.com/avacatering.ch/
+
+Geschäftszeiten: «Nur nach Vereinbarung» wählen
+(oder die gleichen Telefonzeiten wie im Google-Profil eintragen).
+
+────────────────────────────────
+7) NACHRICHTEN (Unternehmenstools > Nachrichten)
+────────────────────────────────
+BEGRÜSSUNGSNACHRICHT
+(Senden an: «Alle» oder «Personen, die nicht im Adressbuch sind»)
+
+Grüezi und herzlich willkommen bei AVA Catering! 🌿
+Schön, dass Sie sich melden. Damit wir Ihnen rasch eine Offerte machen können, schreiben Sie uns bitte:
+• Datum und Uhrzeit
+• Art des Anlasses (z. B. Firmenapéro, Lunch, Geburtstag)
+• Anzahl Personen
+• Ort / Lieferadresse
+Wir melden uns so schnell wie möglich. Herzliche Grüsse, Dilsah
+
+ABWESENHEITSNACHRICHT
+(Zeitplan: «Ausserhalb der Geschäftszeiten» oder «Eigener Zeitplan»)
+
+Vielen Dank für Ihre Nachricht! Im Moment sind wir in der Küche oder unterwegs. Wir melden uns so bald wie möglich bei Ihnen – spätestens am nächsten Werktag.
+Anfragen gehen auch online: https://avacatering.ch
+Herzliche Grüsse, AVA Catering
+
+────────────────────────────────
+8) SCHNELLANTWORTEN (Kürzel mit «/» im Chat aufrufen)
+────────────────────────────────
+/offerte
+Gerne erstellen wir Ihnen eine unverbindliche Offerte. Bitte senden Sie uns Datum, Uhrzeit, Anlass, Anzahl Personen und die Lieferadresse. Gibt es Allergien oder vegetarische Gäste?
+
+/angebot
+Unser Angebot: Apéro-Buffet, Mezze-Buffet, Lunch-Buffet und Lunch-Boxen, Themen-Partys (Burger, Pizza, Pasta) sowie Süsses & Gebäck. Alles mit Bildern finden Sie hier: https://avacatering.ch
+
+/vorlauf
+Am besten fragen Sie mindestens 7 Tage vor Ihrem Anlass an. Kurzfristige Anfragen prüfen wir aber gerne – schreiben Sie uns einfach Ihr Datum.
+
+/lieferung
+Wir liefern in Pfaffnau und Umgebung, im Luzerner Hinterland sowie auf Anfrage in den Aargau und nach Solothurn. Die Lieferkosten sehen Sie in der Offerte.
+
+/danke
+Herzlichen Dank für Ihren Auftrag! Wir freuen uns, für Sie zu kochen. Bei Fragen sind wir jederzeit hier erreichbar.
+
+/bewertung
+Es hat uns sehr gefreut, für Sie zu kochen! Wenn Sie zufrieden waren, würden wir uns riesig über eine kurze Google-Bewertung freuen: https://g.page/r/CYjyPcZD4cJHEBM/review
+
+────────────────────────────────
+9) KATALOG (Unternehmenstools > Katalog > Artikel hinzufügen)
+────────────────────────────────
+Preis leer lassen (Preis nach Offerte). Link jeweils zur Webseite.
+
+01-apero-buffet.jpg
+Name: Apéro-Buffet
+Beschreibung: Hausgemachte Häppchen, Gebäck und kleine Spezialitäten für Empfänge, Geburtstage und Firmenanlässe – zum Anstossen, Plaudern und Zugreifen.
+Link: https://avacatering.ch/angebot/apero
+
+02-mezze-buffet.jpg
+Name: Mezze-Buffet
+Beschreibung: Warme und kalte Spezialitäten zum gemeinsamen Geniessen: gefüllte Weinblätter, Bulgursalat, Grillgemüse, Salate, Dips und frisches Brot.
+Link: https://avacatering.ch/angebot/mezze
+
+03-lunch-firmen.jpg
+Name: Lunch-Buffet & Lunch-Boxen
+Beschreibung: Ausgewogenes Mittagessen für Firmen, Workshops und Seminare – als Buffet oder in praktischen Lunch-Boxen, pünktlich bereit, wenn die Pause beginnt.
+Link: https://avacatering.ch/angebot/lunch
+
+04-themen-party.jpg
+Name: Themen-Party-Service
+Beschreibung: Buffets mit Motto – Chicken-Burger mit Ofenkartoffeln, Pizza, Pasta oder Ihr Wunschmenü. Für Firmenfeste, Vereine und Geburtstage.
+Link: https://avacatering.ch/angebot/themen-party
+
+05-suesses-gebaeck.jpg
+Name: Süsses & Gebäck
+Beschreibung: Kuchen, Torten, Muffins, Kekse und Dessertgläser – der süsse Abschluss für Feiern, Apéros und besondere Anlässe.
+Link: https://avacatering.ch/angebot/suesses
+
+────────────────────────────────
+10) KURZLINK & QR-CODE
+────────────────────────────────
+Direktlink zum Chat: https://wa.me/41782646962
+(Unternehmenstools > Kurzlink: dort auch eine Standardnachricht wie
+«Grüezi, ich möchte eine Offerte für …» hinterlegen und den QR-Code teilen.)
