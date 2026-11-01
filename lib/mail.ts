@@ -70,6 +70,9 @@ export type InquiryMailData = {
   message?: string | null
 }
 
+/** Für die Bestätigung an die Kundin: ohne Freitext, damit das Formular nicht zum Verschicken fremder Inhalte missbraucht werden kann. */
+const forCustomer = (d: InquiryMailData): InquiryMailData => ({ ...d, message: null })
+
 function summaryTable(d: InquiryMailData) {
   return `<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-top:1px solid #E6DCCB;margin:18px 0">
 ${row('Anlass', d.eventType)}${row('Datum', d.eventDate ? formatDate(d.eventDate) : null)}${row('Zeit', d.eventTime)}${row('Personen', d.guests)}
@@ -118,12 +121,12 @@ export async function sendInquiryMails(d: InquiryMailData) {
       'Danke für Ihre Anfrage',
       `<h1 style="font-family:Georgia,serif;font-weight:normal;font-size:28px;margin:16px 0 12px;color:${C.olive}">Herzlichen Dank, ${escapeHtml(firstName)}!</h1>
 <p>${isKontakt ? 'Ihre Nachricht ist bei uns angekommen.' : 'Ihre Anfrage ist bei uns angekommen. Wir schauen uns alles in Ruhe an und melden uns mit einem persönlichen Angebot bei Ihnen – in der Regel innerhalb von zwei Arbeitstagen.'}</p>
-<p>Hier nochmals Ihre Angaben im Überblick:</p>${summaryTable(d)}
+<p>Hier nochmals Ihre Angaben im Überblick:</p>${summaryTable(forCustomer(d))}
 <p>Fragen oder Ergänzungen? Antworten Sie einfach auf diese E-Mail oder rufen Sie uns an: <a href="tel:+41782646962" style="color:${C.orange}">078 264 69 62</a>.</p>
 <p style="margin-top:24px">Herzliche Grüsse<br><span style="font-family:Georgia,serif;font-size:18px;color:${C.olive}">Dilsah Sever</span><br><span style="color:${C.muted};font-size:13px">AVA Catering</span></p>`,
       'Wir haben Ihre Anfrage erhalten und melden uns bald.',
     ),
-    text: `Herzlichen Dank, ${firstName}!\n\nIhre ${label} ist bei uns angekommen. Wir melden uns in der Regel innerhalb von zwei Arbeitstagen.\n\n${summaryText(d)}\nHerzliche Grüsse\nDilsah Sever, AVA Catering\n078 264 69 62 · kontakt@avacatering.ch`,
+    text: `Herzlichen Dank, ${firstName}!\n\nIhre ${label} ist bei uns angekommen. Wir melden uns in der Regel innerhalb von zwei Arbeitstagen.\n\n${summaryText(forCustomer(d))}\nHerzliche Grüsse\nDilsah Sever, AVA Catering\n078 264 69 62 · kontakt@avacatering.ch`,
   })
 
   return Promise.all([owner, customer])

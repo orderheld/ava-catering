@@ -23,6 +23,11 @@ const optional = (max = 500) =>
     .optional()
     .transform((v) => (v ? v : null))
 
+// Links in Name, Firma oder Ort sind fast immer Formular-Spam, der über die Bestätigungsmail
+// an fremde Adressen verteilt werden soll – das würde den Ruf der Absenderdomain ruinieren.
+const hasLink = (v: string | null | undefined) => !!v && /(https?:\/\/|www\.|\b[a-z0-9-]+\.(com|net|org|ru|cn|xyz|top|info|biz|io)\b)/i.test(v)
+const noLink = 'Bitte ohne Internetadresse'
+
 const schema = z.object({
   kind: z.enum(['anfrage', 'kontakt']).default('anfrage'),
   eventType: optional(80),
@@ -37,11 +42,11 @@ const schema = z.object({
     .transform((v) => v || null),
   eventTime: optional(20),
   guests: z.coerce.number().int().min(1, 'Bitte Personenzahl angeben').max(5000).optional().or(z.literal('').transform(() => undefined)),
-  location: optional(160),
+  location: optional(160).refine((v) => !hasLink(v), noLink),
   service: optional(40),
   budget: optional(40),
-  name: z.string().trim().min(2, 'Bitte Ihren Namen angeben').max(120),
-  company: optional(160),
+  name: z.string().trim().min(2, 'Bitte Ihren Namen angeben').max(120).refine((v) => !hasLink(v), noLink),
+  company: optional(160).refine((v) => !hasLink(v), noLink),
   email: z.string().trim().email('Bitte eine gültige E-Mail-Adresse angeben').max(200),
   phone: optional(40),
   message: optional(4000),
