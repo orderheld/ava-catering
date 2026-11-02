@@ -67,6 +67,14 @@ Zufälligen `AUTH_SECRET` erzeugen:
 3. **Domain**: In Vercel `avacatering.ch` und `www.avacatering.ch` hinzufügen und die angezeigten DNS-Einträge bei **cyon** setzen (in der Regel A-Record `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com`). **MX-Einträge nicht ändern** – das Postfach kontakt@ bleibt bei cyon.
 4. **Resend**: Domain `avacatering.ch` hinzufügen und die DKIM-/SPF-Einträge (TXT/MX auf der Subdomain `send`) bei cyon eintragen. Das kollidiert nicht mit dem cyon-Postfach. Nach der Verifizierung gehen die E-Mails von `kontakt@avacatering.ch` raus.
 
+## E-Mails nicht im Spam
+
+- **DNS (bei cyon, Nameserver müssen auf cyon zeigen):** cyon-MX und SPF der Hauptdomain unverändert lassen. Resend: CNAME `send` und `rsend`, TXT `resend._domainkey`. DMARC: `_dmarc` TXT `v=DMARC1; p=quarantine; adkim=r; aspf=r;` (erst wenn Resend und cyon-DKIM grün sind).
+- **cyon:** DKIM für avacatering.ch aktiviert lassen (TXT `default._domainkey`).
+- **Resend:** Open- und Click-Tracking für die Domain ausschalten (umgeschriebene Links wirken wie Werbung).
+- **Code:** Absender immer `kontakt@avacatering.ch` mit Reply-To, jede Mail mit Text- und HTML-Teil, alle Links auf avacatering.ch. Die Bestätigung an Kundinnen enthält keinen Freitext, und Links in Name/Firma/Ort werden abgelehnt, damit das Formular nicht zum Spam-Versand missbraucht werden kann.
+- **Test:** Mail an die Adresse von mail-tester.com schicken (einmal aus dem Webmail, einmal über das Formular), Ziel 10/10.
+
 ## Wie Anfragen ablaufen
 
 1. Kundin füllt den Assistenten aus → Speicherung in Neon (Status *Neu*).
