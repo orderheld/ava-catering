@@ -4,17 +4,17 @@ import { Accent } from '@/components/Accent'
 import { ArrowRight, Heart, Leaf, Truck } from '@/components/Icons'
 import { LazyVideo } from '@/components/site/LazyVideo'
 import { QuantityCalculator } from '@/components/site/QuantityCalculator'
-import { AudienceSplit, CtaBand, Faq, JsonLd, SectionHead, ThemeCards, Thread, TrustBar, faqJsonLd, faqs } from '@/components/site/sections'
-import { googleProfile, instagramUrl, occasions, phoneHours, serviceTowns } from '@/lib/content'
+import { AudienceSplit, CtaBand, Faq, JsonLd, RegionBlock, SectionHead, ThemeCards, Thread, TrustBar, faqJsonLd, faqs } from '@/components/site/sections'
+import { occasions } from '@/lib/content'
 import { getCategories, getGallery, getSettings, getThemes } from '@/lib/data'
 import { businessId, pageMeta } from '@/lib/seo'
-import { plain, siteUrl } from '@/lib/utils'
+import { siteUrl } from '@/lib/utils'
 
 export const revalidate = 300
 
 export const metadata = pageMeta({
   description:
-    'Hausgemachtes Catering aus Pfaffnau: Apéro-, Mezze- und Lunch-Buffets, Themenbuffets und Süsses für Firmen, Geschäfte und Feste. Unverbindlich anfragen.',
+    'Hausgemachtes Catering & Partyservice aus Pfaffnau für Firmen und Feste in Reiden, Zofingen, Langenthal, Sursee, Olten und Umgebung: Apéro, Firmenlunch, Lunch-Boxen, Buffets.',
   path: '/',
 })
 
@@ -35,39 +35,10 @@ const steps = [
 
 export default async function HomePage() {
   const [s, cats, themes, gallery] = await Promise.all([getSettings(), getCategories(), getThemes(), getGallery()])
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'FoodEstablishment',
-    '@id': businessId(),
-    name: 'AVA Catering',
-    description: plain(s.heroText),
-    url: siteUrl(),
-    image: `${siteUrl()}/og.jpg`,
-    logo: `${siteUrl()}/brand/ava-logo.png`,
-    telephone: s.phone,
-    email: s.email,
-    founder: { '@type': 'Person', name: 'Dilsah Sever' },
-    servesCuisine: ['Europäisch', 'Mediterran', 'Fingerfood'],
-    address: { '@type': 'PostalAddress', streetAddress: s.street, postalCode: s.zip, addressLocality: s.city, addressRegion: 'LU', addressCountry: 'CH' },
-    areaServed: serviceTowns.map((name) => ({ '@type': 'City', name })),
-    currenciesAccepted: 'CHF',
-    hasMap: googleProfile.profile,
-    sameAs: [googleProfile.profile, instagramUrl(s)].filter(Boolean),
-    ...(phoneHours.length && {
-      openingHoursSpecification: phoneHours.map((h) => ({
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: h.days.map((d) => `https://schema.org/${d}`),
-        opens: h.opens,
-        closes: h.closes,
-      })),
-    }),
-  }
-
   return (
     <>
-      <JsonLd data={jsonLd} />
-      {/* Name der Website in den Google-Suchergebnissen */}
-      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${siteUrl()}/#website`, name: 'AVA Catering', url: `${siteUrl()}/`, inLanguage: 'de-CH', publisher: { '@id': businessId() } }} />
+      {/* Name der Website in den Google-Suchergebnissen (Betrieb/LocalBusiness steht im Layout auf jeder Seite) */}
+      <JsonLd data={{ '@context': 'https://schema.org', '@type': 'WebSite', '@id': `${siteUrl()}/#website`, name: 'AVA Catering', alternateName: 'AVA Catering Pfaffnau', url: `${siteUrl()}/`, inLanguage: 'de-CH', publisher: { '@id': businessId() } }} />
 
       {/* ───────────── Hero ───────────── */}
       <section className="relative overflow-hidden">
@@ -368,6 +339,13 @@ export default async function HomePage() {
               </figure>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ───────────── Liefergebiet (lokale Suche) ───────────── */}
+      <section className="pb-20 lg:pb-28">
+        <div className="container-x">
+          <RegionBlock s={s} />
         </div>
       </section>
 

@@ -20,7 +20,7 @@ export function PageTitle({ title, text, children }: { title: string; text?: str
   return (
     <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end md:mb-9">
       <div className="min-w-0">
-        <h1 className="text-olive-deep font-serif text-[2.4rem] leading-tight font-medium sm:text-5xl">{title}</h1>
+        <h1 className="text-olive-deep font-serif text-[1.9rem] leading-tight sm:text-[2.2rem]">{title}</h1>
         {text && <p className="text-muted mt-2 max-w-2xl text-[1.02rem] leading-relaxed">{text}</p>}
       </div>
       {children}
@@ -33,7 +33,7 @@ export function Panel({ title, children, className, actions }: { title?: string;
     <section className={cn('border-line/80 min-w-0 rounded-[1.6rem] border bg-white p-5 shadow-[0_1px_2px_rgba(47,57,22,0.04)] sm:p-7', className)}>
       {(title || actions) && (
         <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-          {title && <h2 className="text-olive-deep font-serif text-[1.7rem] leading-tight">{title}</h2>}
+          {title && <h2 className="text-olive-deep font-serif text-[1.3rem] leading-tight">{title}</h2>}
           {actions}
         </div>
       )}

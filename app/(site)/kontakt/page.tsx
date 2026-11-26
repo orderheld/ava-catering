@@ -10,7 +10,7 @@ import { siteUrl, telHref } from '@/lib/utils'
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Kontakt – Catering in Pfaffnau',
+  title: 'Kontakt – Catering & Partyservice in Pfaffnau',
   description: 'Kontakt zu AVA Catering, Dilsah Sever, Stegmatt 9a, 6264 Pfaffnau: Telefon 078 264 69 62, WhatsApp oder E-Mail an kontakt@avacatering.ch.',
   path: '/kontakt',
 })

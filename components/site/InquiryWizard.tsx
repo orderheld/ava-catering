@@ -18,6 +18,7 @@ type Props = {
   initialTheme?: string
   initialEventType?: string
   initialGuests?: number
+  initialLocation?: string
   phone: string
   leadTime: string
 }
@@ -64,7 +65,7 @@ function Tile({
   )
 }
 
-export function InquiryWizard({ categories, themes, blocked, initialOffering, initialTheme, initialEventType, initialGuests, phone, leadTime }: Props) {
+export function InquiryWizard({ categories, themes, blocked, initialOffering, initialTheme, initialEventType, initialGuests, initialLocation, phone, leadTime }: Props) {
   const [state, action, isPending] = useActionState<InquiryState, FormData>(submitInquiry, null)
   const guard = useFormGuard()
   const [preparing, setPreparing] = useState(false)
@@ -81,7 +82,7 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [guests, setGuests] = useState(initialGuests && initialGuests > 0 && initialGuests <= 5000 ? Math.round(initialGuests) : 25)
-  const [location, setLocation] = useState('')
+  const [location, setLocation] = useState(initialLocation ?? '')
   const [service, setService] = useState('')
   const [budget, setBudget] = useState('')
 
@@ -216,7 +217,22 @@ export function InquiryWizard({ categories, themes, blocked, initialOffering, in
           <p className="text-muted mt-3">Wählen Sie den Anlass, der am besten passt.</p>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {eventTypes.map((e) => (
-              <Tile key={e} type="radio" name="eventType" value={e} checked={eventType === e} onChange={() => setEventType(e)}>
+              <Tile
+                key={e}
+                type="radio"
+                name="eventType"
+                value={e}
+                checked={eventType === e}
+                onChange={() => {
+                  setEventType(e)
+                  setErrors({})
+                  // Ein Tippen genügt: kurz die Auswahl zeigen, dann direkt weiter zum Buffet
+                  window.setTimeout(() => {
+                    setStep((s) => (s === 0 ? 1 : s))
+                    topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }, 260)
+                }}
+              >
                 <span className="text-[1.02rem]">{e}</span>
               </Tile>
             ))}

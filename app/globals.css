@@ -176,6 +176,43 @@
   }
 }
 
+/* ───────── Admin: gut lesbar statt elegant ─────────
+   Im Admin zählt Lesbarkeit: klare Systemschrift (wie in Mail/Kalender auf dem Handy), dunklere Grautöne,
+   keine gesperrten Grossbuchstaben und keine dünne Zierschrift. Diese Regeln stehen bewusst ausserhalb von
+   @layer, damit sie die Tailwind-Klassen der Website-Komponenten überschreiben. */
+.admin-root {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: var(--font-sans);
+  --color-muted: #4b483d;
+  --color-line: #d9ccb4;
+  font-family: var(--font-sans);
+  color: #1f1e18;
+  line-height: 1.5;
+}
+.admin-root .font-serif,
+.admin-root .display {
+  font-weight: 650;
+  font-style: normal;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.admin-root .italic {
+  font-style: normal;
+}
+.admin-root .uppercase {
+  text-transform: none;
+}
+.admin-root [class*='tracking-'] {
+  letter-spacing: 0.005em;
+}
+.admin-root .text-xs {
+  font-size: 0.85rem;
+}
+.admin-root .btn {
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
 /* ───────── Admin: grössere Schrift, kein seitliches Verschieben ───────── */
 html:has(.admin-root) {
   font-size: 106.25%; /* 17px */
@@ -193,7 +230,8 @@ html:has(.admin-root) body {
   }
 }
 .admin-root .label {
-  @apply text-olive-deep/80 text-[0.82rem] tracking-[0.08em];
+  @apply text-olive-deep text-[0.95rem] font-semibold normal-case;
+  letter-spacing: 0;
 }
 .admin-root .field {
   @apply text-base;

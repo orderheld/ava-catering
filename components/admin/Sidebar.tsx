@@ -83,7 +83,7 @@ export function Sidebar({ newCount }: { newCount: number }) {
         <nav className="flex-1 space-y-7 px-3 lg:px-4">
           {groups.map((g) => (
             <div key={g.title}>
-              <p className="text-olive-soft/45 mb-2 px-4 text-[0.72rem] font-medium tracking-[0.2em] uppercase">{g.title}</p>
+              <p className="text-olive-soft/70 mb-2 px-4 text-[0.85rem] font-semibold">{g.title}</p>
               <ul className="space-y-1">
                 {g.items.map((l) => (
                   <li key={l.href}>
@@ -134,7 +134,7 @@ export function Sidebar({ newCount }: { newCount: number }) {
             key={t.href}
             href={t.href}
             aria-current={active(t.href) ? 'page' : undefined}
-            className={cn('relative flex flex-col items-center gap-1 pt-2.5 pb-2 text-[0.72rem] font-medium', active(t.href) ? 'text-orange' : 'text-muted')}
+            className={cn('relative flex flex-col items-center gap-1 pt-2.5 pb-2 text-[0.8rem] font-semibold', active(t.href) ? 'text-orange' : 'text-muted')}
           >
             <Icon d={t.icon} />
             {t.label}
@@ -146,7 +146,7 @@ export function Sidebar({ newCount }: { newCount: number }) {
         <button
           onClick={() => setMore((v) => !v)}
           aria-expanded={more}
-          className={cn('flex flex-col items-center gap-1 pt-2.5 pb-2 text-[0.72rem] font-medium', more || inMore ? 'text-orange' : 'text-muted')}
+          className={cn('flex flex-col items-center gap-1 pt-2.5 pb-2 text-[0.8rem] font-semibold', more || inMore ? 'text-orange' : 'text-muted')}
         >
           <Icon d={icons.more} className="stroke-[3]" />
           Mehr

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { googleProfile, instagramUrl, phoneHours, type SiteSettings } from '@/lib/content'
 import { Clock, Instagram, Mail, Phone, Pin, Star, Whatsapp } from '@/components/Icons'
+import { regions } from '@/lib/regions'
 import { telHref } from '@/lib/utils'
 
 export function Footer({ s }: { s: SiteSettings }) {
@@ -103,6 +104,24 @@ export function Footer({ s }: { s: SiteSettings }) {
           </ul>
           <Link href="/anfrage" className="btn btn-primary mt-8 !px-5 !py-3 text-sm">Anfrage starten</Link>
         </div>
+      </div>
+      {/* Liefergebiet: interne Links auf die Ortsseiten (lokale Suche) */}
+      <div className="border-olive-soft/10 relative border-t">
+        <nav aria-label="Catering in der Region" className="container-x py-6 text-[0.85rem]">
+          <h2 className="mb-3 text-xs font-medium tracking-[0.25em] text-[#f08a3e] uppercase">Catering in der Region</h2>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {regions.map((r) => (
+              <li key={r.slug}>
+                <Link href={`/catering/${r.slug}`} className="text-olive-soft/80 hover:text-white">
+                  Catering {r.name}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/catering" className="text-olive-soft/80 underline underline-offset-4 hover:text-white">Liefergebiet</Link>
+            </li>
+          </ul>
+        </nav>
       </div>
       <div className="border-olive-soft/10 border-t">
         <div className="container-x text-olive-soft/60 flex flex-col gap-3 py-6 pb-24 text-[0.8rem] sm:pb-6 lg:flex-row lg:items-center lg:justify-between">

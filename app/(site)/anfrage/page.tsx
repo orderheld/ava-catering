@@ -11,8 +11,8 @@ export const metadata = pageMeta({
   path: '/anfrage',
 })
 
-export default async function AnfragePage({ searchParams }: { searchParams: Promise<{ angebot?: string; thema?: string; anlass?: string; personen?: string }> }) {
-  const [{ angebot, thema, anlass, personen }, s, cats, themes, blocked] = await Promise.all([searchParams, getSettings(), getCategories(), getThemes(), getBlockedDates()])
+export default async function AnfragePage({ searchParams }: { searchParams: Promise<{ angebot?: string; thema?: string; anlass?: string; personen?: string; ort?: string }> }) {
+  const [{ angebot, thema, anlass, personen, ort }, s, cats, themes, blocked] = await Promise.all([searchParams, getSettings(), getCategories(), getThemes(), getBlockedDates()])
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: 'Anfrage', path: '/anfrage' }], siteUrl())} />
@@ -26,6 +26,7 @@ export default async function AnfragePage({ searchParams }: { searchParams: Prom
           initialTheme={thema}
           initialEventType={anlass}
           initialGuests={Number(personen) || undefined}
+          initialLocation={ort?.slice(0, 80)}
           phone={s.phone}
           leadTime={s.leadTime}
         />
