@@ -343,22 +343,3 @@ export const quantityGuide = [
   { key: 'lunch', label: 'Lunch', hint: 'Buffet oder Box', unit: 'Portionen', min: 1, max: 1, anlass: 'Teamlunch & Meeting', angebot: 'lunch' },
   { key: 'pause', label: 'Kaffeepause', hint: 'Gebäck & Süsses', unit: 'Stück', min: 2, max: 3, anlass: 'Teamlunch & Meeting', angebot: 'suesses' },
 ] as const
-
-/** Orte im Liefergebiet (lokale Suche). */
-export const serviceTowns = [
-  'Pfaffnau',
-  'St. Urban',
-  'Reiden',
-  'Wikon',
-  'Dagmersellen',
-  'Nebikon',
-  'Altishofen',
-  'Willisau',
-  'Sursee',
-  'Zofingen',
-  'Brittnau',
-  'Rothrist',
-  'Aarburg',
-  'Murgenthal',
-  'Olten',
-]

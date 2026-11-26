@@ -2,12 +2,15 @@ import { Footer } from '@/components/site/Footer'
 import { Header } from '@/components/site/Header'
 import { MobileBar } from '@/components/site/MobileBar'
 import { RevealObserver } from '@/components/Reveal'
+import { JsonLd } from '@/components/site/sections'
 import { getSettings } from '@/lib/data'
+import { businessJsonLd } from '@/lib/seo'
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const s = await getSettings()
   return (
     <>
+      <JsonLd data={businessJsonLd(s)} />
       <a href="#main" className="bg-orange sr-only z-[60] rounded-full px-4 py-2 text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3">
         Zum Inhalt springen
       </a>

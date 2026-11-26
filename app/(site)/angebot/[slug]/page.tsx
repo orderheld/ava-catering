@@ -26,7 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${c.title} – ${c.subtitle}`,
     description: categoryDetails[slug]?.seo ?? c.description,
     path: `/angebot/${slug}`,
-    image: '/og-angebot.jpg',
+    // Eigenes Vorschaubild nur für die Standard-Kapitel (scripts/og-bilder.mjs), sonst das allgemeine
+    image: slug in categoryDetails ? `/og/angebot-${slug}.jpg` : '/og-angebot.jpg',
     imageAlt: `${c.title} von AVA Catering`,
   })
 }

@@ -61,9 +61,9 @@ export default async function KalenderPage({ searchParams }: { searchParams: Pro
             return (
               <div key={day} className={cn('min-h-16 min-w-0 overflow-hidden rounded-xl border p-1 sm:min-h-24 sm:p-2', day === today ? 'border-orange' : 'border-line', bl && 'bg-stone-100')}>
                 <p className={cn('text-xs', day === today ? 'text-orange font-semibold' : 'text-muted')}>{Number(day.slice(8))}</p>
-                {bl && <p className="mt-1 truncate rounded bg-stone-300/70 px-1 text-[0.65rem]">Blockiert{bl.note ? `: ${bl.note}` : ''}</p>}
+                {bl && <p className="mt-1 truncate rounded bg-stone-300/70 px-1 text-[0.72rem]">Blockiert{bl.note ? `: ${bl.note}` : ''}</p>}
                 {ev.map((e) => (
-                  <Link key={e.id} href={`/admin/anfragen/${e.id}`} className={cn('mt-1 block truncate rounded px-1 py-0.5 text-[0.62rem] leading-tight sm:text-[0.7rem]', statusMeta[e.status].cls)}>
+                  <Link key={e.id} href={`/admin/anfragen/${e.id}`} className={cn('mt-1 block truncate rounded px-1 py-0.5 text-[0.7rem] leading-tight sm:text-[0.8rem]', statusMeta[e.status].cls)}>
                     {e.eventTime ? `${e.eventTime} ` : ''}
                     {e.company || e.name}
                     {e.guests ? ` · ${e.guests}P` : ''}

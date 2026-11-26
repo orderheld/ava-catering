@@ -39,7 +39,7 @@ export default async function OfferPage({ params }: { params: Promise<{ id: stri
           <OfferBadge status={o.status} />
           <span className="text-muted text-sm">Nr. {offerNumber(o)}</span>
         </div>
-        <h1 className="text-olive-deep mt-3 font-serif text-4xl break-words sm:text-5xl">Offerte{o.company || o.name ? ` für ${o.company || o.name}` : ''}</h1>
+        <h1 className="text-olive-deep mt-3 font-serif text-[1.9rem] break-words sm:text-[2.2rem]">Offerte{o.company || o.name ? ` für ${o.company || o.name}` : ''}</h1>
         {events.length > 0 && <p className="text-muted mt-2 text-sm">{events.join(' · ')}</p>}
       </div>
 

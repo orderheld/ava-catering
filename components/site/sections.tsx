@@ -2,7 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Accent } from '@/components/Accent'
 import { ArrowRight, Calendar, Check, Heart, Leaf, Mail, Phone, Pin, Plus, Truck, Users, Whatsapp } from '@/components/Icons'
-import { businessPackages, serviceTowns, type SiteSettings, type Theme } from '@/lib/content'
+import { businessPackages, type SiteSettings, type Theme } from '@/lib/content'
+import { regions } from '@/lib/regions'
 import { cn, telHref } from '@/lib/utils'
 
 export function SectionHead({
@@ -467,20 +468,32 @@ export function PackageCards() {
   )
 }
 
-/** Liefergebiet mit Ortsliste (lokale Suche). */
+/** Liefergebiet mit Ortsliste (lokale Suche): jeder Ort verlinkt auf seine eigene Seite. */
 export function RegionBlock({ s }: { s: SiteSettings }) {
   return (
     <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:gap-16">
       <SectionHead eyebrow="Liefergebiet" title="Von Pfaffnau in die *Region*." text={`${s.serviceArea}. Abholung in ${s.city} jederzeit nach Absprache.`} />
       <div data-reveal className="relative">
         <ul className="flex flex-wrap gap-2.5">
-          {serviceTowns.map((t) => (
-            <li key={t} className={cn('rounded-full border px-4 py-2 text-sm', t === s.city ? 'bg-orange border-orange text-white' : 'border-line text-olive bg-white/60')}>
-              {t === s.city && <Pin className="mr-1.5 -mt-0.5 inline size-3.5" />}
-              {t}
+          {regions.map((r) => (
+            <li key={r.slug}>
+              <Link
+                href={`/catering/${r.slug}`}
+                className={cn(
+                  'inline-flex items-center rounded-full border px-4 py-2 text-sm transition',
+                  r.name === s.city ? 'bg-orange border-orange text-white hover:bg-orange-deep' : 'border-line text-olive hover:border-orange hover:text-orange bg-white/60',
+                )}
+              >
+                {r.name === s.city && <Pin className="mr-1.5 inline size-3.5" />}
+                {r.name}
+              </Link>
             </li>
           ))}
-          <li className="text-muted px-2 py-2 text-sm italic">… und weitere Orte auf Anfrage</li>
+          <li>
+            <Link href="/catering" className="text-muted hover:text-orange inline-flex px-2 py-2 text-sm italic underline-offset-4 hover:underline">
+              … und weitere Orte auf Anfrage
+            </Link>
+          </li>
         </ul>
       </div>
     </div>

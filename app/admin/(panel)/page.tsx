@@ -52,8 +52,8 @@ export default async function Dashboard() {
           { label: 'Offerten ohne Antwort', value: openOffers.n, href: '/admin/offerten?status=gesendet' },
         ].map((k) => (
           <Link key={k.label} href={k.href} className={`rounded-[1.6rem] border p-5 transition hover:-translate-y-0.5 sm:p-6 ${k.accent ? 'bg-orange border-orange text-white' : 'border-line bg-white'}`}>
-            <p className={`text-[0.72rem] leading-snug tracking-[0.12em] uppercase ${k.accent ? 'text-white/80' : 'text-muted'}`}>{k.label}</p>
-            <p className={`mt-2 font-serif text-4xl sm:text-5xl ${k.accent ? '' : 'text-olive-deep'}`}>{k.value}</p>
+            <p className={`text-[0.95rem] leading-snug font-semibold ${k.accent ? 'text-white' : 'text-muted'}`}>{k.label}</p>
+            <p className={`mt-2 font-serif text-[2rem] sm:text-[2.3rem] ${k.accent ? '' : 'text-olive-deep'}`}>{k.value}</p>
           </Link>
         ))}
       </div>
@@ -90,7 +90,7 @@ export default async function Dashboard() {
                   <Link href={`/admin/anfragen/${i.id}`} className="hover:bg-sand/50 -mx-3 flex items-center gap-4 rounded-xl px-3 py-3">
                     <span className="bg-sand text-olive-deep grid w-14 shrink-0 place-items-center rounded-xl py-1.5 text-center leading-tight">
                       <span className="font-serif text-2xl">{formatDate(i.eventDate, { day: '2-digit' })}</span>
-                      <span className="text-[0.65rem] tracking-wider uppercase">{formatDate(i.eventDate, { month: 'short' })}</span>
+                      <span className="text-[0.8rem] font-semibold">{formatDate(i.eventDate, { month: 'short' })}</span>
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-medium">{i.company || i.name}</span>

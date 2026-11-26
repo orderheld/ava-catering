@@ -10,7 +10,7 @@ import { siteUrl } from '@/lib/utils'
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Angebot – Apéro, Mezze, Lunch & Themenbuffets',
+  title: 'Catering-Angebot – Apéro, Fingerfood, Lunch & Buffets',
   description:
     'Apéro-, Mezze- und Lunch-Buffets, Themen-Party-Service und Süsses: das hausgemachte Catering-Angebot aus Pfaffnau für Firmen, Geschäfte und Feste.',
   path: '/angebot',

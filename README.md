@@ -11,6 +11,7 @@ Next.js 16 · Tailwind CSS 4 · Neon (Postgres, Drizzle ORM) · Resend · Vercel
 - **Farben aus dem Logo**: Orange `#E8650A`, Oliv `#4A5822`, Creme `#FBF7F0`. Schriften: Cormorant Garamond (Titel) + Jost (Text, wie «CATERING» im Logo).
 - **Zielgruppen**: Firmen & Geschäfte (Apéro, Teamlunch, Meetings, Eröffnungen) und Feste (Geburtstag, Familien- und Vereinsfest), Anlässe von rund 10 bis 120 Gästen. Keine Hochzeiten oder Grossanlässe.
 - **Mobil zuerst**: Feste Leiste mit «Anrufen», «WhatsApp» und «Unverbindlich anfragen».
+- **Lokale Suche**: Pro Ort eine eigene Seite mit eigenem Text (`lib/regions.ts`), Vorschaubilder in `public/og/` (neu erzeugen mit `node scripts/og/og-bilder.cjs`). Tägliche Prüfung: `docs/taegliche-pruefung.md`.
 - **SEO & Teilen**: Eigene Titel/Beschreibung pro Seite, Open-Graph-Bilder für WhatsApp/Facebook/LinkedIn (`public/og*.jpg`), strukturierte Daten (LocalBusiness, Service, FAQ, Breadcrumbs), Sitemap, Web-App-Manifest, Favicon & App-Icons.
 
 ## Seiten
@@ -23,6 +24,7 @@ Next.js 16 · Tailwind CSS 4 · Neon (Postgres, Drizzle ORM) · Resend · Vercel
 | `/anfrage` Assistent in 4 Schritten | Kalender: Anlässe + blockierte Tage («ausgebucht» im Formular) |
 | `/ueber-uns`, `/galerie` (Lightbox), `/faq` | Angebot, Themen, Galerie (Upload), Texte & Kontaktdaten |
 | `/kontakt`, `/impressum`, `/datenschutz` | |
+| `/catering` Liefergebiet, `/catering/[ort]` Ortsseiten (Reiden, Zofingen, Olten …) aus `lib/regions.ts` | |
 
 Logos liegen in `public/brand/` (SVG): `ava-logo.svg` (Hauptlogo), `ava-logo-claim.svg`, `ava-logo-horizontal.svg`, `ava-logo-emblem.svg` (rund, z.B. Stempel/Social Media), `ava-logo-hell.svg` (für dunkle Hintergründe), `ava-icon.svg` (App-Icon/Favicon).
 

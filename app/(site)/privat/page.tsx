@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from '@/components/Icons'
-import { ContactChips, CtaBand, Faq, ImageHero, JsonLd, SectionHead, ThemeCards, breadcrumbJsonLd, faqGroups, faqJsonLd } from '@/components/site/sections'
+import { ContactChips, CtaBand, Faq, ImageHero, JsonLd, RegionBlock, SectionHead, ThemeCards, breadcrumbJsonLd, faqGroups, faqJsonLd } from '@/components/site/sections'
 import { getSettings, getThemes } from '@/lib/data'
 import { pageMeta } from '@/lib/seo'
 import { siteUrl } from '@/lib/utils'
@@ -9,9 +9,9 @@ import { siteUrl } from '@/lib/utils'
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Catering für Feste – Geburtstag, Verein & Familie',
+  title: 'Partyservice für Geburtstag, Verein & Familienfest',
   description:
-    'Catering für Geburtstage, Vereins-, Sommer- und Familienfeste: hausgemachte Apéro-, Mezze- und Themenbuffets von AVA Catering aus Pfaffnau.',
+    'Partyservice aus Pfaffnau für Geburtstage, Vereins- und Familienfeste in der Region Zofingen, Luzerner Hinterland und Oberaargau: Apéro-, Mezze- und Themenbuffets.',
   path: '/privat',
   image: '/og-privat.jpg',
   imageAlt: 'AVA Catering – Catering für Feste',
@@ -87,6 +87,12 @@ export default async function PrivatPage() {
             </div>
           </div>
           <Faq items={faq} />
+        </div>
+      </section>
+
+      <section className="bg-sand/60 py-20 lg:py-28">
+        <div className="container-x">
+          <RegionBlock s={s} />
         </div>
       </section>
 

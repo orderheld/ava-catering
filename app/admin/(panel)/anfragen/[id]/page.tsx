@@ -8,6 +8,8 @@ import { ActionForm, QuickForm, SubmitButton } from '@/components/admin/forms'
 import { ReplyComposer } from '@/components/admin/ReplyComposer'
 import { DbMissing, Panel, StatusBadge, statusMeta } from '@/components/admin/ui'
 import { inquiries, inquiryLog, inquiryStatuses, offers } from '@/db/schema'
+import { serviceOptions } from '@/lib/content'
+import { getCategories } from '@/lib/data'
 import { getDb } from '@/lib/db'
 import { formatChf, offerNumber } from '@/lib/offer'
 import { formatDate, formatDateTime, telHref } from '@/lib/utils'
@@ -20,10 +22,14 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
   if (!db) return <DbMissing />
   const inq = await db.query.inquiries.findFirst({ where: eq(inquiries.id, Number(id)) })
   if (!inq) notFound()
-  const [log, offerList] = await Promise.all([
+  const [log, offerList, cats] = await Promise.all([
     db.select().from(inquiryLog).where(eq(inquiryLog.inquiryId, inq.id)).orderBy(desc(inquiryLog.createdAt)),
     db.select().from(offers).where(eq(offers.inquiryId, inq.id)).orderBy(desc(offers.createdAt)),
+    getCategories({ includeHidden: true }),
   ])
+  // Interne Kürzel (z.B. «apero», «lieferung») als lesbare Namen anzeigen
+  const offeringLabel = (slug: string) => (slug === 'unsicher' ? 'Noch unsicher, Beratung gewünscht' : (cats.find((c) => c.slug === slug)?.title ?? slug))
+  const serviceLabel = (v: string | null) => (v ? (serviceOptions.find((o) => o.value === v)?.label ?? v) : null)
   const latestOffer = offerList[0]
   const eventLabel = [inq.eventType, inq.eventDate && formatDate(inq.eventDate)].filter(Boolean).join(' am ') || 'Ihre Anfrage'
   const wa = inq.phone ? inq.phone.replace(/\D/g, '').replace(/^0/, '41') : null
@@ -33,9 +39,9 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
     ['Datum', inq.eventDate ? `${formatDate(inq.eventDate, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${inq.eventTime ? `, ${inq.eventTime} Uhr` : ''}` : null],
     ['Personen', inq.guests],
     ['Ort', inq.location],
-    ['Service', inq.service],
+    ['Service', serviceLabel(inq.service)],
     ['Budget p.P.', inq.budget],
-    ['Angebot', inq.offerings.join(', ')],
+    ['Buffet', inq.offerings.map(offeringLabel).join(', ')],
     ['Themen', inq.themes.join(', ')],
     ['Ernährung', inq.dietary.join(', ')],
   ]
@@ -51,7 +57,7 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
               #{inq.id} · {inq.kind === 'kontakt' ? 'Kontaktnachricht' : 'Anfrage'} vom {formatDateTime(inq.createdAt)}
             </span>
           </div>
-          <h1 className="text-olive-deep mt-3 font-serif text-4xl break-words sm:text-5xl">{inq.name}</h1>
+          <h1 className="text-olive-deep mt-3 font-serif text-[1.9rem] break-words sm:text-[2.2rem]">{inq.name}</h1>
           {inq.company && <p className="text-muted mt-1 text-lg">{inq.company}</p>}
         </div>
         <div className="flex flex-col gap-3 sm:items-end">
@@ -87,8 +93,8 @@ export default async function AnfrageDetail({ params }: { params: Promise<{ id: 
                   .filter(([, v]) => v !== null && v !== undefined && v !== '')
                   .map(([k, v]) => (
                     <div key={k}>
-                      <dt className="text-muted text-xs tracking-[0.15em] uppercase">{k}</dt>
-                      <dd className="mt-1">{v}</dd>
+                      <dt className="text-muted text-sm font-semibold">{k}</dt>
+                      <dd className="mt-0.5 text-[1.05rem]">{v}</dd>
                     </div>
                   ))}
               </dl>
