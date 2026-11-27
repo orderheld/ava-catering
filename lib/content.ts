@@ -258,19 +258,19 @@ export const categoryDetails: Record<string, { intro: string; idealFor: string[]
     intro:
       'Ein gutes Mittagessen hält Teams bei Laune. Ob Buffet im Sitzungszimmer oder einzeln verpackte Lunch-Boxen für Workshops – frisch, ausgewogen und pünktlich bereit.',
     idealFor: ['Meetings & Workshops', 'Seminare & Schulungen', 'Teamlunch', 'Messe & Events'],
-    seo: 'Lunch-Catering & Lunch-Boxen für Firmen in der Region Luzern/Aargau – frisch zubereitet von AVA Catering in Pfaffnau.',
+    seo: 'Lunch-Catering & Lunch-Boxen für Firmen in Reiden, Zofingen, Sursee, Olten und Umgebung – jeden Tag frisch zubereitet von AVA Catering in Pfaffnau.',
   },
   'themen-party': {
     intro:
       'Ein Thema macht jede Feier einfacher: Alle wissen, was sie erwartet, und jeder findet etwas. Chicken Burger, Pizza, Pasta oder mediterrane Spezialitäten – passend für Gross und Klein.',
     idealFor: ['Geburtstag & Kindergeburtstag', 'Teamevent', 'Vereinsanlass', 'Familienfest'],
-    seo: 'Themen-Party-Service: Chicken-Burger-, Pizza-, Pasta- und mediterrane Buffets für Geburtstage, Teamevents und Vereine.',
+    seo: 'Themen-Party-Service aus Pfaffnau: Chicken-Burger-, Pizza-, Pasta- und mediterrane Buffets für Geburtstage, Teamevents und Vereinsanlässe.',
   },
   suesses: {
     intro:
       'Der süsse Abschluss bleibt in Erinnerung. Kuchen, Kekse, Baklava und Dessertgläser – als Ergänzung zu jedem Buffet oder als eigenes Dessertbuffet.',
     idealFor: ['Kaffee & Kuchen im Büro', 'Geburtstag', 'Apéro-Ergänzung', 'Dessertbuffet'],
-    seo: 'Süsses & Gebäck: Kuchen, Muffins, Kekse, Baklava und Dessertbuffets – hausgemacht von AVA Catering aus Pfaffnau.',
+    seo: 'Süsses & Gebäck für Apéro, Firmenanlass und Fest: Kuchen, Muffins, Kekse, Baklava und Dessertbuffets – hausgemacht von AVA Catering aus Pfaffnau.',
   },
 }
 

@@ -9,9 +9,9 @@ import { siteUrl } from '@/lib/utils'
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Firmencatering & Firmenlunch – Apéro, Lunch-Boxen, Buffets',
+  title: 'Firmencatering & Firmenlunch – Apéro & Lunch-Boxen',
   description:
-    'Firmencatering aus Pfaffnau für Reiden, Zofingen, Rothrist, Olten, Langenthal und Sursee: Business-Lunch, Lunch-Boxen, Apéro riche und Buffets. Rechnung an Ihre Firma.',
+    'Firmencatering aus Pfaffnau für Reiden, Zofingen, Rothrist, Olten, Langenthal und Sursee: Business-Lunch, Lunch-Boxen, Apéro und Buffets. Rechnung an Ihre Firma.',
   path: '/firmen',
   image: '/og-firmen.jpg',
   imageAlt: 'AVA Catering – Catering für Firmen & Geschäfte',
