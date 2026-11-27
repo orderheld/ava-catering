@@ -14,7 +14,7 @@ export const revalidate = 300
 
 export const metadata = pageMeta({
   description:
-    'Hausgemachtes Catering & Partyservice aus Pfaffnau für Firmen und Feste in Reiden, Zofingen, Langenthal, Sursee, Olten und Umgebung: Apéro, Firmenlunch, Lunch-Boxen, Buffets.',
+    'Hausgemachtes Catering & Partyservice aus Pfaffnau für Firmen und Feste in Reiden, Zofingen, Langenthal, Sursee und Olten: Apéro, Firmenlunch, Lunch-Boxen, Buffets.',
   path: '/',
 })
 

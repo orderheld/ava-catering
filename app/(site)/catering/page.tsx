@@ -9,9 +9,9 @@ import { siteUrl } from '@/lib/utils'
 export const revalidate = 300
 
 export const metadata = pageMeta({
-  title: 'Liefergebiet – Catering Luzern, Aargau, Solothurn & Oberaargau',
+  title: 'Catering Luzern, Aargau & Solothurn – Liefergebiet',
   description:
-    'Catering und Partyservice aus Pfaffnau für Reiden, Zofingen, Rothrist, Olten, Langenthal, Sursee, Willisau, Luzern und Umgebung. Lieferung oder Abholung, Offerte kostenlos.',
+    'Catering und Partyservice aus Pfaffnau für Reiden, Zofingen, Rothrist, Olten, Langenthal, Sursee, Willisau und Luzern. Lieferung oder Abholung, Offerte kostenlos.',
   path: '/catering',
   image: '/og/catering-region.jpg',
   imageAlt: 'AVA Catering – Liefergebiet rund um Pfaffnau',

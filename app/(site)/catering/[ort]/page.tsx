@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!r) return {}
   return pageMeta({
     title: `Catering & Partyservice ${r.name}`,
-    description: `Catering in ${r.name} (${r.canton}): hausgemachte Apéros, Firmenlunch, Lunch-Boxen und Buffets für Firmen, Geburtstage und Feste. ${r.km === 0 ? 'Abholung in Pfaffnau.' : 'Lieferung aus Pfaffnau.'} Offerte kostenlos.`,
+    description: `Catering in ${r.name} (${r.canton}): hausgemachte Apéros, Firmenlunch, Lunch-Boxen und Buffets für Firmen, Geburtstage und Feste. ${r.km === 0 ? 'Abholung in Pfaffnau.' : 'Lieferung aus Pfaffnau.'} Offerte gratis.`,
     path: `/catering/${r.slug}`,
     image: regionOgImage(r),
     imageAlt: `AVA Catering – Catering & Partyservice in ${r.name}`,
